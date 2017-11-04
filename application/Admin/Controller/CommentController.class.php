@@ -187,7 +187,7 @@ class CommentController extends AdminbaseController {
                 left join cm_users as u on u.id=r.uid
                 left join cm_comment as c on c.id=r.cid
                 left join cm_seller as s on s.id=c.sid
-                order by r.review_time desc,r.id desc
+                order by r.id desc
                 limit {$page->firstRow},{$page->listRows}";
         $list=M()->query($sql);
          

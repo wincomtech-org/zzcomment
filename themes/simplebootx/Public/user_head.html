@@ -26,7 +26,7 @@
 				</div>
 				<div class="per_lf">
 				<foreach name="seller_list" item="vo" key="k">
-					<a class="plt <eq name='vo.id' value='$sid'>red</eq>" href="javascript:void(0)">店铺{$k+1}</a>
+					<a class="plt <if condition="$sid eq $vo['id']" >red</if>" href="javascript:void(0)">店铺{$k+1}</a>
 					<ul class="per_lf_list">
 						<li><a href="{:U('User/Seller/index',array('sid'=>$vo['id']))}">店铺管理</a></li>
 						<li><a href="{:U('User/Goods/index',array('sid'=>$vo['id']))}">商品列表</a></li>

@@ -152,7 +152,17 @@ class ListController extends HomebaseController {
 	    $page = $this->page($total, 5-$len);
 	    
 	    $list=$m->where($where_top)->order('start_time desc')->limit($page->firstRow,$page->listRows)->select();
-	     
+	    foreach($list as $k=>$v){
+	        /* if($v['end_time']<$time){
+	            $list[$k]['status']=3;
+	        } */
+	        $content_01 = $v["content"];//从数据库获取富文本content
+	        $content_02 = htmlspecialchars_decode($content_01); //把一些预定义的 HTML 实体转换为字符
+	        $content_03 = str_replace("&nbsp;","",$content_02);//将空格替换成空
+	        $contents = strip_tags($content_03);//函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
+	        $con = mb_substr($contents, 0, 100,"utf-8");//返回字符串中的前100字符串长度的字符
+	        $list[$k]['content']=$con;
+	    }
 	    $this->assign('list',$list)->assign('list_top_active',$list_top_active)
 	    ->assign('page',$page->show('Admin'));
 	    $this->display();

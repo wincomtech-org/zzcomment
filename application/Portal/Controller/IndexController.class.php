@@ -100,8 +100,25 @@ class IndexController extends HomebaseController {
 	        $len=$active_len-$len;
 	        $list_top_active_empty=array();
 	        $list_top_active_empty=$m_active->where($where_top)->order('id desc')->limit('0,'.$len)->select();
+	        foreach($list_top_active_empty as $k=>$v){
+	            
+	            $content_01 = $v["content"];//从数据库获取富文本content
+	            $content_02 = htmlspecialchars_decode($content_01); //把一些预定义的 HTML 实体转换为字符
+	            $content_03 = str_replace("&nbsp;","",$content_02);//将空格替换成空
+	            $contents = strip_tags($content_03);//函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
+	            $con = mb_substr($contents, 0, 100,"utf-8");//返回字符串中的前100字符串长度的字符
+	            $list_top_active_empty[$k]['content']=$con;
+	        }
 	    }
-	     
+	    foreach($list_top_active as $k=>$v){
+	         
+	        $content_01 = $v["content"];//从数据库获取富文本content
+	        $content_02 = htmlspecialchars_decode($content_01); //把一些预定义的 HTML 实体转换为字符
+	        $content_03 = str_replace("&nbsp;","",$content_02);//将空格替换成空
+	        $contents = strip_tags($content_03);//函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
+	        $con = mb_substr($contents, 0, 100,"utf-8");//返回字符串中的前100字符串长度的字符
+	        $list_top_active[$k]['content']=$con;
+	    }
 	    $this->assign('banners',$banners)
 	    ->assign('list_score_seller',$list_score_seller)
 	    ->assign('list_top_seller',$list_top_seller)
