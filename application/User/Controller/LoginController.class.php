@@ -1,9 +1,9 @@
 <?php
 namespace User\Controller;
 
-use Common\Controller\HomebaseController;
+use Common\Controller\Homebase0Controller;
 
-class LoginController extends HomebaseController {
+class LoginController extends Homebase0Controller {
 	
     // 前台用户登录
 	public function index(){

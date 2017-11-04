@@ -3,7 +3,7 @@ namespace Common\Controller;
 
 use Common\Controller\AppframeController;
 
-class HomebaseController extends AppframeController {
+class Homebase0Controller extends AppframeController {
 	
 	public function __construct() {
 		$this->set_action_success_error_tpl();
@@ -66,8 +66,7 @@ class HomebaseController extends AppframeController {
 		    session('add_city3',$city3);
 		}
 		 
-		$this->check_login();
-		$this->check_user();
+		 
 		$this->assign("company",session('company'))
 		->assign("add_cate1",session('add_cate1'))
 		->assign('add_cate2',session('add_cate2'))
