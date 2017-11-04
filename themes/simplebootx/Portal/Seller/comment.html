@@ -1,0 +1,90 @@
+ <tc_include file="Public:head" />
+ 
+</head>
+<body>
+	<tc_include file="Public:header" />
+	<!-- top end -->
+
+	<!-- main -->
+		<div class="shop-wrapper">
+			
+			<tc_include file="Public:seller_home" />
+				 <div class="shop-head head2">
+					<span class="">评论区</span>
+				</div>
+				<div class="shop-message-wrapper">
+					<div class="shop-message-container">
+						<p>留下您的足迹</p>
+						<form action="#" method="" class="sm-form">
+							<div class="sm-row">
+								<div class="sm-c1 lf">
+									<label for="user_message" class="must">内容</label>
+								</div>
+								<div class="sm-c2 lf">
+									<textarea name="usermessage" id="user_message" placeholder="请输入您的留言信息，字数在2-150字！" class="user-message"></textarea>
+								</div>
+							</div>
+							<div class="sm-row">
+								<div class="sm-c1 lf">
+									<label class="must">评分</label>
+								</div>
+								<div class="sm-c2 lf">
+									<label for="add_core" class="core add-core lf checked"><span>升级：&nbsp;</span><input type="radio" name="core" id="add_core" checked></label>
+									<label for="sub_core" class="core sub-core lf"><span>降级：&nbsp;</span><input type="radio" name="core" id="sub_core"></label>
+									
+									<label for="provedata" class="upload lf">
+										<span class="lf">上传文件：</span>
+										<span class="lf btn-style">点击上传</span>
+										<input type="file" name="provedata" id="provedata">
+									</label>
+									<p class="sm-infor">登录后才能评分，必须上传文件证明！</p>
+									<input type="submit" value="提交留言" class="lg-signup" id="lgsignup" onclick="return userComment();">
+								</div>
+							</div>
+							<div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="shop-head head5">
+					<span class="">网友点评（{$count_comment}）</span>
+				</div>
+				<div class="shop-colcontainer">
+					<ul class="shop-comment">
+					<foreach name="list" item="vo">
+						<li>
+							<a href="{:U('Portal/List/comment',array('uid'=>$vo['uid']))}" class="lf">
+								<img src="__UPLOAD__/{$vo['avatar']|default=$company['avatar']['content']}" alt="{$vo.uname}" title="{$vo.uname}">
+							</a>
+							<div class="lf comment-cont">
+								<span class="comment-title">{$vo.sname}</span>
+								<span class="comment-type"><eq name="vo.score" value="1">加分<else/>减分</eq></span>
+								<p class="comment-about">{$vo.content}<span class="comment-date">&nbsp;&nbsp;【发表于{$vo.create_time|date="Y-m-d",###}】</span></p>
+								<div class="comment-reply">
+									<a href="javascript:void(0);" title="回复" class="comment-rbtn1">回复</a>
+								<notempty name='vo.reply'>
+									<a href="javascript:void(0);" class="comment-rbtn2">展开回复</a>
+								</notempty>
+								</div>
+								<div class="comment-cont2">
+								<foreach name='vo.reply' item='v'>
+									<span class="comment-title">{$v['uname']|default='游客'.$v['ip']}&nbsp;&nbsp;回复</span>
+									<p class="comment-about">{$v.content}<span class="comment-date">&nbsp;&nbsp;【发表于{$vo.create_time|date="Y-m-d",###}】</span></p>
+								</foreach> 
+								</div>
+							</div>
+						</li>
+					</foreach>
+						 
+					</ul>
+					<div class="page">{$page}</div>
+					 
+				</div>
+					
+			</div>
+		</div>
+	<!-- main end -->
+
+	<tc_include file="Public:footer" />
+</body>
+</html>

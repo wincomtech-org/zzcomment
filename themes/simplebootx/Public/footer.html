@@ -1,0 +1,74 @@
+<!-- bottom -->
+<div class="foot-wrapper">
+	<div class="foot-container">
+		<div class="lf foot-cont1">
+			<p class="p1">{$company.company.content}</p>
+			<div>{$company.icp.content}<br>
+			技术支持：{$company.suport.content}</div>
+		</div>
+		<div class="lf foot-cont3">
+			<div class="foot-link">
+				<a href="{:U('Portal/index/index')}">网站首页</a>
+				<a href="{:U('Portal/List/seller_list')}">查找店铺</a>
+				<a href="#">用户协议</a>
+				<a href="#">商家协议</a>
+				<span>联系电话：{$company.tel.content}</span>
+				<span>邮箱：{$company.email.content}</span>
+			</div>
+		</div>
+		<div class="rt foot-cont2">
+			<img src="__UPLOAD__/{$company.weixin.content}" alt="微信二维码" title="微信二维码">
+			<p>扫一扫,关注我们</p>
+		</div>
+	</div>
+</div>
+<!-- bottom end -->
+ 
+
+	<!-- js -->	
+	<!-- js end -->	
+	<script type="text/javascript" src="__TMPL__Public/js/jquery-1.12.1.min.js"></script>
+	<script type="text/javascript" src="__TMPL__Public/js/jquery.flexslider-min.js"></script>
+	
+	<script type="text/javascript" src="__TMPL__Public/js/load.js"></script>
+	
+	<!-- js end -->
+<script>
+$('#add-cate2 option').hide();
+$('#add-cate2 .cate20').show();
+$('#add-cate1').change(function(){
+	var fid=this.value;
+	$('#add-cate2 option').hide();
+	$('#add-cate2 .cate20').show();
+	$('#add-cate2 .cate20').prop('selected',true);
+	$('#add-cate2 .cate2'+fid).show();
+	
+});
+
+$('#add-city2 option').hide();
+$('#add-city2 .city20').show();
+$('#add-city1').change(function(){
+	var fid=this.value;
+	$('#add-city2 option').hide();
+	$('#add-city2 .city20').show();
+	$('#add-city2 .city20').prop('selected',true);
+	$('#add-city2 .city2'+fid).show();
+	$('#add-city3 option').hide();
+	$('#add-city3 .city30').show(); 
+	$('#add-city3 .city30').prop('selected',true);
+	 
+});
+
+$('#add-city3 option').hide();
+$('#add-city3 .city30').show();
+$('#add-city2').change(function(){
+	var fid=this.value;
+	$('#add-city3 option').hide();
+	
+	$('#add-city3 .city30').show(); 
+	$('#add-city3 .city30').prop('selected',true);
+	
+	$('#add-city3 .city3'+fid).show(); 
+});
+ 
+</script>
