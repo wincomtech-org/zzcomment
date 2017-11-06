@@ -161,7 +161,7 @@ $(document).ready(function(){
 
 	// login register
 	
-	$(".login-form input:text,.register-form input:text,.reset-form input:text,.reset-form2 input:text,.reset-form3 input:text").each(function(){
+	$(".login-form input,.register-form input,.reset-form input,.reset-form2 input,.reset-form3 input").each(function(){
 		$(this).blur(function(){
 			var infor=$(this).val();
 			if(infor.length<1){
@@ -256,7 +256,7 @@ var mR= /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/;
 // login register	
     var totalstatus=true;
     function nullCheck(){
-    	$(":text").each(function(){
+    	$("input[type='text'],input[type='password']").each(function(){
     		if($(this).val().length<1){
 				$(this).parent("div").next(".lg-infor").text("请填写信息！");
 				totalstatus=false;
