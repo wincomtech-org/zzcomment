@@ -34,8 +34,7 @@
 					<th>图片</th>
                     <th>价格</th>
                     <th>创建时间</th>
-                    <th>上架更新时间</th>
-                    <th>过期时间</th> 
+                    <th>推荐时间</th> 
                     <th>状态</th> 
                     <th>操作</th> 
 				</tr>
@@ -51,7 +50,7 @@
                     <td>￥{$vo.price}</td>
                      <td> {$vo.create_time|date="Y-m-d H:i:s",###}</td>
                      <td> {$vo.start_time|date="Y-m-d H:i:s",###}</td>
-                     <td> {$vo.end_time|date="Y-m-d H:i:s",###}</td>
+                     
                    <td>
 					<switch name="vo.status">
 					<case value="0">未审核</case>

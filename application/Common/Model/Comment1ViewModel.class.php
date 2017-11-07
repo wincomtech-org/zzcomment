@@ -11,8 +11,7 @@ class Comment1ViewModel extends ViewModel {
     public $viewFields = array(
         'Comment'=>array(
             'id',
-             'sid',
-            'name',
+             'sid', 
             'uid',
             'score', 
             'status',

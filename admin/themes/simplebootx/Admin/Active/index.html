@@ -12,7 +12,7 @@
 				<option value="0" <if condition="$status eq 0">selected</if>>未审核</option>
 				<option value="1" <if condition="$status eq 1">selected</if>>审核不通过</option>
 				<option value="2" <if condition="$status eq 2">selected</if>>审核通过</option>
-				
+				<option value="3" <if condition="$status eq 3">selected</if>>已过期</option>
 			</select>
 			动态ID： 
 			<input type="text" name="id" style="width: 100px;" value="{$id}" >
@@ -34,7 +34,7 @@
 					<th>图片</th>
                     
                     <th>创建时间</th>
-                     <th>开始时间</th>
+                    <th>推荐时间</th>
                     <th>过期时间</th> 
                     <th>审核结果</th> 
                     <th>操作</th> 

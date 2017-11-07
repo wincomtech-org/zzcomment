@@ -31,12 +31,7 @@
 						  <input type="text" value="{$info.name}" readonly/> 
 					</div>
 				</div>
-				<div class="control-group fleft">
-					<span class="control-label" >商品链接：</span>
-					<div class="controls">
-						  <input type="text" value="{$info.link}" readonly/> 
-					</div>
-				</div>
+				 
 				 <div class="control-group fleft">
 					<span class="control-label" >商品价格：</span>
 					<div class="controls">
@@ -50,19 +45,12 @@
 					</div>
 				</div>
 				<div class="control-group fleft">
-					<span class="control-label" >上新时间：</span>
+					<span class="control-label" >推荐时间：</span>
 					<div class="controls">
 						<input type="text"  value="{$info.start_time|date='Y-m-d H:i:s',###}" readonly/>
 					</div>
 				</div>
-				<div class="control-group fleft">
-					<span class="control-label" >过期时间：</span>
-					<div class="controls">
-						<input type="text" value="{$info.end_time|date='Y-m-d H:i:s',###}" readonly/>
-					</div>
-				</div>
-				 
-				 
+				  
 				<div style="clear:both"></div>
 				<div class="control-group">
 					<span class="control-label" >商品图片：</span>
@@ -71,12 +59,7 @@
 						 
 					</div>
 				</div>
-				 <div class="control-group">
-					<span class="control-label" >商品详情：</span>
-					<div class="controls">
-					 {$info.content}
-					</div>
-				</div>
+				 
 			 <div class="control-group fleft">
 					<span class="control-label" >审核状态：</span>
 					<div class="controls">
