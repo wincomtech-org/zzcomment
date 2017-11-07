@@ -1,5 +1,6 @@
 <?php
 date_default_timezone_set('PRC');
+header("content-type:text/html;charset=utf-8");
 set_time_limit(600);
 $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 $log='1.log';
