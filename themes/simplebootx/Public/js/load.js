@@ -320,7 +320,7 @@ var mR= /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/;
 			return false;
 		}
 		else{
-			$(":submit").parent("div").next(".lg-infor").text("注册成功！");			
+			$(":submit").parent("div").next(".lg-infor").text("开始注册验证...");			
 		}
 	}
 	function loginCheck(){
@@ -333,7 +333,7 @@ var mR= /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/;
 			return false;
 		}
 		else{
-			$(":submit").parent("div").next(".lg-infor").text("登录成功！");			
+			$(":submit").parent("div").next(".lg-infor").text("开始登陆验证...");			
 		}		
 	}
 	function resetCheck1(){
