@@ -16,7 +16,7 @@ class TestController extends AdminbaseController {
     } 
    public function index(){
        echo 'test<br/>';
-       echo "<a href='.(U('Admin/Test/add')).'>还原</a>";
+       echo "<a href='.(U('Admin/Test/restore')).'>还原</a>";
        
    }
    //数据库还原
