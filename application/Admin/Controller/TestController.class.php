@@ -24,7 +24,7 @@ class TestController extends AdminbaseController {
    public function restore()
    {
        
-       $filename='zz2017-11-7.sqlsql';
+       $filename='/zz2017-11-7.sqlsql';
        set_time_limit(0);
        $dname=C('DB_NAME');
        $dir=getcwd();
