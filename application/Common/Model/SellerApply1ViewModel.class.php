@@ -14,8 +14,7 @@ class SellerApply1ViewModel extends ViewModel {
         'SellerApply'=>array(
             'id',
              'sid',
-            'uid',
-           
+            'uid', 
             'corporation',
             'scope', 
             'create_time', 

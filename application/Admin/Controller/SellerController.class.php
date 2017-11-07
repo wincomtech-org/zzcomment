@@ -184,14 +184,23 @@ class SellerController extends AdminbaseController {
                     //删除店铺后还要删除店铺动态，，商品，点评回复，各种推荐
                     //动态
                     $where='sid='.$id;
-                    M('Dynamic')->delete($where);
+                    M('Active')->delete($where);
+                    $m_comment=M('Comment');
+                    $comments=$m_comment->field('id')->where($where)->select();
+                    $m_comment->delete($where);
+                    foreach ($comments as $v){
+                        $ids[]=$v['id'];
+                    }
+                    if(!empty($ids)){
+                        M('Reply')->where(array('cid'=>array('in',$ids)))->delete();
+                    }
                     //商品
                     M('Goods')->delete($where);
                     //店铺推荐
-                    M('Recommend')->delete($where);
+                    M('TopSeller')->delete($where);
                     //点评,还要删除回复
                     $m_comment=M('Comment');
-                    $comments=$m_comment->field('id')->select();
+                    $comments=$m_comment->field('id')->where($where)->select();
                     $m_comment->delete($where);
                     foreach ($comments as $v){
                         $ids[]=$v['id'];
@@ -273,17 +282,27 @@ class SellerController extends AdminbaseController {
             'sid'=>$id,
             'sname'=>'seller',
         );
+        
         $desc='新建店铺'.$id;
+        $data_msg=array(
+            'aid'=>session('ADMIN_ID'),
+            'time'=>time(),
+            'uid'=>$info['author'],
+            'content'=>'新建店铺'.$info['name'],
+        );
         if($action==1){
             $row=$m->data(array('status'=>1))->where('id='.$id)->save();
             $desc.='审核成功';
+            $data_msg['content'].='审核通过了';
         }else{
             $row=$m->where('id='.$id)->delete();
             $desc.='删除成功';
+            $data_msg['content'].='审核不通过，被删除了';
         }
         if($row===1){
             $data_action['descr']=$desc;
             M('AdminAction')->add($data_action);
+            M('Msg')->add($data_msg);
             $this->success($desc);
         }else{
             $this->error('操作错误');
@@ -426,12 +445,22 @@ class SellerController extends AdminbaseController {
             'sid'=>$id,
             'sname'=>'seller_apply',
         );
+        $data_msg=array(
+            'aid'=>$uid,
+            'time'=>$time,
+            'uid'=>$info['uid'],
+            'content'=>date('Y-m-d',$info['create_time']).'提交的领用店铺申请',
+        );
         $desc='用户'.$uid.'领用店铺'.$info['sid'].'的申请';
         if($status==3){
             $data_action['descr']='删除了'.$desc;
             $row=$m->where('id='.$id)->delete(); 
             if($row===1){
                 M('AdminAction')->add($data_action);
+                $data_msg['content'].='不通过，被删除了';
+                if($info['status']==0){
+                    M('Msg')->add($data_msg);
+                }
                 $this->success('删除成功',U('applied'));
                 
             }else{
@@ -452,14 +481,14 @@ class SellerController extends AdminbaseController {
         
         //审核
         $data1=array(
-            'status'=>$status,
-             
+            'status'=>$status, 
         );
         $m->startTrans();
         $row1=$m->data($data1)->where('id='.$id)->save();
         if($row1===1){
             if($status==2){ 
                 $data_action['descr']='通过了'.$desc;
+                $data_msg['content'].='审核通过了';
                 $data2=array(
                     'status'=>2,
                     'uid'=>$info['uid'],
@@ -481,9 +510,11 @@ class SellerController extends AdminbaseController {
                 } 
             }else{
                 $data_action['descr']='不同意'.$desc;
+                $data_msg['content'].='审核不通过';
             }
             $m->commit();
             M('AdminAction')->add($data_action);
+            M('Msg')->add($data_msg);
             $this->success('审核成功');
             exit;
             

@@ -17,10 +17,8 @@ class GoodsController extends MemberbaseController {
     //  
     public function index() {
         $m=$this->m;
-        $where=array('sid'=>$this->sid);
+        $where=array('sid'=>$this->sid); 
         
-        $time=time();
-         
         $total=$m->where($where)->count();
         $page = $this->page($total, C('PAGE'));
         $list=$m->where($where)->order('start_time desc')->limit($page->firstRow,$page->listRows)->select();
@@ -30,8 +28,7 @@ class GoodsController extends MemberbaseController {
        $this->display();
        
     }
-    public function add(){
-       
+    public function add(){ 
         $this->display();
        exit;
     }
@@ -43,6 +40,7 @@ class GoodsController extends MemberbaseController {
         $row=$m->where($where)->delete();
         if($row===1){
             $data=array('errno'=>1,'error'=>'删除成功'); 
+            M('TopGoods')->where('pid='.$id)->delete();
         }else{
             $data=array('errno'=>2,'error'=>'删除失败');
         }
@@ -91,6 +89,13 @@ class GoodsController extends MemberbaseController {
                     'content'=>'推荐商品'.$id, 
                 );
                 M('Pay')->add($data_pay);
+                $data_top0=array(
+                    'pid'=>$id,
+                    'status'=>2,
+                    'create_time'=>$time,
+                    'price'=>$price,
+                );
+                M('TopGoods0')->add($data_top0);
                 $m_user->commit();
             }
         }else{
@@ -109,33 +114,52 @@ class GoodsController extends MemberbaseController {
         $id=I('id',0);
         $m=$this->m;
         $info=$m->where('id='.$id)->find();
+        if($info['status']!=2){
+            $this->error('该商品无法购买置顶');
+        }
         //计算得到可置顶天数，最多10天
-        $i=floor(($info['end_time']-$time)/3600/24);
-        if($i<1){
-            $this->error('该动态即将过期，无法购买置顶');
-        }
-        $i=($i>10)?10:$i;
+        $i=11;
         $top=array();
-        $m_top=M('TopActive');
+        $m_top=M('TopGoods');
         //得到总置顶位，再计算剩余
-        $num=session('company.top_active_num');
+        $num=session('company.top_goods_num');
         $num=$num['content'];
-        echo $num;
-        for($j=1;$j<=$i;$j++){
+        $where_tops=array(
+            'pid'=>array('eq',$id),
+            'status'=>array('in','0,2'),
+        );
+        $tops=$m_top->where($where_tops)->select();
+        
+        $flag=0;
+        for($j=2;$j<=$i;$j++){
             $day=date('Y-m-d',$time+3600*24*$j);
-            $time=strtotime($day);
-            $where=array('status'=>2,'start_time'=>$time);
+            $time1=strtotime($day);
+            foreach ($tops as $v){
+                if($time1==$v['start_time']){
+                    $flag=1;
+                    continue;
+                }
+            }
+            if($flag==1){
+                $flag=0;
+                continue;
+            }
+            $where=array('pid'=>$id,'status'=>2,'start_time'=>$time1);
             $count=$m_top->where($where)->count();
-            $top[]=array('day'=>$day,'count'=>($num-$count));
+            if($count<$num){
+                $top[]=array('day'=>$day,'count'=>($num-$count));
+            }
+            
         }
-        $this->assign('type','动态标题')->assign('info',$info)->assign('top',$top);
+         
+        $this->assign('type','商品名')->assign('info',$info)->assign('top',$top);
         $this->display();
     }
     
     //ajax
     public function add_top_ajax(){
         $id=I('id',0);
-        $m=M('TopActive');
+        $m=M('TopGoods');
         $days=I('days',array());
         $data=array('errno'=>0,'error'=>'未执行操作');
         if(empty($days)){
@@ -144,7 +168,7 @@ class GoodsController extends MemberbaseController {
             exit;
         }
         $uid=$this->userid;
-        $price0=session('company.top_active_fee');
+        $price0=session('company.top_goods_fee');
         $price=bcmul($price0['content'],count($days));
         //扣款
         if($price>0){
@@ -187,7 +211,7 @@ class GoodsController extends MemberbaseController {
                     'uid'=>$uid,
                     'money'=>'-'.$price,
                     'time'=>$time,
-                    'content'=>'置顶动态'.$id,
+                    'content'=>'置顶商品'.$id,
                 );
                 M('Pay')->add($data_pay);
                 $m_user->commit();
@@ -220,7 +244,6 @@ class GoodsController extends MemberbaseController {
             if(!$info) {// 上传错误提示错误信息
                 $this->error($upload->getError());
             }
-           
             foreach ($info as $v){ 
                 $pic='goods/'.$subname.'/'.$v['savename'];
             }
@@ -230,12 +253,15 @@ class GoodsController extends MemberbaseController {
             'sid'=>$this->sid,
             'pic'=>$pic,
             'create_time'=>$time,
-            'start_time'=>$time,
-            'end_time'=>strtotime('2029-12-30 00:00:00'),
+            'start_time'=>$time, 
             'name'=>I('shopname',''),
-            'price'=>I('shopprice',''),
-            'content'=>''
+            'price'=>trim(I('shopprice','')),
+            'pic0'=>$pic,
         );
+        //实名认证无需审核
+        if(session('user.name_status')==1){
+            $data['status']==2;
+        }
         $m=$this->m;
         $insert=$m->add($data);
         if($insert>=1){

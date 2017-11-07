@@ -8,8 +8,8 @@
                             <ul class="form3_list1 lf">
                             <foreach name="top" item="vo">
                                 <li>
-                                    <input type="checkbox" name="week" value="{$vo.day}" onClick="anycheck(this.form)">
-                                    <span>{$vo.day}</span>
+                                    <input type="checkbox" name="week" value="{$vo.day1}" onClick="anycheck(this.form)">
+                                    <span>{$vo.day1}---{$vo.day2}</span>
                                 </li>
                              </foreach>
                                 
@@ -42,8 +42,8 @@ $('#recommend').submit(function(){
 	if(days.length==0){
 		return false;
 	}
-	$.post("{:U('User/News/add_top_ajax')}",{'id':id,'days':days},function(data){
-	 
+	$.post("{:U('User/Seller/add_top_ajax')}",{'id':id,'days':days},function(data){
+		 
 		if(data.errno==1){
 			alert('购买成功,等待审核');
 			history.go(-1);

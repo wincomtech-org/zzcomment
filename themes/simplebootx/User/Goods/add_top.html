@@ -42,8 +42,8 @@ $('#recommend').submit(function(){
 	if(days.length==0){
 		return false;
 	}
-	$.post("{:U('User/News/add_top_ajax')}",{'id':id,'days':days},function(data){
-		console.log(data);
+	$.post("{:U('User/Goods/add_top_ajax')}",{'id':id,'days':days},function(data){
+		 
 		if(data.errno==1){
 			alert('购买成功,等待审核');
 			history.go(-1);

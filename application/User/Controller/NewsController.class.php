@@ -18,23 +18,16 @@ class NewsController extends MemberbaseController {
     public function index() {
         $m=$this->m;
         $where=array('sid'=>$this->sid);
-        
-        $time=time();
-        
+         
         $status=I('status',-1);
-        if($status==3){
-            $where['end_time']=array('lt',$time);
-        }elseif($status!=-1){
-            $where['end_time']=array('gt',$time);
+        if($status!=-1){
             $where['status']=$status;
         }
         $total=$m->where($where)->count();
         $page = $this->page($total, C('PAGE'));
         $list=$m->where($where)->order('start_time desc')->limit($page->firstRow,$page->listRows)->select();
         foreach($list as $k=>$v){
-            if($v['end_time']<$time){
-                $list[$k]['status']=3;
-            }
+           
             $content_01 = $v["content"];//从数据库获取富文本content
             $content_02 = htmlspecialchars_decode($content_01); //把一些预定义的 HTML 实体转换为字符
             $content_03 = str_replace("&nbsp;","",$content_02);//将空格替换成空
@@ -60,7 +53,7 @@ class NewsController extends MemberbaseController {
         $row=$m->where($where)->delete();
         if($row===1){
             $data=array('errno'=>1,'error'=>'删除成功');
-             
+             M('TopActive')->where('pid='.$id)->delete();
         }else{
             $data=array('errno'=>2,'error'=>'删除失败');
         }
@@ -73,9 +66,15 @@ class NewsController extends MemberbaseController {
         $id=I('id',0);
         $time=time();
         $data=array('errno'=>0,'error'=>'动态推荐还未执行');
+        $info=$m->where('id='.$id)->find();
+        if($info['status']!=2){ 
+            $data['error']='该动态无法购买推荐';
+            $this->ajaxReturn($data);
+            exit;
+        }
         $price=session('company.top_active_fee0');
         $price=$price['content'];
-         
+       
         //扣款
         if($price>0){
             $m_user=M('Users');
@@ -108,6 +107,13 @@ class NewsController extends MemberbaseController {
                     'content'=>'推荐动态'.$id, 
                 );
                 M('Pay')->add($data_pay);
+                $data_top0=array(
+                    'pid'=>$id,
+                    'status'=>2,
+                    'create_time'=>$time,
+                    'price'=>$price,
+                );
+                M('TopActive0')->add($data_top0);
                 $m_user->commit();
             }
         }else{
@@ -126,24 +132,46 @@ class NewsController extends MemberbaseController {
         $id=I('id',0);
         $m=$this->m;
         $info=$m->where('id='.$id)->find();
+        if($info['status']!=2){
+            $this->error('该动态无法购买置顶');
+        }
         //计算得到可置顶天数，最多10天
         $i=floor(($info['end_time']-$time)/3600/24);
-        if($i<1){
+        if($i<2){
             $this->error('该动态即将过期，无法购买置顶');
         }
-        $i=($i>10)?10:$i;
+        $i=($i>10)?11:($i+1);
         $top=array();
         $m_top=M('TopActive');
         //得到总置顶位，再计算剩余
         $num=session('company.top_active_num');
         $num=$num['content'];
-        echo $num;
-        for($j=1;$j<=$i;$j++){
+        $where_tops=array(
+            'pid'=>array('eq',$id),
+            'status'=>array('in','0,2'),
+        );
+        $tops=$m_top->where($where_tops)->select();
+       
+        $flag=0;
+        for($j=2;$j<=$i;$j++){ 
             $day=date('Y-m-d',$time+3600*24*$j);
-            $time=strtotime($day);
-            $where=array('status'=>2,'start_time'=>$time);
+            $time1=strtotime($day);
+            foreach ($tops as $v){
+                if($time1==$v['start_time']){
+                    $flag=1; 
+                    continue;
+                }
+            }
+            if($flag==1){
+                $flag=0; 
+                continue;
+            }
+            $where=array('pid'=>$id,'status'=>2,'start_time'=>$time1);
             $count=$m_top->where($where)->count();
-            $top[]=array('day'=>$day,'count'=>($num-$count));
+            if($count<$num){
+                $top[]=array('day'=>$day,'count'=>($num-$count));
+            }
+            
         }
         $this->assign('type','动态标题')->assign('info',$info)->assign('top',$top);
         $this->display();
@@ -155,6 +183,7 @@ class NewsController extends MemberbaseController {
         $m=M('TopActive');
         $days=I('days',array());
         $data=array('errno'=>0,'error'=>'未执行操作');
+         
         if(empty($days)){
             $data['error']='未选中日期';
             $this->ajaxReturn($data);
@@ -255,6 +284,10 @@ class NewsController extends MemberbaseController {
             'name'=>I('title',''),
             'content'=>$_POST['content']
         );
+        //实名认证无需审核
+        if(session('user.name_status')==1){
+            $data['status']==2;
+        }
         $m=$this->m;
         $insert=$m->add($data);
         if($insert>=1){

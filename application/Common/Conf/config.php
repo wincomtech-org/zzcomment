@@ -96,8 +96,8 @@ $configs= array(
         ),
     //自添加
         'WEBSITE'=>'http://localhost/zzcomment/',
-        'PAGE'=>5,          //前台展示分页，动态，评论
-        'SIZE'=>2000000,    //上传文件大小2M
+        'PAGE'=>5,          //前台展示列表分页，动态，评论
+        'SIZE'=>4096000,    //上传文件大小4M
          
 );
 

@@ -153,6 +153,7 @@
 										<img src="__UPLOAD__/{$vo['avatar']|default=$company['avatar']['content']}" alt="{$vo.uname}" title="{$vo.uname}">
 									</a>
 									<div class="lf comment-cont">
+										<input type="hidden" name="zzcid" class="zzcid" value="{$vo.id}"/>
 										<span class="comment-title">{$vo.sname}</span>
 										<span class="comment-type"><eq name="vo.score" value="1">加分<else/>减分</eq></span>
 										<p class="comment-about">{$vo.content}<span class="comment-date">&nbsp;&nbsp;【发表于{$vo.create_time|date="Y-m-d",###}】</span></p>
@@ -185,7 +186,7 @@
 									<div class="lf news-cont">
 										<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf news-title">{$vo.name}</a>
 										<span class="rt news-date">{$vo.create_time|date="Y-m-d",###}</span>
-										<p class="clear news-about">{$vo.content|substr=0,20}</p>
+										<p class="clear news-about">{$vo.content}</p>
 									</div>
 								</li>
 							</foreach>
@@ -197,7 +198,7 @@
 									<div class="lf news-cont">
 										<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf news-title">{$vo.name}</a>
 										<span class="rt news-date">{$vo.create_time|date="Y-m-d",###}</span>
-										<p class="clear news-about">{$vo.content|substr=0,20}</p>
+										<p class="clear news-about">{$vo.content}</p>
 									</div>
 								</li>
 							</foreach> 

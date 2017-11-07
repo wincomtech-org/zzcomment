@@ -20,8 +20,7 @@ class ListController extends HomebaseController {
 	    $where_top=array();
 	    //0申请。，1不同意，2同意
 	    $where_top['status']=array('eq',2);
-	    //0预定，1正在推荐，2过期
-	    $where_top['state']=array('lt',2);
+	    
 	    //此处直接比较时间，没有服务器检查过期
 	    $where_top['start_time']=array('lt',$time);
 	    $where_top['end_time']=array('gt',$time);
@@ -50,10 +49,7 @@ class ListController extends HomebaseController {
 	    $where_seller=array();
 	    //0未审核，1未认领，2已认领,3已冻结
 	    $where_seller['status']=array('between','1,2');
-	    //不在推荐商家中
-	    if($len>0){
-	       $where_seller['id']=array('not in',$sids);
-	    }
+	    
 	    $keyword=trim(I('keyword',''));
 	    if($keyword!=''){
 	        $where_seller['name']=array('like','%'.$keyword.'%');
@@ -108,16 +104,33 @@ class ListController extends HomebaseController {
 	    $where_top=array();
 	    //0申请。，1不同意，2同意
 	    $where_top['status']=array('eq',2);
-	    //0预定，1正在推荐，2过期
-	    $where_top['state']=array('lt',2);
+	    
 	    //此处直接比较时间，没有服务器检查过期
 	    $where_top['start_time']=array('lt',$time);
 	    $where_top['end_time']=array('gt',$time);
-	     
+	    //先找置顶动态
+	    $top_len=session('company.top_goods_num');
+	    $tmp=M('TopGoods')->where($where_top)->limit(0,$top_len['content'])->select();
+	    $sids=array();
+	    foreach ($tmp as $v){
+	        $sids[]=$v['sid'];
+	    }
+	    $len=0;
+	    if((count($sids))>0){
+	        $where=array('id'=>array('in',$sids));
+	        //推荐动态发布时间排名
+	        $list_top=$m->order('start_time desc')->where($where)->select();
+	        $len=count($list_top);
+	    }
+	    //少于$active_len个要有其他动态
+	    //置顶的动态不变
 	    $total=$m->where($where_top)->count();
-	    $page = $this->page($total, 10);
+	    $page = $this->page($total, 5-$len);
+	    
 	    $list=$m->where($where_top)->order('start_time desc')->limit($page->firstRow,$page->listRows)->select();
-	    $this->assign('list',$list)->assign('page',$page->show('Admin'));
+	    
+	    $this->assign('list',$list)->assign('list_top',$list_top)
+	    ->assign('page',$page->show('Admin'));
 	    $this->display();
 	}
 	
@@ -127,24 +140,32 @@ class ListController extends HomebaseController {
 	    $where_top=array(); 
 	    //0申请。，1不同意，2同意
 	    $where_top['status']=array('eq',2);
-	    //0预定，1正在推荐，2过期
-	    $where_top['state']=array('lt',2);
+	     
 	    //此处直接比较时间，没有服务器检查过期
 	    $where_top['start_time']=array('lt',$time);
 	    $where_top['end_time']=array('gt',$time);
 	    //先找置顶动态
-	    $active_len=session('company.top_active_num');
-	    $tmp=M('TopActive')->where($where_top)->limit(0,$active_len)->select();
+	    $top_len=session('company.top_active_num');
+	    $tmp=M('TopActive')->where($where_top)->limit(0,$top_len['content'])->select();
 	    $sids=array();
 	    foreach ($tmp as $v){
 	        $sids[]=$v['sid'];
 	    }
 	    $len=0;
-	    if((count($sids))>0){
+	    if((count($sids))>0){ 
 	        $where=array('id'=>array('in',$sids));
 	        //推荐动态发布时间排名
-	        $list_top_active=$m->order('id desc')->where($where)->select();
+	        $list_top_active=$m->order('start_time desc')->where($where)->select();
 	        $len=count($list_top_active);
+	    }
+	    foreach($list_top_active as $k=>$v){
+	         
+	        $content_01 = $v["content"];//从数据库获取富文本content
+	        $content_02 = htmlspecialchars_decode($content_01); //把一些预定义的 HTML 实体转换为字符
+	        $content_03 = str_replace("&nbsp;","",$content_02);//将空格替换成空
+	        $contents = strip_tags($content_03);//函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
+	        $con = mb_substr($contents, 0, 100,"utf-8");//返回字符串中的前100字符串长度的字符
+	        $list_top_active[$k]['content']=$con;
 	    }
 	    //少于$active_len个要有其他动态
 	    //置顶的动态不变
@@ -153,9 +174,7 @@ class ListController extends HomebaseController {
 	    
 	    $list=$m->where($where_top)->order('start_time desc')->limit($page->firstRow,$page->listRows)->select();
 	    foreach($list as $k=>$v){
-	        /* if($v['end_time']<$time){
-	            $list[$k]['status']=3;
-	        } */
+	        
 	        $content_01 = $v["content"];//从数据库获取富文本content
 	        $content_02 = htmlspecialchars_decode($content_01); //把一些预定义的 HTML 实体转换为字符
 	        $content_03 = str_replace("&nbsp;","",$content_02);//将空格替换成空

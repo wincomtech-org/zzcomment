@@ -14,8 +14,7 @@ class ActiveController extends AdminbaseController {
         parent::_initialize();
         $this->m = M('Active');
         $this->order='id desc';
-        $this->assign('flag','店铺动态');
-        
+        $this->assign('flag','店铺动态'); 
     }
     
     //编辑

@@ -55,6 +55,9 @@ $(document).ready(function(){
 
 	$(".comment-rbtn1").click(function(){
 		$("#reply_layer").fadeIn();
+		//给回复点评id
+		var cid=$(this).parents('.comment-cont').find('.zzcid').val();
+		$("#reply_layer").find('.zzcid').val(cid);
 	});
 	$("#rclose").click(function(){
 		$("#reply_layer").fadeOut();

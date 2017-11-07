@@ -12,7 +12,7 @@
                             <th class="shoplist_t2">名称</th>
                             <th class="shoplist_t3">价格</th>
                             <th class="shoplist_t3">推荐</th>
-                           
+                            <th class="shoplist_t3">置顶</th>
                             <th class="shoplist_t3">删除</th>
                             <th class="shoplist_t3">状态</th>
                         </tr>
@@ -24,7 +24,17 @@
                             <td><img class="pro" src="__UPLOAD__/{$vo.pic|default=$company['goods_empty']['content']}"></td>
                             <td>{$vo.name}</td>
                             <td>￥{$vo.price}</td>
+                         <eq name="vo.status" value="2">
                             <td><a href="javascript:void(0);" class="stj"><img src="__TMPL__Public/img/groom.png"></a></td>
+                            <td>
+                              <a href="{:U('User/Goods/add_top',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="per_d6"><img src="__TMPL__Public/img/addtop.png"></a>
+	                        </td>
+	                     <else/>
+	                       	<td><a href="javascript:void(0);" class=""><img src="__TMPL__Public/img/groom_1.png"></a></td>
+                            <td>
+                              <a href="javascript:void(0);" class="per_d6"><img src="__TMPL__Public/img/addtop_1.png"></a>
+	                        </td>
+	                      </eq>  
                             <td><a href="javascript:void(0);" class="delete"><img src="__TMPL__Public/img/delete.png"></a></td> 
                             <td><switch name="vo.status">
                             	<case value="0"> <span class="per_d4 expire">审核中</span></case>
@@ -62,13 +72,10 @@ $('.delete').click(function(){
 	var $li=$(this).parents('tr');
 	var id=$li.find('.id').val();
 	$.post("{:U('User/Goods/del')}",{'id':id},function(data){
-		if(data.errno==1){
-			$li.remove();
-		}else{
-			alert('删除失败');
-			location.reload(true);
-			 
+		if(data.errno!=1){ 
+			alert('删除失败'); 
 		}
+		location.reload(true);
 	});
 	
 });

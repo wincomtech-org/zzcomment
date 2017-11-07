@@ -21,7 +21,7 @@
 						<li><a href="{:U('User/Info/info')}">资料设置</a></li>
 						<li><a href="#">会员充值</a></li>
 						<li><a href="{:U('User/Comment/index')}">评价管理</a></li>
-						 <li><a href="{:U('User/Info/msg')}">消息记录</a></li>
+						 <li><a href="{:U('User/Msg/index')}">消息记录</a></li>
 					</ul>
 				</div>
 				<div class="per_lf">
@@ -30,8 +30,8 @@
 					<ul class="per_lf_list">
 						<li><a href="{:U('User/Seller/index',array('sid'=>$vo['id']))}">店铺管理</a></li>
 						<li><a href="{:U('User/Goods/index',array('sid'=>$vo['id']))}">商品列表</a></li>
-						<li><a href="{:U('User/News/index',array('sid'=>$vo['id']))}">发布动态</a></li>
-						<li><a href="{:U('User/Seller/top',array('sid'=>$vo['id']))}">推荐位购买</a></li>
+						<li><a href="{:U('User/News/index',array('sid'=>$vo['id']))}">动态列表</a></li>
+						<li><a href="{:U('User/Seller/add_top',array('sid'=>$vo['id']))}">推荐位购买</a></li>
 					</ul>
 				</foreach>
 				</div>

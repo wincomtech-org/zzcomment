@@ -54,13 +54,17 @@ class HomebaseController extends AppframeController {
 		    //读取网站头文件中一级分类
 		    $m_cate=M('Cate');
 		    $cate1=$m_cate->where('fid=0')->order('sort desc,name asc')->select();
-		    $cate2=$m_cate->where('fid>0')->order('fid asc')->select();
+		    $cate2=$m_cate->where('fid>0')->order('fid asc')->select(); 
 		    session('add_cate1',$cate1);
 		    session('add_cate2',$cate2);
 		    $m_city=M('City');
-		    $city1=$m_city->where('type=1')->order($this->order)->select();
+		    /* $city1=$m_city->where('type=1')->order($this->order)->select();
 		    $city2=$m_city->where('type=2')->order($this->order)->select();
-		    $city3=$m_city->where('type=3')->order($this->order)->select();
+		    $city3=$m_city->where('type=3')->order($this->order)->select(); */
+		    
+		    $city1=$m_city->where("name='安徽省'")->order($this->order)->select();
+		    $city2=$m_city->where("name='安庆市'")->order($this->order)->select();
+		    $city3=$m_city->where("name='潜山县'")->order($this->order)->select();
 		    session('add_city1',$city1);
 		    session('add_city2',$city2);
 		    session('add_city3',$city3);

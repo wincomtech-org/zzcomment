@@ -70,6 +70,20 @@ $('#add-city2').change(function(){
 	
 	$('#add-city3 .city3'+fid).show(); 
 });
- var id="{$Think.session.user.id}";
- console.log(id);
+if(navigator.appName == "Microsoft Internet Explorer"&&parseInt(navigator.appVersion.split(";")[1].replace(/[ ]/g, "").replace("MSIE",""))<9){
+	alert("当前浏览器版本过低，为不影响网站体验效果，请下载最新版本的浏览器！");
+}
+$('.reply-form').submit(function(){
+	 var cid=$(this).find('.zzcid').val();
+	 var content=$(this).find('#user_reply').val();
+	 $.post("{:U('Portal/Index/reply')}",{'cid':cid,'content':content},function(data){
+		 alert(data.error);
+		 if(data.errno==1){
+			 $('#user_reply').val('');
+			 $("#reply_layer").fadeOut();
+		 }
+	 });
+	 
+	 return false;
+});
 </script>

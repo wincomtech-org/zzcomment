@@ -28,8 +28,6 @@ class IndexController extends HomebaseController {
 	    $where_top=array();
 	    //0申请。，1不同意，2同意
 	    $where_top['status']=array('eq',2);
-	    //0预定，1正在推荐，2过期
-	    $where_top['state']=array('lt',2);
 	    //此处直接比较时间，没有服务器检查过期
 	    $where_top['start_time']=array('lt',$time);
 	    $where_top['end_time']=array('gt',$time);
@@ -55,7 +53,7 @@ class IndexController extends HomebaseController {
 	    }
 	    
 	   //商品上新
-	    $list_goods=M('Goods')->where($where_top)->order('start_time desc')->limit(0,8)->select();
+	    $list_goods=M('Goods')->where(array('status=2'))->order('start_time desc')->limit(0,8)->select();
 	    //新增店铺,按创建时间排序
 	    //店铺信息
 	    $sql="select s.*,c2.name as citys,
@@ -99,7 +97,7 @@ class IndexController extends HomebaseController {
 	    if($len<$active_len){
 	        $len=$active_len-$len;
 	        $list_top_active_empty=array();
-	        $list_top_active_empty=$m_active->where($where_top)->order('id desc')->limit('0,'.$len)->select();
+	        $list_top_active_empty=$m_active->where('status=2')->order('start_time desc')->limit('0,'.$len)->select();
 	        foreach($list_top_active_empty as $k=>$v){
 	            
 	            $content_01 = $v["content"];//从数据库获取富文本content
@@ -130,6 +128,33 @@ class IndexController extends HomebaseController {
 	    ->assign('list_top_active_empty',$list_top_active_empty);
 	     
 	    $this->display();
+    }
+    
+    //回复评级
+    public function reply(){
+        $cid=I('cid',0);
+        $content=I('content','','trim');
+        $data=array('errno'=>0,'error'=>'操作未执行');
+        if($cid==0 || $content==''){
+            $this->ajaxReturn($data);
+            exit;
+        }
+        $uid=empty(session('user.id'))?0:session('user.id');
+        $add=array(
+            'uid'=>$uid,
+            'content'=>$content,
+            'cid'=>$cid,
+            'create_time'=>time(),
+            'ip'=>get_client_ip(0,true),
+        );
+        $row=M('Reply')->add($add);
+        if($row>=1){
+            $data=array('errno'=>1,'error'=>'回复成功');
+        }else{
+            $data=array('errno'=>2,'error'=>'回复失败');
+        }
+        $this->ajaxReturn($data);
+        exit;
     }
 
 }

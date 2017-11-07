@@ -49,22 +49,43 @@ class CommentController extends MemberbaseController {
         foreach ($info as $v){
             $files.='comment/'.$subname.'/'.$v['savename'].';';
         }
-        
+        $sid=I('sid',0);
+        $score=I('score',1);
         $data=array(
             'files'=>$files,
             'uid'=>$uid,
-            'sid'=>I('sid',0), 
-            'score'=>I('core',1),
+            'sid'=>$sid, 
+            'score'=>$score,
             'content'=>I('usermessage',''),
             'create_time'=>time(),
             'ip'=>get_client_ip(0,true),
         );
        $m=$this->m;
+       //实名认证的评级不审核
+       if(session('user.name_status')==1){
+           $data['status']==2;
+           $row=$m->add($data);
+           if($row>0){
+               $m_seller=M('Seller');
+               $score=$m_seller->field('score')->where('id='.$sid)->find();
+               //暂时是多少分就多少级,没有分级
+               $score=$score+$info['score'];
+               $data=array(
+                   'score'=>$score,
+                   'grade'=>$score,
+               );
+               $m_seller->data($data)->where('id='.$info['sid'])->save();
+               $this->success('评级上传成功');
+           }else{
+               $this->error('点评失败，请刷新重试');
+           }
+           exit;
+       }
        $row=$m->add($data);
        if($row>0){
-           $this->success('点评上传成功，等待管理员审核');
+           $this->success('评级上传成功，等待管理员审核');
        }else{
-           $this->error('点评失败，请刷新重试');
+           $this->error('评级失败，请刷新重试');
        }
        exit;
     }

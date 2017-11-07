@@ -10,6 +10,7 @@ class SellerController extends HomebaseController {
     function _initialize(){
         parent::_initialize();
         $this->sid=I('sid',0);
+        $sid=$this->sid;
         $m=M();
         //店铺信息
         $sql="select s.*,concat(c1.name,'-',c2.name,'-',c3.name) as citys,
@@ -22,10 +23,22 @@ class SellerController extends HomebaseController {
         left join cm_users as au on au.id=s.author
         left join cm_cate as cate2 on cate2.id=s.cid
         left join cm_cate as cate1 on cate1.id=cate2.fid
-        where s.id={$this->sid} limit 1";
+        where s.id={$sid} limit 1";
         $info=$m->query($sql);
         $info=$info[0];
-        $this->assign('sid',$this->sid)->assign('info',$info);
+        $this->assign('sid',$sid)->assign('info',$info);
+        //店铺浏览量+1
+        
+        $m_seller=M('Seller'); 
+        if(empty(session('browse'))){
+            session('browse',array($sid));  
+            $m_seller->where('id='.$sid)->save(array('browse'=>($info['browse']+1)));
+        }elseif(!in_array($sid, session('browse'))){
+            $arr=session('browse');
+            $arr[]=$sid;
+            session('browse',$arr);
+            $m_seller->where('id='.$sid)->save(array('browse'=>($info['browse']+1)));
+        }
     }
     //首页
 	public function home() {

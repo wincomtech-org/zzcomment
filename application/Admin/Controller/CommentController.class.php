@@ -122,7 +122,7 @@ class CommentController extends AdminbaseController {
                 if($row===1){
                      $m_seller=M('Seller');
                     
-                     $score=$m_seller->field('score')->find();
+                     $score=$m_seller->field('score')->where('id='.$info['sid'])->find();
                      //暂时是多少分就多少级,没有分级
                      $score=$score+$info['score'];
                      $data=array(

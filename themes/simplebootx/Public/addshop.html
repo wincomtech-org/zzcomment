@@ -1,14 +1,14 @@
 <!-- add shop -->
 	<div class="shop-add" id="shopadd_btn">
-		<a href="javascript:void(0);" title="新建店铺">
-			<img src="__TMPL__Public/img/shopadd.png" alt="新建店铺">
+		<a href="javascript:void(0);" title="创建店铺">
+			<img src="__TMPL__Public/img/shopadd.png" alt="创建店铺">
 		</a>		
 	</div>
 	<div class="pop-layer" id="pop_layer">
 		<div class="pop-container">
 			<a href="javascript:void(0);" class="close" id="close"><img src="__TMPL__Public/img/close.png" alt="关闭" title="关闭"></a>
 			<form action="{:U('User/Seller/create')}" method="post" class="shop-add-form">
-				<p class="message" id="message">请输入店铺信息(登录后才能创建店铺)！</p>
+				<p class="message" id="message">请输入店铺信息！(登录后才能创建店铺)</p>
 				<div class="catecory">
 					<label>店铺分类</label>
 					<select name="catecory" id="add-cate1">
@@ -43,7 +43,7 @@
 					</foreach>
 					</select>
 					<select name="town" id="add-city3">
-						<option class="city30" value="0">区/县</option>
+						<option class="city30" value="0">县/区</option>
 					<foreach name="add_city3" item="vo">
 						<option class="city3{$vo.fid}" value="{$vo.id}">{$vo.name}</option>
 					</foreach>
@@ -69,8 +69,9 @@
 <!-- comment reply -->
 	<div class="pop-layer" id="reply_layer">
 		<div class="pop-container">
-			<a href="javascript:void(0);" class="close" id="rclose"><img src="img/close.png" alt="关闭" title="关闭"></a>
+			<a href="javascript:void(0);" class="close" id="rclose"><img src="__TMPL__Public/img/close.png" alt="关闭" title="关闭"></a>
 			<form class="reply-form">
+				<input type="hidden" name="zzcid" class="zzcid" value="0"/>
 				<p class="message" id="rmessage">请输入回复信息！</p>
 				<div>
 					<label for="user_reply" class="must">留言内容</label>

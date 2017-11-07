@@ -40,13 +40,10 @@ $('.delete').click(function(){
 	var $li=$(this).parents('li');
 	var id=$li.find('.id').val();
 	$.post("{:U('User/Comment/del')}",{'id':id},function(data){
-		if(data.errno==1){
-			$li.remove();
-		}else{
-			alert('删除失败');
-			location.reload(true);
-			 
+		if(data.errno!=1){ 
+			alert('删除失败'); 
 		}
+		location.reload(true);
 	});
 	
 });
