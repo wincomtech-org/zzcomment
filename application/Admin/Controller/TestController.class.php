@@ -16,12 +16,14 @@ class TestController extends AdminbaseController {
     } 
    public function index(){
        echo 'test<br/>';
-       echo "<a href='.(U('Admin/Test/restore')).'>还原</a>";
+      
+       echo "<a href='Admin/Test/restore'>还原</a>";
        
    }
    //数据库还原
    public function restore()
    {
+       
        $filename='zz2017-11-7.sqlsql';
        set_time_limit(0);
        $dname=C('DB_NAME');
