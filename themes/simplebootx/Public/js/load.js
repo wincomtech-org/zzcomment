@@ -1,4 +1,15 @@
 $(document).ready(function(){
+	// level color
+	$(".shop-color i").each(function(){
+		var levelNum=Number($(this).html());
+		if(levelNum<0){
+			$(this).parent(".shop-color").css("color","green");
+		}
+		else{
+			$(this).parent(".shop-color").css("color","red");
+		}
+	})
+
 	// top select
 	$("#shop_type>a").click(function(){
 		$(this).addClass("select").siblings().removeClass("select");

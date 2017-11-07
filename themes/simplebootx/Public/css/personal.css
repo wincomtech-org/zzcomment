@@ -150,11 +150,11 @@ background-color: rgba(0, 0, 0, .3);}
 .form3>span{display: inline-block;line-height:45px;width:110px;font-size: 16px;text-align: right;}
 .form3 input[type="submit"]{padding:0 20px;height:35px;line-height: 35px;background:#eb0000;color:#fff;text-align: center;margin-left:110px;cursor: pointer;font-size: 16px;}
 .form3{margin:10px 0;}
-.form3_list1 li{width:180px;font-size:16px;color:#333;line-height: 35px;text-align: center;margin-bottom:10px;}
+.form3_list1 li{width:300px;font-size:16px;color:#333;line-height: 35px;text-align: center;margin-bottom:10px;float: left;}
 .form3_list1 li span{margin-left:10px;text-align: left;}
 .form3_t1{color:#000;font-size: 18px;line-height: 35px;}
-.form3_list2 li{margin-left:10px;font-size: 16px;color:#333;margin-bottom:10px;}
-.form3_list2 span{font-size: 16px;color:#333;line-height: 35px;}
+/*.form3_list2 li{margin-left:10px;font-size: 16px;color:#333;margin-bottom:10px;}
+.form3_list2 span{font-size: 16px;color:#333;line-height: 35px;}*/
 .mobile{display: none;width:32px;height:32px;margin-right:15px;position: relative;margin-top:10px;}
 .mobilemenu{background:url(../img/menu.png) no-repeat center center;width:32px;height:32px;}
 .ml{margin-left:80px;color:#f00;height:20px;line-height: 20px;}
@@ -168,6 +168,9 @@ background-color: rgba(0, 0, 0, .3);}
 .webmsg tbody tr{border-top:1px solid #dcdcdc;}
 .webmsg_t1{width:120px;min-width: 60px;} .webmsg_t2{width:200px;min-width: 150px;}.webmsg_t3{width:600px;min-width: 300px;}
 .webmsg_t4{width:50px;min-width: 40px;}
+.ban{cursor: not-allowed;}
+.pt1{font-size:16px;margin-left:10px;}
+.pml{color:#f00;text-align:left;margin-left:5%;}
 @media screen and (max-width:1200px) {
      .w1200{width:100%;}
      .per_main{margin-top:0px;}
@@ -229,7 +232,7 @@ background-color: rgba(0, 0, 0, .3);}
     .form1 input[type="submit"],.form1 input[type="reset"]{padding:0 20px;height:35px;line-height: 35px;background:#eb0000;color:#fff;text-align: center;margin-right:30px;cursor: pointer;font-size: 16px;}
     .form3>span{width:90px;}
     .form2>span{text-align: left;margin-left:10px;}
-    .form3_list1 li{width:150px;}
+/*    .form3_list1 li{width:150px;}*/
     .evaluate_li_rt{width:80%;margin-top:5px;}
     #provinces{margin-left:10px;}
     #citys,#countys{margin:0 0 0 2px;}
