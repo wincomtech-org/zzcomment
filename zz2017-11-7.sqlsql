@@ -1,35 +1,35 @@
-DROP TABLE IF EXISTS `cm_company`;--end_flag--
-CREATE TABLE `cm_company` (
+DROP TABLE IF EXISTS `cm_seller`;--end_flag--
+CREATE TABLE `cm_seller` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '名称,用于内部识别',
-  `title` varchar(100) NOT NULL DEFAULT '' COMMENT '标题，用于显示在网站说明',
-  `content` text COMMENT '内容',
-  `type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '类型，1文字，2图片 ，3有图片文字',
-  `sort` tinyint(2) NOT NULL DEFAULT '0' COMMENT '排序',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0未审核，1未认领，2已认领,3已冻结',
+  `name` varchar(50) NOT NULL COMMENT '店铺名称',
+  `first_char` char(1) NOT NULL DEFAULT '',
+  `city` int(11) NOT NULL DEFAULT '0' COMMENT '所属地区',
+  `address` varchar(100) NOT NULL DEFAULT '' COMMENT '店铺地址',
+  `cid` int(11) NOT NULL DEFAULT '0' COMMENT '所属类别',
+  `author` int(11) NOT NULL COMMENT '创评人',
+  `author_status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否显示创评人，1显示2隐藏',
+  `create_time` int(11) NOT NULL COMMENT '创建时间',
+  `score` int(11) NOT NULL DEFAULT '0' COMMENT '店铺分数',
+  `grade` int(11) NOT NULL DEFAULT '0' COMMENT '店铺等级',
+  `browse` int(11) NOT NULL DEFAULT '0' COMMENT '浏览量',
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '认领的用户',
+  `reply_time` int(11) NOT NULL DEFAULT '0' COMMENT '商家领用时间',
+  `link` varchar(50) NOT NULL DEFAULT '' COMMENT '店铺链接',
+  `qrcode` varchar(50) NOT NULL DEFAULT '' COMMENT '店铺二维码',
+  `pic` varchar(50) NOT NULL DEFAULT '' COMMENT '店铺logo',
+  `pic0` varchar(50) NOT NULL DEFAULT '',
+  `corporation` varchar(50) NOT NULL DEFAULT '' COMMENT '法人代表',
+  `scope` varchar(100) NOT NULL DEFAULT '' COMMENT '经营范围',
+  `tel` varchar(50) NOT NULL DEFAULT '' COMMENT '店铺电话',
+  `mobile` varchar(50) NOT NULL DEFAULT '' COMMENT '手机',
+  `bussiness_time` varchar(50) NOT NULL DEFAULT '' COMMENT '经营时间',
+  `cards` varchar(50) NOT NULL DEFAULT '' COMMENT '营业执照图片',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;--end_flag--
-insert into cm_company(`id`,`name`,`title`,`content`,`type`,`sort`) values 
- ('5','email','邮箱','zypjw@zypjw.cn','1','0'),
-('6','company','公司名','
-祖运网','1','0'),
-('7','title','网站标题','祖运网','1','0'),
-('17','logo','logo图标','admin/20171020/59e9a0b6aa5fe.png','2','0'),
-('21','top_goods_fee0','商品推荐费用，0为不收费','0','1','0'),
-('20','top_seller_empty','推荐商家空白图片','admin/20171021/59eaafd4c6b06.jpg','2','0'),
-('22','top_active_num','动态置顶个数','3','1','0'),
-('23','top_active_fee','动态置顶费用','10','1','0'),
-('24','seller_empty','店铺空白图片','admin/20171021/59eaafd4c6b06.jpg','2','0'),
-('25','winxin','微信二维码','','2','0'),
-('26','icp','备案','© 2009-2017 Aliyun.com 版权所有 ICP证：皖B2-20080101','1','0'),
-('34','active_empty','动态空白图片','admin/20171020/59e9a0b6aa5fe.png','2','0'),
-('39','seller_gift','领用店铺赠送余额','100','1','0'),
-('1','tel','联系电话','4000056003','1','0'),
-('30','goods_empty','商品空白图片','admin/20171021/59eaafd4c6b06.jpg','2','0'),
-('31','suport','技术支持','华创在线网络科技（北京）有限公司','1','0'),
-('32','top_seller_fee','商家推荐费用','3','1','0'),
-('33','avatar','用户空白头像','admin/20171102/59fade787ca40.png','2','0'),
-('35','top_active_fee0','动态推荐费用','0','1','0'),
-('37','top_goods_num','商品置顶数目','4','1','0'),
-('38','top_goods_fee','置顶费用','12','1','0');--end_flag--
-insert into cm_company(`id`,`name`,`title`,`content`,`type`,`sort`) values 
- ('40','email','邮箱22','zypjw@zypjw.cn','1','0');--end_flag--
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='商家店铺信息表';--end_flag--
+insert into cm_seller(`id`,`status`,`name`,`first_char`,`city`,`address`,`cid`,`author`,`author_status`,`create_time`,`score`,`grade`,`browse`,`uid`,`reply_time`,`link`,`qrcode`,`pic`,`pic0`,`corporation`,`scope`,`tel`,`mobile`,`bussiness_time`,`cards`) values 
+('1','0','小吃店11','','340824','人民路88号','12','3','1','1510040883','8','8','0','0','0','','','','','','','','','',''),
+DROP TABLE IF EXISTS `cm_seller_apply`;--end_flag--
+insert into cm_seller(`id`,`status`,`name`,`first_char`,`city`,`address`,`cid`,`author`,`author_status`,`create_time`,`score`,`grade`,`browse`,`uid`,`reply_time`,`link`,`qrcode`,`pic`,`pic0`,`corporation`,`scope`,`tel`,`mobile`,`bussiness_time`,`cards`) values 
+('2','0','小吃店12','','340824','人民路188号','12','3','1','1510040883','8','8','0','0','0','','','','','','','','','',''),
+DROP TABLE IF EXISTS `cm_seller_apply`;--end_flag--
