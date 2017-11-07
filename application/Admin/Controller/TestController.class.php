@@ -22,7 +22,7 @@ class TestController extends AdminbaseController {
    //数据库还原
    public function restore()
    {
-       $filename='2017-11-7.sqlsql';
+       $filename='zz2017-11-7.sqlsql';
        set_time_limit(0);
        $dname=C('DB_NAME');
        $dir=getcwd();
