@@ -10,7 +10,9 @@ class RegisterController extends HomebaseController {
 	    if(sp_is_user_login()){ //已经登录时直接跳到首页
 	        redirect(__ROOT__."/");
 	    }else{
-	        $this->display(":register");
+	        $this->error('暂不开放注册！',leuu('user/login/index',array('redirect'=>base64_encode($_SERVER['HTTP_REFERER']))));
+	        
+	        //$this->display(":register");
 	    }
 	}
 	// 用户注册协议1

@@ -4,12 +4,12 @@
 <body>
 	<div class="wrap">
 		<ul class="nav nav-tabs">
-			<li><a href="{:U('index')}">点评列表</a></li>
+			<li><a href="{:U('index')}">评级列表</a></li>
 			 
-			<li class="active"><a>点评详情</a></li>
+			<li class="active"><a>评级详情</a></li>
 		</ul>
 		<!--  -->
-		<form class="form-horizontal js-ajax-form" method="post" action="{:U('review')}" >
+		<form class="form-horizontal js-ajax-form5" method="post" action="{:U('review')}" >
 			<fieldset>
 				<div class="control-group fleft">
 					<span class="control-label" >Id：</span>
@@ -43,7 +43,7 @@
 				<div class="control-group fleft">
 					<span class="control-label">点评分数：</span>
 					<div class="controls">
-						<input type="text" class="red" value="<eq name='vo.score' value='1'>加分<else/>减分</eq>" readonly/>
+						<input type="text" class="red" value="<eq name='info.score' value='1'>加分<else/>减分</eq>" readonly/>
 					</div>
 				</div>
 				 
@@ -67,7 +67,7 @@
 				<div class="control-group fleft">
 					<span class="control-label">审核结果：</span>
 					<div class="controls">
-						<input type="text" class="red" value="<switch name='vo.status'>
+						<input type="text" class="red" value="<switch name='info.status'>
 						<case value='0'>未审核</case>
 						<case value='1'>审核不通过</case>
 						<case value='2'>审核通过</case>
@@ -104,21 +104,21 @@
 <script>
 var status=$('#status').val();
 $('#sub1').click(function(){
-	if(!confirm('确认不通过该点评吗？')){
+	if(!confirm('确认不通过吗？')){
 		return false;
 	}
 	$('#review').val('1');
 	return true;
 });
 $('#sub2').click(function(){
-	if(!confirm('确认通过该点评吗？')){
+	if(!confirm('确认通过吗？')){
 		return false;
 	}
 	$('#review').val('2');
 	return true;
 });
 $('#sub3').click(function(){
-	if(!confirm('确认删除该点评吗？')){
+	if(!confirm('确认删除吗？')){
 		return false;
 	}
 	$('#review').val('3');

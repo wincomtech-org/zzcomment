@@ -10,7 +10,7 @@ use Think\Model\ViewModel;
  */
 class TopGoods0ViewModel extends ViewModel {
     public $viewFields = array(
-        'TopGoods'=>array(
+        'TopGoods0'=>array(
             'id',
             'pid',
             'create_time', 
@@ -26,9 +26,9 @@ class TopGoods0ViewModel extends ViewModel {
             'content',
             'create_time'=>'acreate_time',
             'start_time'=>'astart_time',
-            'end_time'=> 'aend_time',
+           
             'status'=>'astatus', 
-            '_type'=>'LEFT','_on'=>'Goods.id=TopGoods.pid'
+            '_type'=>'LEFT','_on'=>'Goods.id=TopGoods0.pid'
         ), 
       
         'Seller'=>array('name'=>'sname',  '_on'=>'Goods.sid=Seller.id'),

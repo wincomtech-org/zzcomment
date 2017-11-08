@@ -21,7 +21,7 @@ class SqlController extends AdminbaseController {
        
        foreach($files as $v){
            
-           if(is_file($dir.$v) && substr($v,strrpos($v, '.'))=='.sql'){
+           if(is_file($dir.$v) && substr($v,strrpos($v, '.'))=='.sqlsql'){
                
                $list[]=$v;
            }

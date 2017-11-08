@@ -18,8 +18,7 @@ class Goods0ViewModel extends ViewModel {
             'price',
             'link',
             'create_time',
-            'start_time',
-            'end_time',
+            'start_time', 
              'status',
             'content',
             '_type'=>'LEFT' 

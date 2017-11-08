@@ -67,7 +67,7 @@ class CommentController extends AdminbaseController {
         $info=$info[0];
         //得到营业执照照片
         $info['file']=explode(';', $info['files']);
-         
+         array_pop($info['file']);
         $this->assign('info',$info);
         
         $this->display();
@@ -97,6 +97,7 @@ class CommentController extends AdminbaseController {
             'sid'=>$id,
             'sname'=>'comment',
         );
+        
         $desc='店铺'.$info['sid'].'的点评'.$id;
         $m->startTrans();
         switch($review){
@@ -107,6 +108,7 @@ class CommentController extends AdminbaseController {
                     exit;
                 }
                 $data_action['descr']=$desc.'审核不通过';
+               
                 $row=$m->where('id='.$id)->data(array('status'=>1))->save();
                 break;
             case 2:
@@ -117,14 +119,15 @@ class CommentController extends AdminbaseController {
                 }
                 //通过要加分减分
                 $data_action['descr']=$desc.'审核通过';
+               
                 $row=$m->where('id='.$id)->data(array('status'=>2))->save();
                 //通过要加分减分
                 if($row===1){
                      $m_seller=M('Seller');
                     
-                     $score=$m_seller->field('score')->where('id='.$info['sid'])->find();
+                     $tmp=$m_seller->field('score')->where('id='.$info['sid'])->find();
                      //暂时是多少分就多少级,没有分级
-                     $score=$score+$info['score'];
+                     $score=$tmp['score']+$info['score'];
                      $data=array(
                          'score'=>$score,
                          'grade'=>$score,
@@ -141,6 +144,7 @@ class CommentController extends AdminbaseController {
             case 3:
                 //删除其关联的回复也需删除
                
+                
                 $desc.='删除';
                 $row=$m->where('id='.$id)->delete();
                 //之前审核通过且未过期的动态才计算退置顶费
@@ -161,6 +165,15 @@ class CommentController extends AdminbaseController {
             $m->commit();
             $data_action['descr']=$desc;
             $m_action->add($data_action);
+            if($review==3){
+                $data_msg=array(
+                    'aid'=>session('ADMIN_ID'),
+                    'time'=>time(),
+                    'uid'=>$info['uid'],
+                    'content'=>date('Y-m-d H:i:s',$info['create_time']).'发布的评级被删除了',
+                );
+                M('Msg')->add($data_msg);
+            }
             if($url=='index'){
                 $this->success('删除成功');
             }elseif($review==3){

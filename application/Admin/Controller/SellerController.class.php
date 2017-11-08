@@ -330,7 +330,7 @@ class SellerController extends AdminbaseController {
         $info=$m->query($sql);
         $info=$info[0];
         
-        $m_user=M('Users'); 
+        
         //判断状态
         switch ($info['status']){
             case 1:
@@ -433,7 +433,7 @@ class SellerController extends AdminbaseController {
         }
         $info=$m->where('id='.$id)->find();
         //查看是否被他人审核或已审核通过
-        if(empty($info) || $info['status'] != $old_status || $info['status']==1){
+        if(empty($info) || $info['status'] != $old_status){
             $this->error('错误，申请已被审核,请刷新');
         }
         //删除
@@ -451,7 +451,7 @@ class SellerController extends AdminbaseController {
             'uid'=>$info['uid'],
             'content'=>date('Y-m-d',$info['create_time']).'提交的领用店铺申请',
         );
-        $desc='用户'.$uid.'领用店铺'.$info['sid'].'的申请';
+        $desc='用户'.$info['uid'].'领用店铺'.$info['sid'].'的申请';
         if($status==3){
             $data_action['descr']='删除了'.$desc;
             $row=$m->where('id='.$id)->delete(); 
@@ -524,7 +524,177 @@ class SellerController extends AdminbaseController {
          
         exit;
     }
+    //修改申请
+    public function edit(){
+        //店铺名搜索
+        $name=trim(I('name',''));
+        if($name!=''){
+            $where=" where s.name like '%{$name}%' or se.name like '%{$name}%' ";
+        }
+        $m=M();
+        
+        $sql="select count(se.id) as total 
+                from cm_seller_edit as se 
+                left join cm_seller as s on s.id=se.sid
+            {$where}";
+        
+        $tmp=$m->query($sql);
+        
+        $total=$tmp[0]['total'];
+        $page = $this->page($total, 10);
+        
+        $sql="select se.*,s.name as sname
+            from cm_seller_edit as se 
+            left join cm_seller as s on s.id=se.sid
+        {$where} order by se.id desc
+        limit {$page->firstRow},{$page->listRows}";
+        $list=$m->query($sql);
+        $this->assign('name',$name)->assign('list',$list)->assign('page',$page->show('Admin'));
+        $this->display();
+    }
+    //店铺详情
+    public function editinfo(){
+        $id=I('id',0);
+        $m=M();
+        $sql="select s.*,concat(c1.name,'-',c2.name,'-',c3.name) as citys,
+        concat(cate1.name,'-',cate2.name) as cname
+        from cm_seller_edit as s
+        left join cm_city as c3 on c3.id=s.city
+        left join cm_city as c2 on c2.id=c3.fid
+        left join cm_city as c1 on c1.id=c2.fid
+        left join cm_cate as cate2 on cate2.id=s.cid
+        left join cm_cate as cate1 on cate1.id=cate2.fid
+        where s.id={$id} limit 1";
+        
+        $info=$m->query($sql);
+        $info1=$info[0];
+         $sql="select s.*,concat(c1.name,'-',c2.name,'-',c3.name) as citys,
+        u.user_login as uname,au.user_login as author_name,concat(cate1.name,'-',cate2.name) as cname
+        from cm_seller as s
+        left join cm_city as c3 on c3.id=s.city
+        left join cm_city as c2 on c2.id=c3.fid
+        left join cm_city as c1 on c1.id=c2.fid
+        left join cm_users as u on s.uid=u.id
+        left join cm_users as au on au.id=s.author
+        left join cm_cate as cate2 on cate2.id=s.cid
+        left join cm_cate as cate1 on cate1.id=cate2.fid
+        where s.id={$info1['sid']} limit 1";
+        
+        $info=$m->query($sql);
+        $info0=$info[0];
+         
+        $this->assign('info0',$info0)->assign('info1',$info1);
+        
+        $this->display();
+        
+    }
     
-    
+    public function edit_review(){
+        $old_status=I('status',0);
+        $status=I('review',0);
+        $id=I('id',0);
+        $m=M('SellerEdit');
+        if($status==0 || $id==0){
+            $this->error('数据错误');
+        }
+        $info1=$m->where('id='.$id)->find();
+        //查看是否被他人审核或已审核通过
+        if(empty($info1) || $info1['status'] != $old_status ){
+            $this->error('错误，申请已被审核,请刷新');
+        }
+       $m_seller=$this->m;
+       $info0=$m_seller->where('id='.$info1['sid'])->find();
+       if(empty($info0)){
+           $this->error('错误，店铺不存在了');
+       }
+        //删除
+        $uid=session('ADMIN_ID');
+        $time=time();
+        $data_action=array(
+            'uid'=>$uid,
+            'time'=>$time,
+            'sid'=>$id,
+            'sname'=>'seller_edit',
+        );
+        $data_msg=array(
+            'aid'=>$uid,
+            'time'=>$time,
+            'uid'=>$info0['uid'],
+            'content'=>'修改店铺'.$info0['name'].'申请',
+        );
+        $desc='用户'.$info0['uid'].'修改店铺'.$info1['sid'].'的申请';
+        if($status==3){
+            $data_action['descr']='删除了'.$desc;
+            $row=$m->where('id='.$id)->delete();
+            if($row===1){
+                M('AdminAction')->add($data_action);
+                $data_msg['content'].='不通过，被删除了';
+                if($info1['status']==0){
+                    M('Msg')->add($data_msg);
+                }
+                $this->success('删除成功',U('edit'));
+                
+            }else{
+                $this->error('操作失败');
+            }
+            exit;
+        }
+         
+        //审核
+        $data1=array(
+            'status'=>$status,
+        );
+        $m->startTrans();
+        $row1=$m->data($data1)->where('id='.$id)->save();
+        if($row1===1){
+            if($status==2){
+                $data_action['descr']='通过了'.$desc;
+                $data_msg['content'].='审核通过了';
+                $data2=array(
+                    'status'=>2, 
+                    'tel'=>$info1['tel'],
+                    'mobile'=>$info1['mobile'], 
+                    'corporation'=>$info1['corporation'],
+                    'scope'=>$info1['scope'],
+                    'bussiness_time'=>$info1['bussiness_time'], 
+                    'link'=>$info1['link'],
+                    'city'=>$info1['city'],
+                    'cid'=>$info1['cid'],
+                    'name'=>$info1['name'],
+                    'address'=>$info1['address'],
+                    
+                   
+                );
+                if(!empty($info1['pic'])){
+                    $data2['pic']=$info1['pic'];
+                }
+                if(!empty($info1['cards'])){
+                    $data2['cards']=$info1['cards'];
+                }
+                if(!empty($info1['qrcode'])){
+                    $data2['qrcode']=$info1['qrcode'];
+                }
+                $row2=$m_seller->data($data2)->where('id='.$info1['sid'])->save();
+                if($row2!==1){
+                    $m->rollback();
+                    $this->error('审核失败，请刷新重试');
+                    exit;
+                }
+            }else{
+                $data_action['descr']='不同意'.$desc;
+                $data_msg['content'].='审核不通过';
+            }
+            $m->commit();
+            M('AdminAction')->add($data_action);
+            M('Msg')->add($data_msg);
+            $this->success('审核成功');
+            exit;
+            
+        }
+        $m->rollback();
+        $this->error('审核失败，请刷新重试');
+        
+        exit;
+    }
      
 }
