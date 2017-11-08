@@ -69,9 +69,7 @@ class HomebaseController extends AppframeController {
 		    session('add_city2',$city2);
 		    session('add_city3',$city3);
 		}
-		 
-		$this->check_login();
-		$this->check_user();
+		  
 		$this->assign("company",session('company'))
 		->assign("add_cate1",session('add_cate1'))
 		->assign('add_cate2',session('add_cate2'))
