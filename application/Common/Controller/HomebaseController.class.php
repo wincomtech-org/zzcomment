@@ -39,10 +39,16 @@ class HomebaseController extends AppframeController {
 		if(sp_is_user_login()){
 			$this->assign("user",sp_get_current_user());
 		}
-		
+		//session保存时间，1800秒后user以外的session清空
+		$time=time();
+		if(empty(session('online_time')) || ((session('online_time')+1800)<$time)){
+		    session('online_time',$time);
+		    session('company',null);
+		   
+		}
 		//给头文件读取数据保存到session 
 		if(empty(session('company'))){
-		    
+		  
 		    //读取网站配置
 		    $tmp=M('Company')->select();
 		    $company=array();

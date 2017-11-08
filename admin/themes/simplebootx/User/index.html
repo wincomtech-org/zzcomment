@@ -9,7 +9,7 @@
 			用户ID： 
 			<input type="text" name="uid" style="width: 100px;" value="{:I('request.uid')}" placeholder="请输入用户ID">
 			关键字： 
-			<input type="text" name="keyword" style="width: 200px;" value="{:I('request.keyword')}" placeholder="用户名/昵称/邮箱">
+			<input type="text" name="keyword" style="width: 200px;" value="{:I('request.keyword')}" placeholder="用户名/手机号">
 			<input type="submit" class="btn btn-primary" value="搜索" />
 			<a class="btn btn-danger" href="{:U('Indexadmin/index')}">清空</a>
 		</form>
@@ -26,6 +26,8 @@
 						<th>{:L('REGISTRATION_TIME')}</th>
 						<th>{:L('LAST_LOGIN_TIME')}</th>
 						<th>{:L('LAST_LOGIN_IP')}</th>
+						<th>信息更新时间</th>
+						<th>实名认证</th>
 						<th>{:L('STATUS')}</th>
 						<th align="center">{:L('ACTIONS')}</th>
 					</tr>
@@ -36,21 +38,27 @@
 					<tr>
 						<td align="center">{$vo.id}</td>
 						<td>{$vo['user_login']?$vo['user_login']:($vo['mobile']?$vo['mobile']:L('THIRD_PARTY_USER'))}</td>
-						 <td><img width="25" height="25" src="__UPLOAD__/avatar/{$vo['avatar']}" /></td>
+						 <td><img width="25" height="25" src="__UPLOAD__/{$vo['avatar']}" /></td>
 						<td>{$vo.mobile}</td>
 						<td>￥{$vo.account}</td>
 						<td>{$vo.create_time}</td>
 						<td>{$vo.last_login_time}</td>
 						<td>{$vo.last_login_ip}</td>
+						<td>{$vo.update_time|date='Y-m-d H:i:s',###}</td>
+						<td>
+						<switch name='vo.name_status'>
+							<case value='0'>未认证</case>
+							<case value='1'>已认证</case>
+							<case value='2'>认证不通过</case>
+						</switch>
+						</td>
 						<td>{$user_statuses[$vo['user_status']]}</td>
 						<td align="center">
-							<neq name="vo.id" value="1">
-								<a href="{:U('indexadmin/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:L('BLOCK_USER_CONFIRM_MESSAGE')}">{:L('BLOCK_USER')}</a>|
-								<a href="{:U('indexadmin/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:L('ACTIVATE_USER_CONFIRM_MESSAGE')}">{:L('ACTIVATE_USER')}</a>
-							<else/>
-								<a style="color: #ccc;">{:L('BLOCK_USER')}</a>|
-								<a style="color: #ccc;">{:L('ACTIVATE_USER')}</a>
-							</neq>
+							 
+							<a href="{:U('Indexadmin/info',array('id'=>$vo['id']))}"  >查看资料</a>|
+							<a href="{:U('indexadmin/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:L('BLOCK_USER_CONFIRM_MESSAGE')}">{:L('BLOCK_USER')}</a>|
+							<a href="{:U('indexadmin/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:L('ACTIVATE_USER_CONFIRM_MESSAGE')}">{:L('ACTIVATE_USER')}</a>
+							 
 						</td>
 					</tr>
 					</foreach>

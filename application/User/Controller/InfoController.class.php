@@ -48,6 +48,8 @@ class InfoController extends MemberbaseController {
                     case 'IDpic1':$avatar='user/'.$subname.'/'.$v['savename'];break;
                     case 'IDpic2':$pic1='user/'.$subname.'/'.$v['savename'];break;
                     case 'IDpic3':$pic2='user/'.$subname.'/'.$v['savename'];break;
+                    case 'IDpic8':$pic3='user/'.$subname.'/'.$v['savename'];break;
+                    
                 }
             }
         }
@@ -75,6 +77,9 @@ class InfoController extends MemberbaseController {
         }
         if(!empty($pic2)){
             $data['name_pic2']=$pic2;
+        }
+        if(!empty($pic3)){
+            $data['name_pic3']=$pic3;
         }
         
         $row=$m->data($data)->where('id='.($this->userid))->save();

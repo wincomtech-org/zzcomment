@@ -5,17 +5,15 @@ use Think\Model\ViewModel;
 
 /**
  *  
- * 店铺动态置顶
+ * 店铺动态推荐
  *
  */
-class TopActive0ViewModel extends ViewModel {
+class Top0Active0ViewModel extends ViewModel {
     public $viewFields = array(
-        'TopActive'=>array(
+        'TopActive0'=>array(
             'id',
             'pid',
             'create_time',
-            'start_time',
-            'end_time',
             'status',
             'price',
             '_type'=>'LEFT'
@@ -30,7 +28,7 @@ class TopActive0ViewModel extends ViewModel {
             'start_time'=>'astart_time',
             'end_time'=> 'aend_time',
             'status'=>'astatus', 
-            '_type'=>'LEFT','_on'=>'Active.id=TopActive.pid'
+            '_type'=>'LEFT','_on'=>'Active.id=TopActive0.pid'
         ), 
       
         'Seller'=>array('name'=>'sname',  '_on'=>'Active.sid=Seller.id'),

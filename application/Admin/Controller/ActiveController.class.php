@@ -109,8 +109,8 @@ class ActiveController extends AdminbaseController {
                 $m->startTrans();
                 $data_action['descr']=$desc.'删除'; 
                 $row=$m->where('id='.$id)->delete();
-                //之前审核通过且未过期的动态才计算退置顶费
-                if($row===1 && $info['status']=2 && $info['end_time']>$time){ 
+                //之前审核通过的动态才计算退置顶费
+                if($row===1 && $info['status']>=2 ){ 
                     //计算置顶费用
                     $m_top_active=M('TopActive');
                     $where_top=array();
@@ -145,8 +145,10 @@ class ActiveController extends AdminbaseController {
                             $m_top_active->rollback();
                             $this->error('操作失败，请刷新重试');
                         }
+                         //应通知用户消息，添加pay记录
                          
                     }
+                    M('TopActive0')->where('pid='.$id)->delete();
                     $m_top_active->commit();
                     $m->commit();
                 }elseif($row===1){
@@ -214,6 +216,9 @@ class ActiveController extends AdminbaseController {
         $this->assign('flag','动态置顶');
         $id=I('id',0);
         $info=D('TopActive0View')->where('TopActive.id='.$id)->find();
+        $count=M('TopActive')->where(array('status'=>2,'start_time'=>$info['start_time']))->count();
+        $num=M('Company')->where(array('name'=>'top_active_num'))->find();
+        $info['count']=$num['content']-$count;
         $this->assign('info',$info);
         
         $this->display();
@@ -234,7 +239,6 @@ class ActiveController extends AdminbaseController {
         if(empty($info) || $info['status']!=$status){
             $this->error('数据更新，请刷新重试');
         }
-        
         $time=time();
         $m_action=M('AdminAction');
         $data_action=array(
@@ -242,6 +246,37 @@ class ActiveController extends AdminbaseController {
             'time'=>$time,
             'sid'=>$id,
             'sname'=>'top_active',
+        );
+        $desc='动态'.$info['pid'].'的置顶申请'.$id;
+        
+        $sql="select a.name as aname,s.name as sname,u.id,u.account
+        from cm_active as a
+        left join cm_seller as s on s.id=a.sid
+        left join cm_users as u on u.id=s.uid
+        where a.id={$info['pid']} limit 1";
+        $tmp=M()->query($sql);
+        $user=$tmp[0];
+        if( empty($user)){
+            if($review==3){
+                $data_action['desc']='用户找不到，删除了'.$desc;
+                $row=$m->where('id='.$id)->delete();
+                if($row===1){
+                    M('AdminAction')->add($data_action);
+                    if($url=='top'){
+                        $this->success('删除成功');
+                    }else{
+                        $this->success('删除成功',U('top'),3);
+                    }
+                    exit;
+                }
+            }
+            $this->error('找不到该用户，请检查数据或删除');
+        }
+        $data_msg=array(
+            'aid'=>session('ADMIN_ID'),
+            'time'=>$time,
+            'content'=>'店铺'.$user['sname'].'的动态'.$user['aname'].'于'.date('Y-m-d',$info['start_time']).'的置顶申请',
+            'uid'=>$user['id'],
         );
         //删除前未生效的置顶费用应退还
         $m->startTrans();
@@ -253,52 +288,61 @@ class ActiveController extends AdminbaseController {
                 }
                 //不通过退还余额
                 $data_action['descr']=$desc.'审核不通过';
+                $data_msg['content'].='审核不通过';
                 $row=$m->where('id='.$id)->data(array('status'=>1))->save();
                 break;
             case 2:
                 if($status!=0){
                     $this->error('错误，已审核过');
                 }
+                //检查置顶位
+                $count=M('TopActive')->where(array('status'=>2,'start_time'=>$info['start_time']))->count();
+                $num=M('Company')->where(array('name'=>'top_active_num'))->find();
+                if($count>=$num['content']){
+                    $m->rollback();
+                    $this->error('置顶位已满');
+                }
                 $data_action['descr']=$desc.'审核通过';
-                
+                $data_msg['content'].='审核通过';
                 $row=$m->where('id='.$id)->data(array('status'=>2))->save();
                 break;
             case 3: 
-                $data_action['descr']=$desc.'删除';  
+                $data_action['descr']=$desc.'删除'; 
+                $data_msg['content'].='审核不通过';
                 $row=$m->where('id='.$id)->delete(); 
                 break;
         }
         //删除或审核不通过 应退还 前未生效的置顶费用
         if($row===1){
            
-            if($review!=2){  
-               
+            if($review!=2 && $status==0){
                 //计算置顶费用
-                $price=0;
-                if($info['start_time']>$time && $info['status']!=1){
-                    $price=$info['price'];
-                }
                 
-                $sql="select u.id,u.account
-                from cm_active as a
-                left join cm_seller as s on s.id=a.sid
-                left join cm_users as u on u.id=s.uid
-                where a.id={$info['pid']} limit 1";
-                $tmp=M()->query($sql);
-                $user=$tmp[0];
-               
-                //价格没有或店铺用户不存在就不用还钱了
-                if($price>0 && !empty($user) && !empty($user['id'])){
+                $price=$info['price']; 
+                
+                // 还钱了
+                if($price>0 ){
                     $data_action['descr'].='，且退还未生效的置顶费用￥'.$price;
+                    $data_msg['content'].='，且退还未生效的置顶费用￥'.$price;
                     $account=bcadd($price, $user['account']);
                     $row_account=M('Users')->data(array('account'=>$account))->where('id='.$user['id'])->save();
                     if($row_account!==1){
                         $m->rollback();
                         $this->error('操作失败，请刷新重试');
                     }
+                    $data_pay=array(
+                        'uid'=>$user['id'],
+                        'money'=>$price,
+                        'time'=>$time,
+                        'content'=>'店铺'.$user['sname'].'的动态'.$user['aname'].'于'.date('Y-m-d',$info['start_time']).'的置顶申请不通过，退还费用',
+                    );
+                    M('Pay')->add($data_pay);
                 } 
             }
             $m->commit();
+            if($info['status']==0){
+                M('Msg')->add($data_msg);
+            }
             $m_action->add($data_action);
             if($review==3){
                 if($url=='top'){
@@ -317,7 +361,54 @@ class ActiveController extends AdminbaseController {
         }
         exit;
     }
-   
+    
+    function top0(){
+        $this->assign('flag','动态推荐');
+        $m=D('Top0Active0View');
+        $aid=trim(I('aid',''));
+        $aname=trim(I('aname',''));
+        $sid=trim(I('sid',''));
+        $sname=trim(I('sname',''));
+        $status=I('status',-1);
+        $where=array();
+        
+        if($aid!=''){
+            $where['pid']=array('like','%'.$aid.'%');
+        }
+        if($sid!=''){
+            $where['sid']=array('like','%'.$sid.'%');
+        }
+        if($aname!=''){
+            $where['aname']=array('like','%'.$aname.'%');
+        }
+        if($sname!=''){
+            $where['sname']=array('like','%'.$sname.'%');
+        }
+        if($status!=-1){
+            $where['status']=array('eq',$status);
+        }
+        $total=$m->where($where)->count();
+        $page = $this->page($total, 10);
+        $list=$m->where($where)->order($this->order)->limit($page->firstRow,$page->listRows)->select();
+        $this->assign('page',$page->show('Admin'));
+        $this->assign('list',$list);
+        $this->assign('aid',$aid)
+        ->assign('sid',$sid)
+        ->assign('aname',$aname)
+        ->assign('sname',$sname)
+        ->assign('status',$status);
+        $this->display();
+    }
+   public function top0_review(){
+       $id=I('id',0);
+       $row=M('TopActive0')->where('id='.$id)->delete();
+       if($row===1){
+           $this->success('删除成功');
+       }else{
+           $this->error('删除失败');
+       }
+       exit;
+   }
 }
 
 ?>

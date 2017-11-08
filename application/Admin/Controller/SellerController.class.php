@@ -16,7 +16,7 @@ class SellerController extends AdminbaseController {
 	    $this->m = M('Seller');
 	    $this->m1 = M('SellerApply');
 	    $this->order='id desc';
-	    $this->order1='sid desc';
+	    $this->order1='id desc';
 	}
     //店铺管理首页
     public function index(){
@@ -355,32 +355,31 @@ class SellerController extends AdminbaseController {
     }
     //待审核
     public function applying(){
-        $m=$this->m1;
+        $m=D('SellerApply0View');
         $order=$this->order1;
-        //未处理
-        $where=array('status'=>0);
+        $sid=trim(I('sid',''));
+        $sname=trim(I('sname',''));
+        $status=I('status',-1);
+        $where=array();
+        if($sid!=''){
+            $where['sid']=array('like','%'.$sid.'%');
+        }
+        if($sname!=''){
+            $where['sname']=array('like','%'.$sname.'%');
+        }
+        if($status!=-1){
+            $where['status']=array('eq',$status);
+        }
+         
         $total=$m->where($where)->count();
         $page = $this->page($total, 10);
-        $list=D('SellerApply0View')->where($where)->order($this->order)->limit($page->firstRow,$page->listRows)->select();
+        $list=$m->where($where)->order($this->order)->limit($page->firstRow,$page->listRows)->select();
         $this->assign('page',$page->show('Admin'));
-        $this->assign('list',$list);
+        $this->assign('list',$list)->assign('sid',$sid)->assign('sname',$sname)->assign('status',$status);
         
         $this->display();
     }
-    //已审核
-    public function applied(){
-        $m=$this->m1;
-        $order=$this->order1;
-        //未处理
-        $where['status']=array('gt',0);
-        $total=$m->where($where)->count();
-        $page = $this->page($total, 10);
-        $list=D('SellerApply1View')->where($where)->order($this->order)->limit($page->firstRow,$page->listRows)->select();
-        $this->assign('page',$page->show('Admin'));
-        $this->assign('list',$list);
-        
-        $this->display();
-    }
+    
     //查看店铺领用申请详情
     public function applyinfo(){
         $id=I('id',0);
@@ -427,6 +426,7 @@ class SellerController extends AdminbaseController {
         $old_status=I('status',0);
         $status=I('review',0);
         $id=I('id',0);
+        $url=I('url','');
         $m=$this->m1;
         if($status==0 || $id==0){
             $this->error('数据错误');
@@ -457,11 +457,16 @@ class SellerController extends AdminbaseController {
             $row=$m->where('id='.$id)->delete(); 
             if($row===1){
                 M('AdminAction')->add($data_action);
-                $data_msg['content'].='不通过，被删除了';
+                $data_msg['content'].='不通过';
                 if($info['status']==0){
                     M('Msg')->add($data_msg);
                 }
-                $this->success('删除成功',U('applied'));
+                if($url=='applying'){
+                    $this->success('删除成功');
+                }else{
+                    $this->success('删除成功',U('applying'),3);
+                }
+                
                 
             }else{
                 $this->error('操作失败');
@@ -527,10 +532,20 @@ class SellerController extends AdminbaseController {
     //修改申请
     public function edit(){
         //店铺名搜索
-        $name=trim(I('name',''));
-        if($name!=''){
-            $where=" where s.name like '%{$name}%' or se.name like '%{$name}%' ";
+        $sname=trim(I('sname',''));
+        $sid=trim(I('sid',''));
+        $status=trim(I('status',-1));
+        $where='where se.id>0 ';
+        if( $sname!='' ){
+            $where.=" and (s.name like '%{$sname}%' or se.name like '%{$sname}%') ";
         }
+        if($sid!=''){
+            $where.=" and se.sid like '%{$sid}%' ";
+        }
+        if($status!=-1){
+            $where.=" and se.status = {$status} " ;
+        }
+         
         $m=M();
         
         $sql="select count(se.id) as total 
@@ -548,8 +563,11 @@ class SellerController extends AdminbaseController {
             left join cm_seller as s on s.id=se.sid
         {$where} order by se.id desc
         limit {$page->firstRow},{$page->listRows}";
+        
         $list=$m->query($sql);
-        $this->assign('name',$name)->assign('list',$list)->assign('page',$page->show('Admin'));
+        $this->assign('sname',$sname)->assign('sid',$sid)->assign('status',$status)
+        ->assign('list',$list)
+        ->assign('page',$page->show('Admin'));
         $this->display();
     }
     //店铺详情
@@ -593,6 +611,7 @@ class SellerController extends AdminbaseController {
         $old_status=I('status',0);
         $status=I('review',0);
         $id=I('id',0);
+        $url=I('url','');
         $m=M('SellerEdit');
         if($status==0 || $id==0){
             $this->error('数据错误');
@@ -620,7 +639,7 @@ class SellerController extends AdminbaseController {
             'aid'=>$uid,
             'time'=>$time,
             'uid'=>$info0['uid'],
-            'content'=>'修改店铺'.$info0['name'].'申请',
+            'content'=>'修改店铺'.$info0['name'].'的申请',
         );
         $desc='用户'.$info0['uid'].'修改店铺'.$info1['sid'].'的申请';
         if($status==3){
@@ -628,11 +647,15 @@ class SellerController extends AdminbaseController {
             $row=$m->where('id='.$id)->delete();
             if($row===1){
                 M('AdminAction')->add($data_action);
-                $data_msg['content'].='不通过，被删除了';
+                $data_msg['content'].='不通过';
                 if($info1['status']==0){
                     M('Msg')->add($data_msg);
                 }
-                $this->success('删除成功',U('edit'));
+                if($url=='edit'){
+                    $this->success('删除成功');
+                }else{
+                    $this->success('删除成功',U('edit'));
+                }
                 
             }else{
                 $this->error('操作失败');
@@ -694,6 +717,198 @@ class SellerController extends AdminbaseController {
         $m->rollback();
         $this->error('审核失败，请刷新重试');
         
+        exit;
+    }
+    
+    //top
+    function top(){
+        $this->assign('flag','店铺置顶');
+        $m=D('TopSeller0View');
+        
+        $sid=trim(I('sid',''));
+        $sname=trim(I('sname',''));
+        $status=I('status',-1);
+        $where=array();  
+        if($sid!=''){
+            $where['pid']=array('like','%'.$sid.'%');
+        }
+        if($sname!=''){
+            $where['sname']=array('like','%'.$sname.'%');
+        }
+        if($status!=-1){
+            $where['status']=array('eq',$status);
+        }
+        $total=$m->where($where)->count();
+        $page = $this->page($total, 10);
+        $list=$m->where($where)->order($this->order)->limit($page->firstRow,$page->listRows)->select();
+        $this->assign('page',$page->show('Admin'));
+        $this->assign('list',$list);
+        $this->assign('sid',$sid)
+        ->assign('sname',$sname)
+        ->assign('status',$status);
+        $this->display();
+    }
+    
+    //详情z
+    function top_info(){
+        $this->assign('flag','店铺置顶');
+        $id=I('id',0);
+        $m=M();
+        $sql="select top.*,s.name,s.pic,s.address,concat(c1.name,'-',c2.name,'-',c3.name) as citys,
+         concat(cate1.name,'-',cate2.name) as cname
+        from cm_top_seller as top
+        left join cm_seller as s on s.id=top.pid
+        left join cm_city as c3 on c3.id=s.city
+        left join cm_city as c2 on c2.id=c3.fid
+        left join cm_city as c1 on c1.id=c2.fid
+        left join cm_cate as cate2 on cate2.id=s.cid
+        left join cm_cate as cate1 on cate1.id=cate2.fid
+        where top.id={$id} limit 1";
+        
+        $info=$m->query($sql);
+        $info=$info[0];
+        
+        $count=M('TopSeller')->where(array('status'=>2,'start_time'=>$info['start_time']))->count();
+        
+        $info['count']=9-$count;
+        $this->assign('info',$info);
+        
+        $this->display();
+    }
+    //商品推荐操作
+    function top_review(){
+        $this->assign('flag','店铺置顶');
+        $m=M('TopSeller');
+        $url=I('url','');
+        $review=I('review',0);
+        $id=I('id',0);
+        $status=I('status',-1);
+        if($id==0 || $review==0 || $status==-1){
+            
+            $this->error('数据错误，请刷新重试');
+        }
+        $info=$m->where('id='.$id)->find();
+        if(empty($info) || $info['status']!=$status){
+            $this->error('数据更新，请刷新重试');
+        }
+        
+        $time=time();
+        $m_action=M('AdminAction');
+        $data_action=array(
+            'uid'=>session('ADMIN_ID'),
+            'time'=>$time,
+            'sid'=>$id,
+            'sname'=>'top_seller',
+        );
+        $desc='店铺'.$info['pid'].'的置顶申请'.$id;
+        
+        $sql="select s.name as sname,u.id,u.account
+        from cm_seller as s
+        left join cm_users as u on u.id=s.uid
+        where s.id={$info['pid']} limit 1";
+        $tmp=M()->query($sql);
+        $user=$tmp[0];
+        if( empty($user)){
+            if($review==3){
+                $data_action['desc']='用户找不到，删除了'.$desc;
+                $row=$m->where('id='.$id)->delete();
+                if($row===1){
+                    M('AdminAction')->add($data_action);
+                    if($url=='top'){
+                        $this->success('删除成功');
+                    }else{
+                        $this->success('删除成功',U('top'),3);
+                    }
+                    exit;
+                }
+            }
+            $this->error('找不到该用户，请检查数据或删除');
+        }
+        $data_msg=array(
+            'aid'=>session('ADMIN_ID'),
+            'time'=>$time,
+            'content'=>'店铺'.$user['sname'].'于'.date('Y-m-d',$info['start_time']).'至'.date('Y-m-d',$info['end_time']).'的置顶申请',
+            'uid'=>$user['id'],
+        );
+        //删除前未生效的置顶费用应退还
+        $m->startTrans();
+        
+        switch($review){
+            case 1:
+                if($status!=0){
+                    $this->error('错误，已审核过');
+                }
+                //不通过退还余额
+                $data_action['descr']=$desc.'审核不通过';
+                $data_msg['content'].='审核不通过';
+                $row=$m->where('id='.$id)->data(array('status'=>1))->save();
+                break;
+            case 2:
+                if($status!=0){
+                    $this->error('错误，已审核过');
+                }
+                $count=M('TopSeller')->where(array('status'=>2,'start_time'=>$info['start_time']))->count();
+                if($count>=9){
+                    $m->rollback();
+                    $this->error('置顶位已满');
+                }
+                $data_action['descr']=$desc.'审核通过';
+                $data_msg['content'].='审核通过';
+                $row=$m->where('id='.$id)->data(array('status'=>2))->save();
+                break;
+            case 3:
+                $data_action['descr']=$desc.'删除';
+                $data_msg['content'].='审核不通过';
+                $row=$m->where('id='.$id)->delete();
+                break;
+        }
+        //删除或审核不通过 应退还 前未生效的置顶费用
+        if($row===1){
+            
+            if($review!=2 && $status==0){
+                
+                //计算置顶费用
+                $price=$info['price'];
+                
+                //价格没有或店铺用户不存在就不用还钱了
+                if($price>0 ){
+                    $data_action['descr'].='，且退还未生效的置顶费用￥'.$price;
+                    $data_msg['content'].='，且退还未生效的置顶费用￥'.$price;
+                    $account=bcadd($price, $user['account']);
+                    $row_account=M('Users')->data(array('account'=>$account))->where('id='.$user['id'])->save();
+                    if($row_account!==1){
+                        $m->rollback();
+                        $this->error('操作失败，请刷新重试');
+                    }
+                    $data_pay=array(
+                        'uid'=>$user['id'],
+                        'money'=>$price,
+                        'time'=>$time,
+                        'content'=>'店铺'.$user['sname'].'于'.date('Y-m-d',$info['start_time']).'至'.date('Y-m-d',$info['end_time']).'的置顶申请不通过，退还费用'
+                    );
+                    M('Pay')->add($data_pay);
+                }
+            }
+            $m->commit();
+            if($info['status']==0){
+                M('Msg')->add($data_msg);
+            }
+            $m_action->add($data_action);
+            if($review==3){
+                if($url=='top'){
+                    $this->success('删除成功');
+                }else{
+                    $this->success('删除成功',U('top'),3);
+                }
+                
+            }else{
+                $this->success('审核成功');
+            }
+            
+        }else{
+            $m->rollback();
+            $this->error('操作失败，请刷新重试');
+        }
         exit;
     }
      

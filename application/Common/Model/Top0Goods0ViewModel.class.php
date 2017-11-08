@@ -5,18 +5,16 @@ use Think\Model\ViewModel;
 
 /**
  *  
- * 店铺商品置顶
+ * 店铺商品推荐
  *
  */
-class TopGoods0ViewModel extends ViewModel {
+class Top0Goods0ViewModel extends ViewModel {
     public $viewFields = array(
-        'TopGoods'=>array(
+        'TopGoods0'=>array(
             'id',
             'pid',
             'create_time', 
-            'status',  
-            'start_time',
-            'end_time', 
+            'status', 
             'price',
             '_type'=>'LEFT'
         ), 
@@ -29,7 +27,7 @@ class TopGoods0ViewModel extends ViewModel {
             'start_time'=>'astart_time',
            'price'=>'aprice',
             'status'=>'astatus', 
-            '_type'=>'LEFT','_on'=>'Goods.id=TopGoods.pid'
+            '_type'=>'LEFT','_on'=>'Goods.id=TopGoods0.pid'
         ), 
       
         'Seller'=>array('name'=>'sname',  '_on'=>'Goods.sid=Seller.id'),

@@ -37,9 +37,10 @@ class IndexController extends HomebaseController {
     	$login_success=false;
     	if($ucenter_syn){
     		include UC_CLIENT_ROOT."client.php";
-    		echo uc_user_synlogout();
+    		//echo uc_user_synlogout();
     	}
     	session("user",null);//只有前台用户退出
+    	session("company",null);
     	redirect(__ROOT__."/");
     }
 

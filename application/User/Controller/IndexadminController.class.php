@@ -18,9 +18,8 @@ class IndexadminController extends AdminbaseController {
         if(!empty($request['keyword'])){
             $keyword=$request['keyword'];
             $keyword_complex=array();
-            $keyword_complex['user_login']  = array('like', "%$keyword%");
-            $keyword_complex['user_nicename']  = array('like',"%$keyword%");
-            $keyword_complex['user_email']  = array('like',"%$keyword%");
+            $keyword_complex['user_login']  = array('like', "%$keyword%"); 
+            $keyword_complex['mobile']  = array('like',"%$keyword%");
             $keyword_complex['_logic'] = 'or';
             $where['_complex'] = $keyword_complex;
         }
@@ -32,7 +31,7 @@ class IndexadminController extends AdminbaseController {
     	
     	$list = $users_model
     	->where($where)
-    	->order("create_time DESC")
+    	->order("update_time DESC")
     	->limit($page->firstRow . ',' . $page->listRows)
     	->select();
     	
@@ -70,5 +69,48 @@ class IndexadminController extends AdminbaseController {
     	} else {
     		$this->error('数据传入失败！');
     	}
+    }
+    // 后台本站用户查看详情
+    public function info(){
+        $id= I('id',0,'intval');
+        if ($id) {
+            $info = M("Users")->where(array("id"=>$id,"user_type"=>2))->find();
+            if ($info) {
+                $this->assign('info',$info);
+                $this->display(":info");
+                exit;
+            } 
+        } 
+        $this->error('数据传入失败！');
+    }
+    // 实名认证
+    public function review(){
+        $id= I('id',0,'intval');
+        $review=I('review',0,'intval');
+        $status=I('status',0,'intval');
+        if($id==0 || $review==0){
+            $this->error('数据传入失败！');
+        }
+        $m=M('Users');
+        $info = $m->where(array("id"=>$id,"user_type"=>2))->find();
+        if (empty($info) || $info['name_status']!=$status) {
+            $this->error('数据已被更新，请刷新重试'); 
+        }
+        $row=$m->data(array('name_status'=>$review))->where(array("id"=>$id))->save();
+        if($row===1){
+            if($status==2){
+                $data_msg=array(
+                    'uid'=>$info['id'],
+                    'time'=>time(),
+                    'aid'=>session('ADMIN_ID'),
+                    'content'=>'实名认证不通过，请重新上传图片',
+                );
+                M('Msg')->add($data_msg);
+            }
+            $this->success('审核成功');
+        }else{
+            $this->error('数据传入失败！');
+        }
+        exit;
     }
 }

@@ -21,69 +21,70 @@
 				<div class="control-group fleft">
 					<span class="control-label">店铺名称：</span>
 					<div class="controls">
-						<input type="text" value="{$info.sname}" readonly/> 
-					</div>
-				</div>
-				 
-				<div class="control-group fleft">
-					<span class="control-label" >商品名：</span>
-					<div class="controls">
-						  <input type="text" value="{$info.aname}" readonly/> 
+						<input type="text" value="{$info.name}" readonly/> 
 					</div>
 				</div>
 				<div class="control-group fleft">
-					<span class="control-label" >商品价格：</span>
+					<span class="control-label">店铺类别：</span>
 					<div class="controls">
-						  <input type="text" value="￥{$info.price}" readonly/> 
+						<input type="text" value="{$info.cname}" readonly/> 
 					</div>
 				</div>
-				 
+				 <div class="control-group fleft">
+					<span class="control-label">店铺城市：</span>
+					<div class="controls">
+						<input type="text" value="{$info.citys}" readonly/> 
+					</div>
+				</div>
 				<div class="control-group fleft">
-					<span class="control-label" >商品创建时间：</span>
+					<span class="control-label">店铺地址：</span>
 					<div class="controls">
-						<input type="text"  value="{$info.acreate_time|date='Y-m-d H:i:s',###}" readonly/>
+						<input type="text" value="{$info.address}" readonly/> 
 					</div>
 				</div>
-				<div class="control-group fleft">
-					<span class="control-label" >商品刷新时间：</span>
-					<div class="controls">
-						<input type="text"  value="{$info.astart_time|date='Y-m-d H:i:s',###}" readonly/>
-					</div>
-				</div>
-				 
+				
+				
 				 
 				<div style="clear:both"></div>
 				<div class="control-group">
-					<span class="control-label" >商品图片：</span>
+					<span class="control-label" >店铺图片：</span>
 					<div class="controls">
 						<img src="__ROOT__/data/upload/{$info.pic}" alt="暂无图片" style="width:390px;height:270px"/>
 						 
 					</div>
 				</div>
-				 <div class="control-group fleft">
+				 
+				<div class="control-group fleft">
 					<span class="control-label" >置顶申请时间：</span>
 					<div class="controls">
 						<input type="text"  value="{$info.create_time|date='Y-m-d H:i:s',###}" readonly/>
 					</div>
 				</div>
-				<div class="control-group fleft">
-					<span class="control-label" >置顶时间：</span>
+			 	<div class="control-group fleft">
+					<span class="control-label" >置顶开始时间：</span>
 					<div class="controls">
 						<input type="text"  value="{$info.start_time|date='Y-m-d',###}" readonly/>
 					</div>
 				</div>
-			 	  <div class="control-group fleft">
-					<span class="control-label" >置顶花费金额：</span>
+				<div class="control-group fleft">
+					<span class="control-label" >置顶结束时间：</span>
 					<div class="controls">
-						<input type="text"  value="￥{$info.price}" readonly/>
+						<input type="text"  value="{$info.end_time|date='Y-m-d',###}" readonly/>
 					</div>
 				</div>
 				<div class="control-group fleft">
-					<span class="control-label" >置顶位剩余：</span>
+					<span class="control-label" >置顶申请费用：</span>
 					<div class="controls">
-						<input type="text"  value="{$info.count}" readonly/>
+						<input type="text" value="￥{$info.price}" readonly/>
 					</div>
 				</div>
+				<div class="control-group fleft">
+					<span class="control-label" >剩余置顶位：</span>
+					<div class="controls">
+						<input type="text" value="{$info.count}" readonly/>
+					</div>
+				</div>
+				 
 				<div class="control-group fleft">
 					<span class="control-label" >置顶申请状态：</span>
 					<div class="controls">
@@ -100,7 +101,7 @@
 					<input type="hidden" name="id" value="{$info.id}">
 					 <input type="hidden" id="review" name="review" value="0">
 					 <input type="hidden" name="status" value="{$info.status}">
-				 <eq name="info.status" value="0">
+				<eq name="info.status" value="0">
 					<button type="submit" class="btn btn-primary js-ajax-submit" id="sub1">
 						审核不通过
 					</button>
@@ -110,7 +111,7 @@
 					</button>
 				</eq>	
 					<button type="submit" class="btn btn-primary js-ajax-submit" id="sub3">
-						删除商品推荐
+						删除置顶申请
 					</button>
 					 
 					<a class="btn" href="javascript:history.back(-1);">返回</a>

@@ -95,6 +95,7 @@ class RegisterController extends HomebaseController {
 	        'last_login_time' => date("Y-m-d H:i:s"),
 	        'user_status' => 1,
 	        "user_type"=>2,//会员
+	        'update_time'=>time(),
 	    );
 	    
 	    $result = $users_model->add($data);
