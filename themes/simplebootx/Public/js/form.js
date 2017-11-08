@@ -39,7 +39,7 @@ return false;
     };
 
 function send(){ 
-    return (name1()&&idcard()&&qq1()) ;
+    return (name1()&&qq1()) ;
 }
 function tit1(){
 var cval = $("input[name='title']").val();    

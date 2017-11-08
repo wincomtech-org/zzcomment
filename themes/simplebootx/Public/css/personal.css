@@ -32,6 +32,7 @@
 .imgbox5{width:200px;height:120px;position: relative;}
 .imgbox6{width:290px;position: relative;}
 .imgbox7{width:200px;position: relative;margin-left:15px;}
+.imgbox8{width:200px;position: relative;}
 #preview1{width:110px;height:110px;background:#e5e4e4;}
 .img{width:100%;height:100%;}
 #preview2{width:200px;height:120px;background:#e5e4e4;}
@@ -40,6 +41,7 @@
 #preview5{width:200px;height:120px;background:#e5e4e4;}
 #preview6{width:290px;height:175px;background:#e5e4e4;}
 #preview7{width:176px;height:104px;background:#e5e4e4;}
+#preview8{width:200px;height:120px;background:#e5e4e4;}
 .btn{position: absolute;left:0;top:0;display: inline-block;z-index: 9;text-align: center;}
 .btn span{display: inline-block;color:#fff;font-size:20px;width:100%;line-height: 25px;background:#f00;}
 .btn1{width:110px;height:110px;line-height: 110px;}
@@ -49,6 +51,7 @@
 .btn5{width:200px;height:120px;line-height: 120px;}
 .btn6{width:290px;height:175px;line-height: 175px;}
 .btn7{width:176px;height:104px;line-height: 104px;}
+.btn8{width:200px;height:120px;line-height: 104px;}
 .upload_pic{display: block; width: 0; height: 0px;opacity: 0;}
 .preview img{width:100%;height:100%;}
 
