@@ -164,10 +164,10 @@ background-color: rgba(0, 0, 0, .3);}
 .ml2{margin-left:125px;color:#f00;height:20px;line-height: 20px;}
 .cl{font-size:18px;text-align:center;float: right;margin-right:10px;margin-bottom: 5px;}
 .fml{font-size: 16px;margin-left:15px;color:#f00;white-space: nowrap;}
-.webmsg{margin-top:20px;border:1px solid #dcdcdc; border-collapse:collapse;overflow-y: auto;_overflow:auto;min-width:100%;font-size:16px;}
+.webmsg{margin-top:20px;border:1px solid #dcdcdc; border-collapse:collapse;overflow-y: auto;_overflow:auto;min-width:100%;font-size:16px;text-align: left;}
 .webmsg thead{background:#eeeeee;}
-.webmsg th{line-height:50px;font-size:16px;color:#333;}
-.webmsg td{text-align: center;font-size: 16px;color:#333;line-height:50px;}
+.webmsg th{line-height:50px;font-size:16px;color:#333;padding-left:10px;}
+.webmsg td{text-align:left;font-size: 16px;color:#333;line-height:50px;padding-left:10px;}
 .webmsg tbody tr{border-top:1px solid #dcdcdc;}
 .webmsg_t1{width:120px;min-width: 60px;} .webmsg_t2{width:200px;min-width: 150px;}.webmsg_t3{width:600px;min-width: 300px;}
 .webmsg_t4{width:50px;min-width: 40px;}
