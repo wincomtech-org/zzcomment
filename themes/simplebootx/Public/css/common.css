@@ -51,7 +51,7 @@ i,em{ font-style: normal; }
 .foot-cont2 p{line-height:24px;color:#fff;text-align: center;}
 .foot-cont2 img{width:96px;height: 96px;}
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 1250px){
 	.top-wrapper{width:96%;margin:0 2%;}
 	.research{clear:both;padding:0 0 26px;}
 	.foot-container{width:96%;margin:0 2%;}
