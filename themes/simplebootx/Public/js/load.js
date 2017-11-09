@@ -1,12 +1,12 @@
 $(document).ready(function(){
 	// level color
-	$(".shop-color i").each(function(){
+	$(".level-color i").each(function(){
 		var levelNum=Number($(this).html());
 		if(levelNum<0){
-			$(this).parent(".shop-color").css("color","green");
+			$(this).parent(".level-color").css("color","green");
 		}
-		else{
-			$(this).parent(".shop-color").css("color","red");
+		if(levelNum>0){
+			$(this).parent(".level-color").css("color","red");
 		}
 	})
 
