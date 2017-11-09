@@ -114,6 +114,18 @@ class PublicController extends AdminbaseController {
         readfile($file);
         exit;
     }
-     
+    //下载页面
+    public function doDownload1(){
+        $filename=$_GET['filename'];
+        $file=getcwd().'/data/'.$filename;
+        $info=pathinfo($file);
+        $ext=$info['extension'];
+        $name=$info['basename'];
+        header('Content-type: application/x-'.$ext);
+        header('content-disposition:attachment;filename='.$name);
+        header('content-length:'.filesize($file));
+        readfile($file);
+        exit;
+    }
 
 }
