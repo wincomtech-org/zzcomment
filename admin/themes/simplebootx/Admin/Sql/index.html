@@ -36,6 +36,9 @@
 					 
                     <td>
                      <a href="{:U('restore',array('id'=>$vo))}" >还原备份</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+             
+                    <a href="{:U('Admin/Public/doDownload',array('filename'=>$vo))}">下载</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                
                     <a  class="js-ajax-dialog-btn" href="{:U('del',array('id'=>$vo))}" data-msg="确认删除吗？">删除</a>
                     </td>
 					
