@@ -6,7 +6,7 @@ $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 $log='1.log';
 error_log(date('Y-m-d H:i:s')."\r\n",'3',$log);
 
-$db = new mysqli( 'localhost', 'root', '','zzcomment','3306') or die();
+$db = new mysqli( 'localhost', 'root', 'root','zzcomment','3306') or die();
 // 数据库编码方式
 mysqli_set_charset($db, 'utf8');
 $time=time();
