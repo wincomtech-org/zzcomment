@@ -74,7 +74,14 @@ class NewsController extends MemberbaseController {
         }
         $price=session('company.top_active_fee0');
         $price=$price['content'];
-       
+        //检查价格是否更新
+        $tmp=M('Company')->where(array('name'=>'top_active_fee0'))->find();
+        if($tmp['content']!=$price){
+            $data['error']='推荐价格变化，请刷新页面';
+            session('company',null);
+            $this->ajaxReturn($data);
+            exit;
+        }
         //扣款
         if($price>0){
             $m_user=M('Users');
@@ -191,6 +198,14 @@ class NewsController extends MemberbaseController {
         }
         $uid=$this->userid;
         $price0=session('company.top_active_fee');
+        //检查价格是否更新
+        $tmp=M('Company')->where(array('name'=>'top_active_fee'))->find();
+        if($tmp['content']!=$price0['content']){
+            $data['error']='置顶价格变化，请刷新页面';
+            session('company',null);
+            $this->ajaxReturn($data);
+            exit;
+        }
         $price=bcmul($price0['content'],count($days));
         //扣款
         if($price>0){
@@ -254,7 +269,10 @@ class NewsController extends MemberbaseController {
         $pic='';
         $time=time();
         $subname=date('Y-m-d',$time);
-        if(!empty($_FILES['IDpic7']['name'])){
+        if(empty($_FILES['IDpic7']['name'])){
+            $this->error('没有上传有效图片');
+        }
+        
             
             $upload = new \Think\Upload();// 实例化上传类
             //20M
@@ -268,9 +286,18 @@ class NewsController extends MemberbaseController {
             }
             
             foreach ($info as $v){
-                $pic='news/'.$subname.'/'.$v['savename'];
+                $pic0='news/'.$subname.'/'.$v['savename'];
+                $pic=$pic0.'.jpg';
             }
-        }
+            $image = new \Think\Image();
+            $image->open(C("UPLOADPATH").$pic0);
+            // 生成一个固定大小为150*150的缩略图并保存为thumb.jpg
+            $image->thumb(290, 175,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic);
+           
+            unlink(C("UPLOADPATH").$pic0);
+           
+       
+        
         $start=strtotime(I('start',$subname));
         if($start<$time){
             $this->error('请选择有效时间');

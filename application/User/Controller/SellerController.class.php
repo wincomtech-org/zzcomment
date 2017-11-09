@@ -91,11 +91,34 @@ class SellerController extends MemberbaseController {
         
         foreach ($info as $v){ 
             switch ($v['key']){
-                case 'IDpic3':$data['pic']='seller/'.$subname.'/'.$v['savename'];break;
-                case 'IDpic4':$data['qrcode']='seller/'.$subname.'/'.$v['savename'];break;
+                case 'IDpic3':$pic0='seller/'.$subname.'/'.$v['savename'];break;
+                case 'IDpic4':$qrcode0='seller/'.$subname.'/'.$v['savename'];break;
                 case 'IDpic5':$data['cards']='seller/'.$subname.'/'.$v['savename'];break; 
             } 
         }
+        
+        if(!empty($pic0)){
+            $pic=$pic0.'.jpg';
+            $image = new \Think\Image();
+            $image->open(C("UPLOADPATH").$pic0);
+            // 生成一个固定大小为 的缩略图并保存为 .jpg
+            $image->thumb(500, 300,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic);
+            
+            unlink(C("UPLOADPATH").$pic0);
+            $data['pic']=$pic;
+        }
+         
+        if(!empty($qrcode0)){
+            $qrcode=$qrcode0.'.jpg';
+            $image = new \Think\Image();
+            $image->open(C("UPLOADPATH").$qrcode0);
+            // 生成一个固定大小为 的缩略图并保存为 .jpg
+            $image->thumb(114, 114,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$qrcode);
+            
+            unlink(C("UPLOADPATH").$qrcode0);
+            $data['qrcode']=$qrcode;
+        }
+        
         $row=$m->add($data);
         if($row>=1){
             $this->success('已提交申请，等待管理员审核',U('Portal/Seller/home',array('sid'=>$sid)));
@@ -151,7 +174,7 @@ class SellerController extends MemberbaseController {
             foreach ($info as $v){
                 switch ($v['key']){
                     case 'IDpic3':$avatar='seller/'.$subname.'/'.$v['savename'];break;
-                    case 'IDpic4':$qrcode='seller/'.$subname.'/'.$v['savename'];break;
+                    case 'IDpic4':$qrcode0='seller/'.$subname.'/'.$v['savename'];break;
                      
                 }
             }
@@ -172,11 +195,29 @@ class SellerController extends MemberbaseController {
             'create_time'=>$time,
         );
         if(!empty($avatar)){
-            $data['pic']=$avatar;
+            $pic=$avatar.'.jpg';
+            $image = new \Think\Image();
+            $image->open(C("UPLOADPATH").$avatar);
+            // 生成一个固定大小为 的缩略图并保存为 .jpg
+            $image->thumb(500, 300,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic);
+            
+            unlink(C("UPLOADPATH").$avatar);
+            $data['pic']=$pic;
+           
         }
-        if(!empty($qrcode)){
+        if(!empty($qrcode0)){
+            $qrcode=$qrcode0.'.jpg';
+            $image = new \Think\Image();
+            $image->open(C("UPLOADPATH").$qrcode0);
+            // 生成一个固定大小为 的缩略图并保存为 .jpg
+            $image->thumb(114, 114,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$qrcode);
+            
+            unlink(C("UPLOADPATH").$qrcode0);
             $data['qrcode']=$qrcode;
         }
+        
+        
+        
         $insert=M('SellerEdit')->add($data);
         if($insert>=1){
             $this->success('新资料已经提交，等待管理员审核后生效，请不要重复操作');
@@ -256,6 +297,14 @@ class SellerController extends MemberbaseController {
         }
         $uid=$this->userid;
         $price0=session('company.top_seller_fee');
+        //检查价格是否更新
+        $tmp=M('Company')->where(array('name'=>'top_seller_fee'))->find();
+        if($tmp['content']!=$price0['content']){
+            $data['error']='价格变化，请刷新页面';
+            session('company',null);
+            $this->ajaxReturn($data);
+            exit;
+        }
         $price=bcmul($price0['content'],count($days));
         //扣款
         if($price>0){

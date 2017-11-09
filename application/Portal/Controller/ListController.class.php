@@ -23,12 +23,11 @@ class ListController extends HomebaseController {
 	    
 	    //此处直接比较时间，没有服务器检查过期
 	    $where_top['start_time']=array('lt',$time);
-	    $where_top['end_time']=array('gt',$time);
 	    
-	    $tmp=M('TopSeller')->where($where_top)->limit('0,9')->select();
+	    $tmp=M('TopSeller')->where($where_top)->limit('0,10')->select();
 	    $sids=array();
 	    foreach ($tmp as $v){
-	        $sids[]=$v['sid'];
+	        $sids[]=$v['pid'];
 	    }
 	    $len=count($sids);
 	    if($len>0){
@@ -39,11 +38,13 @@ class ListController extends HomebaseController {
 	    
 	    //少于10个要有默认图片
 	    $list_top_seller_empty=array();
+	     
 	    $empty=session('company.top_seller_empty');
-	    
+	    $price=session('company.top_seller_fee');
 	    for($i=$len;$i<10;$i++){
-	        $list_top_seller_empty[]=array('pic'=>$empty['content'],'name'=>$empty['title']);
+	        $list_top_seller_empty[]=array('pic'=>$empty['content'],'name'=>$empty['title'],'price'=>$price['content']);
 	    }
+	    
 	    
 	    //商家//商家排名10
 	    $where_seller=array();
@@ -107,13 +108,13 @@ class ListController extends HomebaseController {
 	    
 	    //此处直接比较时间，没有服务器检查过期
 	    $where_top['start_time']=array('lt',$time);
-	    $where_top['end_time']=array('gt',$time);
-	    //先找置顶动态
-	    $top_len=session('company.top_goods_num');
-	    $tmp=M('TopGoods')->where($where_top)->limit(0,$top_len['content'])->select();
+	    
+	    //先找置顶 
+	    $top_len=10;
+	    $tmp=M('TopGoods')->where($where_top)->limit(0,$top_len)->select();
 	    $sids=array();
 	    foreach ($tmp as $v){
-	        $sids[]=$v['sid'];
+	        $sids[]=$v['pid'];
 	    }
 	    $len=0;
 	    if((count($sids))>0){
@@ -125,7 +126,7 @@ class ListController extends HomebaseController {
 	    //少于$active_len个要有其他动态
 	    //置顶的动态不变
 	    $total=$m->where($where_top)->count();
-	    $page = $this->page($total, 5-$len);
+	    $page = $this->page($total, 16-$len);
 	    
 	    $list=$m->where($where_top)->order('start_time desc')->limit($page->firstRow,$page->listRows)->select();
 	    
@@ -143,13 +144,13 @@ class ListController extends HomebaseController {
 	     
 	    //此处直接比较时间，没有服务器检查过期
 	    $where_top['start_time']=array('lt',$time);
-	    $where_top['end_time']=array('gt',$time);
+	   
 	    //先找置顶动态
-	    $top_len=session('company.top_active_num');
-	    $tmp=M('TopActive')->where($where_top)->limit(0,$top_len['content'])->select();
+	    $top_len=10;
+	    $tmp=M('TopActive')->where($where_top)->limit(0,10)->select();
 	    $sids=array();
 	    foreach ($tmp as $v){
-	        $sids[]=$v['sid'];
+	        $sids[]=$v['pid'];
 	    }
 	    $len=0;
 	    if((count($sids))>0){ 
@@ -170,7 +171,7 @@ class ListController extends HomebaseController {
 	    //少于$active_len个要有其他动态
 	    //置顶的动态不变
 	    $total=$m->where($where_top)->count();
-	    $page = $this->page($total, 5-$len);
+	    $page = $this->page($total, 10-$len);
 	    
 	    $list=$m->where($where_top)->order('start_time desc')->limit($page->firstRow,$page->listRows)->select();
 	    foreach($list as $k=>$v){
@@ -198,14 +199,14 @@ class ListController extends HomebaseController {
 	     }
 	   
 	    $total=M('Comment')->where($where_comment)->count();
-	    $page = $this->page($total, 5);
+	    $page = $this->page($total, 10);
 	    $list=D('Comment0View')->where($where_comment)->order('id desc')->limit($page->firstRow,$page->listRows)->select();
 	    $m_reply=D('Reply0View');
 	    foreach ($list as $k=>$v){
 	        $list[$k]['reply']=$m_reply->where('cid='.$v['id'])->select();
 	    }
-	    
-	    $this->assign('list',$list)
+	     
+	    $this->assign('list_comment',$list)
 	    ->assign('page',$page->show('Admin'));
 	    $this->display();
 	}

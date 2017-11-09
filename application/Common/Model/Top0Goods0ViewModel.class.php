@@ -22,6 +22,7 @@ class Top0Goods0ViewModel extends ViewModel {
             'id'=>'aid',
             'sid', 
             'pic', 
+           
             'name'=>'aname', 
             'create_time'=>'acreate_time',
             'start_time'=>'astart_time',

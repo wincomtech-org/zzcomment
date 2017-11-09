@@ -56,7 +56,7 @@ class CommentController extends AdminbaseController {
      
     //查看点评详情
     public function applyinfo(){
-        $id=I('id',0);
+        $id=I('id',0,'intval');
         $m=M();
         $sql="select cm.* ,s.name as sname,u.user_login as uname 
             from cm_comment as cm
@@ -78,8 +78,8 @@ class CommentController extends AdminbaseController {
     public function review(){
         $url=I('url','');
         $m=$this->m;
-        $review=I('review',0);
-        $id=I('id',0);
+        $review=I('review',0,'intval');
+        $id=I('id',0,'intval');
         $status=I('status',-1);
         if($id==0 || $review==0 || $status==-1){ 
             $this->error('数据错误，请刷新重试');
@@ -125,19 +125,21 @@ class CommentController extends AdminbaseController {
                 if($row===1){
                      $m_seller=M('Seller');
                     
-                     $tmp=$m_seller->field('score')->where('id='.$info['sid'])->find();
+                     $tmp=$m_seller->where('id='.$info['sid'])->find();
                      //暂时是多少分就多少级,没有分级
                      $score=$tmp['score']+$info['score'];
+                    
                      $data=array(
                          'score'=>$score,
                          'grade'=>$score,
                      );
                      $row_score=$m_seller->data($data)->where('id='.$info['sid'])->save();
+                     
                      if($row_score===1){
                          $desc.='，且相应修改了店铺的积分和等级'; 
                      }else{
                          $m->rollback();
-                         $this->error('操作失败，请刷新重试');
+                         $this->error($row_score.'操作失败，店铺积分'.$score.'请刷新重试');
                      }
                 } 
                 break;
@@ -212,7 +214,7 @@ class CommentController extends AdminbaseController {
     }
     //回复详情
     public function replyinfo(){
-        $id=I('id',0);
+        $id=I('id',0,'intval');
         $sql="select r.*,u.user_login as uname,c.sid,c.create_time as ctime,c.uid as cuid,c.score as cscore,c.content as ccontent,s.name as sname
         from cm_reply as r
         left join cm_users as u on u.id=r.uid
@@ -227,13 +229,38 @@ class CommentController extends AdminbaseController {
     
     //回复删除
     public function replydel(){
-        $id=I('id',0);
+        $id=I('id',0,'intval');
        $row=M('Reply')->where('id='.$id)->delete();
        if($row===1){
            $this->success('删除成功','Admin/Comment/reply');
            exit;
        }
        $this->error('删除失败，请刷新重试');
+        
+    }
+    //回复删除
+    public function reply_del(){
+        $id=I('id',0,'intval');
+        $row=M('Reply')->where('id='.$id)->delete();
+        if($row===1){
+            $this->success('删除成功');
+            exit;
+        }
+        $this->error('删除失败，请刷新重试');
+        
+    }
+    //回复删除
+    public function reply_dels(){
+        $ids=I('ids',array());
+        if(empty($ids)){
+            $this->error('请至少选择一项');
+        }
+        $row=M('Reply')->where(array('id'=>array('in',$ids)))->delete();
+        if($row>=1){
+            $this->success('删除成功');
+            exit;
+        }
+        $this->error('删除失败，请刷新重试');
         
     }
     

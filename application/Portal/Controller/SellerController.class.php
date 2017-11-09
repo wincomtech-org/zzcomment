@@ -50,12 +50,7 @@ class SellerController extends HomebaseController {
 	     $where_top['sid']=array('eq',$sid);
 	     //0申请。，1不同意，2同意
 	     $where_top['status']=array('eq',2);
-	     //0预定，1正在推荐，2过期
-	     $where_top['state']=array('lt',2);
-	     //此处直接比较时间，没有服务器检查过期
-	     $where_top['start_time']=array('lt',$time);
-	     $where_top['end_time']=array('gt',$time);
-	     
+	      
 	     //商品上新
 	     $list_goods=M('Goods')->where($where_top)->order('start_time desc')->limit(0,8)->select();
 	     //最新点评 
@@ -83,11 +78,8 @@ class SellerController extends HomebaseController {
         $where_top['sid']=array('eq',$sid);
         //0申请。，1不同意，2同意
         $where_top['status']=array('eq',2);
-        //0预定，1正在推荐，2过期
-        $where_top['state']=array('lt',2);
-        //此处直接比较时间，没有服务器检查过期
-        $where_top['start_time']=array('lt',$time);
-        $where_top['end_time']=array('gt',$time);
+        
+        
         $total=$m->where($where_top)->count();
         $page = $this->page($total, 5);
        
@@ -107,11 +99,8 @@ class SellerController extends HomebaseController {
         $where_top['sid']=array('eq',$sid);
         //0申请。，1不同意，2同意
         $where_top['status']=array('eq',2);
-        //0预定，1正在推荐，2过期
-        $where_top['state']=array('lt',2);
-        //此处直接比较时间，没有服务器检查过期
-        $where_top['start_time']=array('lt',$time);
-        $where_top['end_time']=array('gt',$time);
+        
+         
         $total=$m->where($where_top)->count();
         $page = $this->page($total, 8);
         
@@ -139,7 +128,7 @@ class SellerController extends HomebaseController {
         }
         
         $this->assign('seller_flag','comment')->assign('count_comment',$total)
-        ->assign('list',$list)
+        ->assign('list_comment',$list)
         ->assign('page',$page->show('Admin'));
         $this->display();
     }

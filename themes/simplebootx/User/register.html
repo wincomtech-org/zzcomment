@@ -47,7 +47,11 @@
 						<div class="rowcheck">
 							<label></label>
 							<input type="checkbox" class="must">
-							<span>阅读并接受<a href="{:U('User/Register/register_protocol1')}">《用户注册协议》</a>及<a href="{:U('User/Register/register_protocol2')}">《商户服务协议》</a></span>
+							<span>
+								阅读并接受
+								<a href="{:U('Portal/index/protocol',array('name'=>'user'))}">《用户注册协议》</a>
+								<a href="{:U('Portal/index/protocol',array('name'=>'seller'))}">《商户服务协议》</a>
+							</span>
 						</div>
 						<p class="lg-infor"></p>
 						<div class="rg-s">

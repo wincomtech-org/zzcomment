@@ -14,6 +14,7 @@ class Goods0ViewModel extends ViewModel {
             'id',
             'sid', 
             'pic', 
+            'pic0', 
             'name',
             'price',
             'link',

@@ -56,7 +56,14 @@ class GoodsController extends MemberbaseController {
         $data=array('errno'=>0,'error'=>'未执行');
         $price=session('company.top_goods_fee0');
         $price=$price['content'];
-        
+        //检查价格是否更新
+        $tmp=M('Company')->where(array('name'=>'top_goods_fee0'))->find();
+        if($tmp['content']!=$price){
+            $data['error']='推荐价格变化，请刷新页面';
+            session('company',null);
+            $this->ajaxReturn($data);
+            exit;
+        }
         //扣款
         if($price>0){
             $m_user=M('Users');
@@ -169,6 +176,14 @@ class GoodsController extends MemberbaseController {
         }
         $uid=$this->userid;
         $price0=session('company.top_goods_fee');
+        //检查价格是否更新
+        $tmp=M('Company')->where(array('name'=>'top_goods_fee'))->find();
+        if($tmp['content']!=$price0['content']){
+            $data['error']='置顶价格变化，请刷新页面';
+            session('company',null);
+            $this->ajaxReturn($data);
+            exit;
+        }
         $price=bcmul($price0['content'],count($days));
         //扣款
         if($price>0){
@@ -232,22 +247,30 @@ class GoodsController extends MemberbaseController {
         $pic='';
         $time=time();
         $subname=date('Y-m-d',$time);
-        if(!empty($_FILES['IDpic6']['name'])){
+        if(empty($_FILES['IDpic6']['name'])){
+            $this->error('没有上传有效图片');
+        }
              
             $upload = new \Think\Upload();// 实例化上传类
             //20M
             $upload->maxSize   =  C('SIZE') ;// 设置附件上传大小
             $upload->rootPath=getcwd().'/';
             $upload->subName = $subname;
+            $upload->exts = array('jpg', 'png', 'jpeg');// 设置附件上传类型
             $upload->savePath  =C("UPLOADPATH").'/goods/';
             $info   =   $upload->upload();
             if(!$info) {// 上传错误提示错误信息
                 $this->error($upload->getError());
             }
             foreach ($info as $v){ 
-                $pic='goods/'.$subname.'/'.$v['savename'];
+                $pic0='goods/'.$subname.'/'.$v['savename'];
+                $pic=$pic0.'.jpg';
             }
-        }
+       
+        $image = new \Think\Image(); 
+        $image->open(C("UPLOADPATH").$pic0);
+        // 生成一个固定大小为150*150的缩略图并保存为thumb.jpg
+        $image->thumb(290, 175,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic);
         
         $data=array(
             'sid'=>$this->sid,
@@ -256,7 +279,7 @@ class GoodsController extends MemberbaseController {
             'start_time'=>$time, 
             'name'=>I('shopname',''),
             'price'=>trim(I('shopprice','')),
-            'pic0'=>$pic,
+            'pic0'=>$pic0,
         );
         //实名认证无需审核
         if(session('user.name_status')==1){

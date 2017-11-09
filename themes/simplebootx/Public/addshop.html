@@ -20,7 +20,7 @@
 					<select name="letter" id="add-cate2">
 						<option class="cate20" value="0">行业</option>
 					<foreach name="add_cate2" item="vo">
-						<option class="cate2{$vo.fid}" value="{$vo.id}">{$vo.name}</option>
+						<option class="cate2{$vo.fid}" value="{$vo.id}">{$vo.first_char}{$vo.name}</option>
 					</foreach>
 					</select>
 				</div>

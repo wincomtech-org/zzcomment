@@ -10,8 +10,8 @@
 			<div class="foot-link">
 				<a href="{:U('Portal/index/index')}">网站首页</a>
 				<a href="{:U('Portal/List/seller_list')}">查找店铺</a>
-				<a href="#">用户协议</a>
-				<a href="#">商家协议</a>
+				<a href="{:U('Portal/index/protocol',array('name'=>'user'))}">用户协议</a>
+				<a href="{:U('Portal/index/protocol',array('name'=>'seller'))}">商家协议</a>
 				<span>联系电话：{$company.tel.content}</span>
 				<span>邮箱：{$company.email.content}</span>
 			</div>
@@ -79,8 +79,16 @@ $('.reply-form').submit(function(){
 	 $.post("{:U('Portal/Index/reply')}",{'cid':cid,'content':content},function(data){
 		 alert(data.error);
 		 if(data.errno==1){
+			 
 			 $('#user_reply').val('');
 			 $("#reply_layer").fadeOut();
+			//还要在网页添加回复
+			 
+			var span='<span class="comment-title">'+data['uname']+'&nbsp;&nbsp;回复</span>';
+			var p='<p class="comment-about">'+data['content']+'<span class="comment-date">&nbsp;&nbsp;【发表于'+data['time']+'】</span></p>';
+			var cid=data['cid'];
+			$('.zzreply'+cid).prepend(span+p);
+			$('.zzreply0'+cid).find('.comment-rbtn2').html('展开回复');
 		 }
 	 });
 	 

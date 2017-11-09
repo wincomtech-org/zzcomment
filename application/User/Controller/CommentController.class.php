@@ -50,7 +50,7 @@ class CommentController extends MemberbaseController {
             $files.='comment/'.$subname.'/'.$v['savename'].';';
         }
         $sid=I('sid',0);
-        $score=I('score',1);
+        $score=I('core',1);
         $data=array(
             'files'=>$files,
             'uid'=>$uid,

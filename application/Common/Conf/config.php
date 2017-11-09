@@ -98,6 +98,7 @@ $configs= array(
         'WEBSITE'=>'http://localhost/zzcomment/',
         'PAGE'=>5,          //前台展示列表分页，动态，评论
         'SIZE'=>4096000,    //上传文件大小4M
+        
          
 );
 

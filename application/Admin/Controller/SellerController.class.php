@@ -39,7 +39,7 @@ class SellerController extends AdminbaseController {
            }
        }
        //排序
-       $sort=I('sort',0);
+       $sort=I('sort',0,'intval');
        $order=' order by ';
        switch ($sort){ 
            case 2:$order.=' s.score desc,s.id desc ';break;
@@ -60,14 +60,14 @@ class SellerController extends AdminbaseController {
            $where.=" and s.id like '%{$id}%' ";
        }
        //分类查询条件
-       $fid1=I('fid1',0);
-       $fid2=I('fid2',0);
+       $fid1=I('fid1',0,'intval');
+       $fid2=I('fid2',0,'intval');
     	
     	if($fid2==0 ){
     	    if($fid1==0){
     	        
     	    }elseif(empty($tmp[$fid1])){
-    	        //$where['cid']=array('eq',0);
+    	        //$where['cid']=array('eq',0,'intval');
     	        $where.=' and s.cid=0 ';
     	    }else{
     	        //$where['cid']=array('in',$tmp[$fid1]);
@@ -119,9 +119,9 @@ class SellerController extends AdminbaseController {
     
     //后台操作店铺状态
     public function index_del(){
-        $old_status=I('status',0);
-        $review=I('review',0);
-        $id=I('id',0);
+        $old_status=I('status',0,'intval');
+        $review=I('review',0,'intval');
+        $id=I('id',0,'intval');
         $m=$this->m;
         if($old_status==0 || $id==0 || $review==0){
             $this->error('数据错误');
@@ -181,13 +181,21 @@ class SellerController extends AdminbaseController {
                 $desc='删除了'.$desc;
                 $row=$m->where('id='.$id)->delete();
                 if($row===1){
-                    //删除店铺后还要删除店铺动态，，商品，点评回复，各种推荐
-                    //动态
                     $where='sid='.$id;
-                    M('Active')->delete($where);
+                    //删除店铺后还要删除店铺动态，，商品，点评回复，各种推荐
+                    //店铺推荐
+                    M('TopSeller')->where('pid='.$id)->delete();
+                    M('SellerEdit')->where($where)->delete();
+                    M('SellerApply')->where($where)->delete();
+                    
+                    //动态
+                   
+                   
+                    //点评,还要删除回复
                     $m_comment=M('Comment');
                     $comments=$m_comment->field('id')->where($where)->select();
-                    $m_comment->delete($where);
+                    $m_comment->where($where)->delete();
+                    $ids=array();
                     foreach ($comments as $v){
                         $ids[]=$v['id'];
                     }
@@ -195,19 +203,31 @@ class SellerController extends AdminbaseController {
                         M('Reply')->where(array('cid'=>array('in',$ids)))->delete();
                     }
                     //商品
-                    M('Goods')->delete($where);
-                    //店铺推荐
-                    M('TopSeller')->delete($where);
-                    //点评,还要删除回复
-                    $m_comment=M('Comment');
-                    $comments=$m_comment->field('id')->where($where)->select();
-                    $m_comment->delete($where);
-                    foreach ($comments as $v){
+                    $m_goods=M('Goods');
+                    $goods=$m_goods->field('id')->where($where)->select();
+                    $m_goods->where($where)->delete();
+                    $ids=array();
+                    foreach ($goods as $v){
                         $ids[]=$v['id'];
                     }
                     if(!empty($ids)){
-                        M('Reply')->where(array('cid'=>array('in',$ids)))->delete();
+                        M('TopGoods')->where(array('pid'=>array('in',$ids)))->delete();
+                        M('TopGoods0')->where(array('pid'=>array('in',$ids)))->delete();
                     }
+                    
+                    //商品
+                    $m_active=M('Active');
+                    $goods=$m_active->field('id')->where($where)->select();
+                    $m_active->where($where)->delete();
+                    $ids=array();
+                    foreach ($goods as $v){
+                        $ids[]=$v['id'];
+                    }
+                    if(!empty($ids)){
+                        M('TopActive')->where(array('pid'=>array('in',$ids)))->delete();
+                        M('TopActives0')->where(array('pid'=>array('in',$ids)))->delete();
+                    }
+                     
                     $m->commit();
                     $data_action['descr']=$desc;
                     $m_action->add($data_action);
@@ -265,8 +285,8 @@ class SellerController extends AdminbaseController {
     }
     //创建店铺的审核
     public function create_do(){
-        $action=I('action',0);
-        $id=I('id',0);
+        $action=I('action',0,'intval');
+        $id=I('id',0,'intval');
         if($action==0 ||$id==0){
             $this->error('数据错误,请刷新');
         }
@@ -312,7 +332,7 @@ class SellerController extends AdminbaseController {
     
     //查看店铺详情
     public function info(){
-        $id=I('id',0);
+        $id=I('id',0,'intval');
         $m=M();
        // $sql="select s.*,c3.name as name3,c3.id as city1,c3.fid as city2,c2.name as name2,c2.fid as city1,c1.name as name1,
         $sql="select s.*,concat(c1.name,'-',c2.name,'-',c3.name) as citys,
@@ -382,7 +402,7 @@ class SellerController extends AdminbaseController {
     
     //查看店铺领用申请详情
     public function applyinfo(){
-        $id=I('id',0);
+        $id=I('id',0,'intval');
         $m=M();
        
         $sql="select sa.*,s.create_time as stime,s.name as sname,s.author,s.address,s.city,s.status as sstatus,
@@ -423,9 +443,9 @@ class SellerController extends AdminbaseController {
     
     //审核
     public function review(){
-        $old_status=I('status',0);
-        $status=I('review',0);
-        $id=I('id',0);
+        $old_status=I('status',0,'intval');
+        $status=I('review',0,'intval');
+        $id=I('id',0,'intval');
         $url=I('url','');
         $m=$this->m1;
         if($status==0 || $id==0){
@@ -572,7 +592,7 @@ class SellerController extends AdminbaseController {
     }
     //店铺详情
     public function editinfo(){
-        $id=I('id',0);
+        $id=I('id',0,'intval');
         $m=M();
         $sql="select s.*,concat(c1.name,'-',c2.name,'-',c3.name) as citys,
         concat(cate1.name,'-',cate2.name) as cname
@@ -608,9 +628,9 @@ class SellerController extends AdminbaseController {
     }
     
     public function edit_review(){
-        $old_status=I('status',0);
-        $status=I('review',0);
-        $id=I('id',0);
+        $old_status=I('status',0,'intval');
+        $status=I('review',0,'intval');
+        $id=I('id',0,'intval');
         $url=I('url','');
         $m=M('SellerEdit');
         if($status==0 || $id==0){
@@ -752,7 +772,7 @@ class SellerController extends AdminbaseController {
     //详情z
     function top_info(){
         $this->assign('flag','店铺置顶');
-        $id=I('id',0);
+        $id=I('id',0,'intval');
         $m=M();
         $sql="select top.*,s.name,s.pic,s.address,concat(c1.name,'-',c2.name,'-',c3.name) as citys,
          concat(cate1.name,'-',cate2.name) as cname
@@ -780,8 +800,8 @@ class SellerController extends AdminbaseController {
         $this->assign('flag','店铺置顶');
         $m=M('TopSeller');
         $url=I('url','');
-        $review=I('review',0);
-        $id=I('id',0);
+        $review=I('review',0,'intval');
+        $id=I('id',0,'intval');
         $status=I('status',-1);
         if($id==0 || $review==0 || $status==-1){
             

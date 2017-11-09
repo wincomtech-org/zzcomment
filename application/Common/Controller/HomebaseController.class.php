@@ -44,6 +44,7 @@ class HomebaseController extends AppframeController {
 		if(empty(session('online_time')) || ((session('online_time')+1800)<$time)){
 		    session('online_time',$time);
 		    session('company',null);
+		    session('browse',null);
 		   
 		}
 		//给头文件读取数据保存到session 
@@ -60,7 +61,7 @@ class HomebaseController extends AppframeController {
 		    //读取网站头文件中一级分类
 		    $m_cate=M('Cate');
 		    $cate1=$m_cate->where('fid=0')->order('sort desc,name asc')->select();
-		    $cate2=$m_cate->where('fid>0')->order('fid asc')->select(); 
+		    $cate2=$m_cate->where('fid>0')->order('first_char asc')->select(); 
 		    session('add_cate1',$cate1);
 		    session('add_cate2',$cate2);
 		    $m_city=M('City');
