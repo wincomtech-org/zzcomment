@@ -71,9 +71,13 @@ class IndexController extends HomebaseController {
 	    //少于$goods_len个要有其他 
 	   
 	    if($len<$goods_len){
-	        $len=$goods_len-$len;
 	        $list_goods=array();
-	        $where=array('id'=>array('notin',$sids),'status'=>array('eq',2));
+	        $where=array('status'=>array('eq',2));
+	        if($len>0){
+	            $where['id']=array('notin',$sids);
+	        }
+	        $len=$goods_len-$len;
+	        
 	        $list_goods=$m_goods->where($where)->order('start_time desc')->limit('0,'.$len)->select();
 	        
 	    }
@@ -117,9 +121,14 @@ class IndexController extends HomebaseController {
 	    }
 	    //少于$active_len个要有其他动态
 	    if($len<$active_len){
-	        $len=$active_len-$len;
 	        $list_top_active_empty=array();
-	        $list_top_active_empty=$m_active->where('status=2')->order('start_time desc')->limit('0,'.$len)->select();
+	        $where=array('status'=>array('eq',2));
+	        if($len>0){
+	            $where['id']=array('notin',$sids);
+	        }
+	        $len=$active_len-$len;
+	        
+	        $list_top_active_empty=$m_active->where($where)->order('start_time desc')->limit('0,'.$len)->select();
 	        foreach($list_top_active_empty as $k=>$v){
 	            
 	            $content_01 = $v["content"];//从数据库获取富文本content
