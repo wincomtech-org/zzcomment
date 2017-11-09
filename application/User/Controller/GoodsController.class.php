@@ -265,13 +265,15 @@ class GoodsController extends MemberbaseController {
             foreach ($info as $v){ 
                 $pic0='goods/'.$subname.'/'.$v['savename'];
                 $pic=$pic0.'.jpg';
+                $pic1=$pic0.'1.jpg';
             }
        
         $image = new \Think\Image(); 
         $image->open(C("UPLOADPATH").$pic0);
-        // 生成一个固定大小为150*150的缩略图并保存为thumb.jpg
+        // 生成一个固定大小为 的缩略图并保存为thumb.jpg
         $image->thumb(290, 175,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic);
-        
+        $image->thumb(978, 590,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic1);
+        unlink(C("UPLOADPATH").$pic0);
         $data=array(
             'sid'=>$this->sid,
             'pic'=>$pic,
@@ -279,7 +281,7 @@ class GoodsController extends MemberbaseController {
             'start_time'=>$time, 
             'name'=>I('shopname',''),
             'price'=>trim(I('shopprice','')),
-            'pic0'=>$pic0,
+            'pic0'=>$pic1,
         );
         //实名认证无需审核
         if(session('user.name_status')==1){
