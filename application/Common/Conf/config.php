@@ -95,7 +95,7 @@ $configs= array(
             '__WEB_ROOT__'=>__ROOT__
         ),
     //自添加
-        'WEBSITE'=>'http://localhost/zzcomment/',
+        'WEBSITE'=>'http://www.zypjw.cn/',
         'PAGE'=>5,          //前台展示列表分页，动态，评论
         'SIZE'=>4096000,    //上传文件大小4M
         
