@@ -92,7 +92,7 @@ class SqlBack{
         }
          
         //存储在data文件夹下
-        $filename=$dir.$dname.date('Ymd-His').".sql";
+        $filename=$dir.$dname.date('Ymd-His').".sqlsql";
         
         $fp = fopen($filename,'wb');
         if(!$fp){
