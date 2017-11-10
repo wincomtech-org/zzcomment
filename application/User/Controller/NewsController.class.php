@@ -266,6 +266,8 @@ class NewsController extends MemberbaseController {
     
     //add_do
     public function add_do(){
+        
+        
         $pic='';
         $time=time();
         $subname=date('Y-m-d',$time);
@@ -309,16 +311,19 @@ class NewsController extends MemberbaseController {
             'start_time'=>$time,
             'end_time'=>$start,
             'name'=>I('title',''),
-            'content'=>$_POST['content']
+            'content'=>$_POST['content2']
         );
+       
         //实名认证无需审核
         if(session('user.name_status')==1){
             $data['status']=2;
+        }else{
+            $msg="，等待审核";
         }
         $m=$this->m;
         $insert=$m->add($data);
         if($insert>=1){
-            $this->success('发布动态成功，等待审核');
+            $this->success('发布动态成功'.$msg);
         }else{
             $this->error('发布失败');
         }

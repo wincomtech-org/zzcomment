@@ -207,7 +207,7 @@ hello;
 	//
 	// 登录验证提交
 	public function ajaxlogin(){
-	    //记录返回地址
+	   
 	    
 	    if(!sp_check_verify_code()){
 	        $data=array('errno'=>0,'error'=>'验证码错误');
@@ -251,6 +251,15 @@ hello;
 	            $session_login_http_referer=session('login_http_referer');
 	            $redirect=empty($session_login_http_referer)?__ROOT__."/":$session_login_http_referer;
 	            session('login_http_referer','');
+	            //如果选中记住，就将登录信息放入Cookie中
+	            $remember=I('remember',0,'intval');
+	            if($remember== 1){
+	                $key='zzcomment';
+	                //将登录信息，存放在Cookie中
+	                $value = serialize($result['id']);
+	                $str   = md5($value.$key);
+	                setcookie('zypjwLogin', $str.$value,time()+3600*24*30,'/');
+	            }
 	            $data=array('errno'=>1,'error'=>$redirect);
 	            $this->ajaxReturn($data);
 	            exit;

@@ -116,4 +116,57 @@ class IndexadminController extends AdminbaseController {
         }
         exit;
     }
+    
+    public function account(){
+        $id= I('id',0,'intval');
+        $info=M('Users')->where('id='.$id)->find();
+        if(empty($info)){
+            $this->error('没有该用户');
+        }
+        $this->assign('info',$info);
+        $this->display(':account');
+    }
+    public function account_do(){
+        $id= I('id',0,'intval');
+        $account=I('account',0,'intval');
+        $content=I('content','');
+        if($account==0 || $id==0){
+            $this->error('输入不正确');
+        }
+        $m=M('Users');
+        $info=M('Users')->where('id='.$id)->find();
+        if(empty($info)){
+            $this->error('没有该用户');
+        }
+        $account=bcadd($account, $info['account']);
+        $row=$m->where('id='.$id)->data(array('account'=>$account))->save();
+        $time=time();
+       if($row===1){
+           $data_pay=array(
+               'uid'=>$id,
+               'time'=>$time,
+               'money'=>$account,
+               'content'=>'管理员充值￥'.$account,
+           );
+           $data_msg=array(
+               'uid'=>$id,
+               'time'=>$time,
+               'aid'=>session('ADMIN_ID'),
+               'content'=>'管理员充值￥'.$account,
+           );
+           $data_action=array(
+               'time'=>$time,
+               'uid'=>session('ADMIN_ID'),
+               'descr'=>'为用户'.$id.'充值￥'.$account.'.管理员备注：'.$content,
+               'sid'=>$id,
+               'sname'=>'users',
+           );
+           M('AdminAction')->add($data_action);
+           M('Msg')->add($data_msg);
+           M('Pay')->add($data_pay);
+           $this->success('充值成功');
+       }else{
+           $this->error('充值失败');
+       }
+    }
 }

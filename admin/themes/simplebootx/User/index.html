@@ -14,7 +14,7 @@
 				<option value="1" <eq name="name_status" value="1">selected</eq>>已认证</option>
 				<option value="2" <eq name="name_status" value="2">selected</eq>>审核不通过</option>
 				  
-			<select>
+			</select>
 			用户ID： 
 			<input type="text" name="uid" style="width: 100px;" value="{:I('request.uid')}" placeholder="请输入用户ID">
 			关键字： 
@@ -67,6 +67,7 @@
 						<td align="center">
 							 
 							<a href="{:U('Indexadmin/info',array('id'=>$vo['id']))}"  >查看资料</a>|
+							<a href="{:U('Indexadmin/account',array('id'=>$vo['id']))}"  >充值</a>|
 							<a href="{:U('indexadmin/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:L('BLOCK_USER_CONFIRM_MESSAGE')}">{:L('BLOCK_USER')}</a>|
 							<a href="{:U('indexadmin/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:L('ACTIVATE_USER_CONFIRM_MESSAGE')}">{:L('ACTIVATE_USER')}</a>
 							 

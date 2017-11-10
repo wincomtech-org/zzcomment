@@ -141,7 +141,7 @@ class CateController extends AdminbaseController {
         
         //检查分类下是否有店铺，有就不能删除
         $map_product['cid']=array('in',$ids);
-        $temp=M('Pro')->where($map_product)->select();
+        $temp=M('Seller')->where($map_product)->select();
         if(!empty($temp)){
             $this->error('分类下还有店铺，不能删除');
         }

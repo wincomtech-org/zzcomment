@@ -93,7 +93,7 @@ class CommentController extends MemberbaseController {
        }
        exit;
     }
-    //删除点评
+   /*  //删除点评
     public function del(){
         $m=$this->m;
         $id=I('id',0,'intval'); 
@@ -106,5 +106,5 @@ class CommentController extends MemberbaseController {
         }
         $this->ajaxReturn($data);
         exit;
-    }
+    } */
 }

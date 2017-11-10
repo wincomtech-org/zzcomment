@@ -236,13 +236,13 @@ class SellerController extends MemberbaseController {
             $this->error('该店铺无法购买置顶');
         }
         //计算得到可置顶周期，最多5个周期
-        //设置周期为8周
-        $date_len=2;
+        //设置周期为1周
+        $date_len=1;
         $i=5;
         $top=array();
         $m_top=M('TopSeller');
         //得到总置顶位，再计算剩余
-        $num=9;
+        $num=10;
         $where_tops=array(
             'pid'=>array('eq',$id),
             'status'=>array('in','0,2'),
@@ -329,8 +329,8 @@ class SellerController extends MemberbaseController {
         
         $time=time();
         $data_top=array();
-        //设置周期为8周
-        $date_len=2;
+        //设置周期为1周
+        $date_len=1;
         foreach ($days as $v){
             $time1=strtotime($v);
             $data_top[]=array(

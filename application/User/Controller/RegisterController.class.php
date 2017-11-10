@@ -15,18 +15,6 @@ class RegisterController extends HomebaseController {
 	        //$this->display(":register");
 	    }
 	}
-	// 用户注册协议1
-	public function register_protocol1(){
-	    
-	    $this->display(":register_protocol1");
-	    
-	}
-	// 用户注册协议2
-	public function register_protocol2(){
-	    
-	    $this->display(":register_protocol2");
-	    
-	}
 	
 	// 前台用户注册提交
 	public function doregister(){

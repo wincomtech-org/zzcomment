@@ -39,6 +39,7 @@ class IndexController extends HomebaseController {
     		include UC_CLIENT_ROOT."client.php";
     		//echo uc_user_synlogout();
     	}
+    	setcookie('zypjwLogin', null,time()-2,'/');
     	session("user",null);//只有前台用户退出
     	session("company",null);
     	redirect(__ROOT__."/");

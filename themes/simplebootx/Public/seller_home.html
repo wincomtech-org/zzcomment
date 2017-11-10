@@ -30,10 +30,11 @@
 					<span class="level level-color">等级<i>{$info.grade}</i></span>
 				</div>
 				<div class="infor-rt">
-				<eq name="info.status" value="1">
+				<neq name="info.status" value="1">
 					<span class="shop-mark">认领商家</span>
+				<else/>
 					<a href="{:U('User/Seller/apply',array('sid'=>$sid))}" class="shop-mark">去认领>></a>
-				</eq>
+				</neq>
 					<div class="rt share">
 						<!-- share -->
 						<span class="lf">分享到：</span>

@@ -15,7 +15,7 @@ class HomebaseController extends AppframeController {
 		defined('TMPL_PATH') or define("TMPL_PATH", C("SP_TMPL_PATH"));
 		$site_options=get_site_options();
 		$this->assign($site_options);
-		$ucenter_syn=C("UCENTER_ENABLED");
+		/* $ucenter_syn=C("UCENTER_ENABLED");
 		if($ucenter_syn){
 		    $session_user=session('user');
 			if(empty($session_user)){
@@ -34,6 +34,29 @@ class HomebaseController extends AppframeController {
 				}
 			}else{
 			}
+		} */
+		//如果Session中没有登录信息，尝试从Cookie中加载用户信息
+		if (empty($_SESSION['user'])) {
+		    $value=$_COOKIE['zypjwLogin'];
+		    // 去掉魔术引号
+		    if (get_magic_quotes_gpc()) {
+		        $value = stripslashes($value);
+		    }
+		    $str= substr($value,0,32);
+		    $value=substr($value,32);
+		    $key='zzcomment';
+		    //校验
+		    if (md5($value.$key) == $str) {
+		        $user_old=unserialize($value);
+		        $users_model=M('Users');
+		        $where['id']=$user_old;
+		        $user=$users_model->where($where)->find();
+		        if(!empty($user) && $user['user_status']==1){
+		            $is_login=true;
+		            session('user',$user);
+		        }
+		       
+		    }
 		}
 		
 		if(sp_is_user_login()){
