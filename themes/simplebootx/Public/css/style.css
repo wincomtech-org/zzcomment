@@ -68,7 +68,7 @@ textarea{resize: none;}
 .shoplist-wrapper{position: relative;}
 .shoplist-wrapper .page{padding:80px 0 80px;}
 .shop-character{position:absolute;margin:50px 0 0;right:0;z-index: 4;line-height:32px;font-size:18px;color:#999;}
-.shop-character>a{display:inline-block;font-size:18px;line-height:18px;margin:3px 0;padding:0 5px 0 0;color:#999;border-right: 1px solid #dcdcdc;}
+.shop-character>a{display:inline-block;font-size:18px;line-height:18px;margin:3px 0;padding:0 5px;color:#999;border-right: 1px solid #dcdcdc;}
 .shop-character>a:last-child{border: none;}
 .shop-character>a.select,.shop-character>a:hover{color:#d00000;}
 
