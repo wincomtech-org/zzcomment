@@ -1,6 +1,6 @@
 <tc_include file="Public/user_head" />
 	<div class="per_right rt">
-                <form action="{:U('User/Seller/edit')}" method="post" onsubmit="return send3()">
+                <form action="{:U('User/Seller/edit')}" method="post" onsubmit="return send3()" enctype="multipart/form-data">
                 	<input type="hidden" name="sid" value="{$info.id}"/>
                     <div class="per_r1" >
                         <div class="ib imgbox3">
