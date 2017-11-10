@@ -94,7 +94,7 @@ float:right;}
 .evaluate_li_lf{width:680px;padding-left:20px;}
 .evaluate_li_lf p{line-height: 35px;font-size: 16px;color:#333;max-height:70px;text-overflow:ellipsis;overflow: hidden;position: relative;}
 .evaluate_li_lf p:after{content: ".....";position: absolute; bottom: 0; right: 0; padding-left: 20px;background: -webkit-linear-gradient(left, transparent, #fff 55%);background: -o-linear-gradient(right, transparent, #fff 55%);background: -moz-linear-gradient(right, transparent, #fff 55%);background: linear-gradient(to right, transparent, #fff 55%);}
-.evaluate_li_rt{width:270px;margin-top:10px;}
+.evaluate_li_rt{width:271px;margin-top:10px;}
 .evaluate_li_rt span{line-height: 35px;font-size: 16px;color:#333;}
 .per_e2{display: inline-block; width:1px;margin:0 14px;height:40px;text-align: center;line-height: 40px;background:#d2d2d2;margin-top:5px;}
 .per_e3{display: inline-block;width:80px;height:40px;text-align: center;line-height: 40px;border-left:1px solid #d2d2d2;}
@@ -194,7 +194,7 @@ background-color: rgba(0, 0, 0, .3);}
 /*.per_d5{display:inline-block;width:60px;text-align: center;}*/
 .dy_img{width:100%;min-width: 130px;}
 .evaluate_li_lf{width:65%;padding-left:20px;}
-.evaluate_li_rt{width:30%;margin-top:10px;}
+.evaluate_li_rt{width:35%;margin-top:10px;}
 .per_e3{width:30%;}
 .per_e4{width:40%;}
 .per_e5{width:25%;}
@@ -231,6 +231,7 @@ background-color: rgba(0, 0, 0, .3);}
 #provinces,#citys,#countys{width:95px;margin:0 0 0 15px;padding-left:3px;}
 .imgbox2{margin-bottom: 10px;}
 .addshop{margin-left:0px;}
+.evaluate_li_rt{width:60%;}
 }
 @media screen and (max-width:400px) {
     .form1 input[type="submit"],.form1 input[type="reset"]{padding:0 20px;height:35px;line-height: 35px;background:#eb0000;color:#fff;text-align: center;margin-right:30px;cursor: pointer;font-size: 16px;}
