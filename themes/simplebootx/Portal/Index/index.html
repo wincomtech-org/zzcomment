@@ -163,32 +163,7 @@
 							</div>
 						</li>
 						<li>
-							<ul class="shop-news">
-							<foreach name="list_top_active" item="vo">
-								<li>
-									<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf">
-										<img src="__UPLOAD__/{$vo.pic}" alt="动态标题" title="{$vo.name}">
-									</a>
-									<div class="lf news-cont">
-										<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf news-title">{$vo.name}</a>
-										<span class="rt news-date">{$vo.create_time|date="Y-m-d",###}</span>
-										<p class="clear news-about">{$vo.content}</p>
-									</div>
-								</li>
-							</foreach>
-							<foreach name="list_top_active_empty"  item="vo">
-								<li>
-									<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf">
-										<img src="__UPLOAD__/{$vo.pic}" alt="动态标题" title="{$vo.name}">
-									</a>
-									<div class="lf news-cont">
-										<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf news-title">{$vo.name}</a>
-										<span class="rt news-date">{$vo.create_time|date="Y-m-d",###}</span>
-										<p class="clear news-about">{$vo.content}</p>
-									</div>
-								</li>
-							</foreach> 
-							</ul>
+							<tc_include file="Public/news" />
 							<div class="showmore">
 								<a href="{:U('Portal/List/news_list')}">查看更多>></a>
 							</div>

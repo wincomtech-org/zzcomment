@@ -285,7 +285,7 @@ class GoodsController extends MemberbaseController {
         );
         //实名认证无需审核
         if(session('user.name_status')==1){
-            $data['status']==2;
+            $data['status']=2;
         }
         $m=$this->m;
         $insert=$m->add($data);

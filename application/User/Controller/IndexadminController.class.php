@@ -14,7 +14,10 @@ class IndexadminController extends AdminbaseController {
         if(!empty($request['uid'])){
             $where['id']=intval($request['uid']);
         }
-        
+        $name_status=I('name_status',-1,'intval');
+        if($name_status!=-1){
+            $where['name_status']=$name_status;
+        }
         if(!empty($request['keyword'])){
             $keyword=$request['keyword'];
             $keyword_complex=array();
@@ -35,7 +38,7 @@ class IndexadminController extends AdminbaseController {
     	->limit($page->firstRow . ',' . $page->listRows)
     	->select();
     	
-    	$this->assign('list', $list);
+    	$this->assign('list', $list)->assign('name_status',$name_status);
     	$this->assign("page", $page->show('Admin'));
     	
     	$this->display(":index");

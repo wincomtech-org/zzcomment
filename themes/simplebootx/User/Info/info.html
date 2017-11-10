@@ -20,7 +20,7 @@
 							<label class="sex"><input name="sex" <eq name='user.sex' value='1'>checked</eq> type="radio" value="1">&nbsp;男</label>
 							<label class="sex"><input name="sex" <eq name='user.sex' value='2'>checked</eq> type="radio" value="2">&nbsp;女</label>
 						</div>
-						<div class="form1"><span>手机号：</span><i>{$info.mobile}</i><tt>已验证</tt><a class="red" href="#">(点击修改)</a></div>
+						<div class="form1"><span>手机号：</span><i>{$info.mobile}</i><a class="red" href="#">(点击修改)</a></div>
 						<div class="form1"><span>密码：</span><a class="red" href="#">更改</a></div>
 						<div class="form1">
 						<eq name="user.name_status" value="1">
@@ -30,12 +30,12 @@
 						
 							<div class="lf">
 								<div class="lf ib imgbox2">
-								<div id="preview2" class="preview"></div>
+								<div id="preview2" class="preview"><img class="imgbox2" src="__UPLOAD__/{$user.name_pic1}"></div>
 								<label class="btn btn2" for="p2" title="选择图片"><span>选择图片</span></label>
 								<input type="file" class="upload_pic" onchange="preview(this,2)" id="p2" name="IDpic2" value="" >
 								</div>
 								<div class="lf ib imgbox3">
-								<div id="preview3" class="preview"></div>
+								<div id="preview3" class="preview"><img class="imgbox3" src="__UPLOAD__/{$user.name_pic2}"></div>
 								<label class="btn btn3" for="p3" title="选择图片"><span>选择图片</span></label>
 									<input type="file" class="upload_pic" onchange="preview(this,3)" id="p3" name="IDpic3" value="" >
 								<p class="ml msg4"></p>
@@ -52,7 +52,7 @@
 						<div class="form1">
 							<span class="lf">手持身份证照：</span>
                             <div class="lf ib imgbox8">
-                                <div id="preview8" class="preview"><img class="imgbox8" src=""></div>
+                                <div id="preview8" class="preview"><img class="imgbox8" src="__UPLOAD__/{$user.name_pic3}"></div>
                             <label class="btn btn8" for="p8" title="选择图片"><span>选择图片</span></label>
                             <input type="file" class="upload_pic" id="p8" onchange="preview(this,8)" name="IDpic8" value="" > 
                             </div>

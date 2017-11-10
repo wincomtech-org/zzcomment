@@ -121,22 +121,22 @@ class IndexController extends HomebaseController {
 	    }
 	    //少于$active_len个要有其他动态
 	    if($len<$active_len){
-	        $list_top_active_empty=array();
+	        $list_active=array();
 	        $where=array('status'=>array('eq',2));
 	        if($len>0){
 	            $where['id']=array('notin',$sids);
 	        }
 	        $len=$active_len-$len;
 	        
-	        $list_top_active_empty=$m_active->where($where)->order('start_time desc')->limit('0,'.$len)->select();
-	        foreach($list_top_active_empty as $k=>$v){
+	        $list_active=$m_active->where($where)->order('start_time desc')->limit('0,'.$len)->select();
+	        foreach($list_active as $k=>$v){
 	            
 	            $content_01 = $v["content"];//从数据库获取富文本content
 	            $content_02 = htmlspecialchars_decode($content_01); //把一些预定义的 HTML 实体转换为字符
 	            $content_03 = str_replace("&nbsp;","",$content_02);//将空格替换成空
 	            $contents = strip_tags($content_03);//函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
 	            $con = mb_substr($contents, 0, 100,"utf-8");//返回字符串中的前100字符串长度的字符
-	            $list_top_active_empty[$k]['content']=$con;
+	            $list_active[$k]['content']=$con;
 	        }
 	    }
 	    foreach($list_top_active as $k=>$v){
@@ -157,7 +157,7 @@ class IndexController extends HomebaseController {
 	    ->assign('list_goods',$list_goods)
 	    ->assign('list_comment',$list_comment)
 	    ->assign('list_top_active',$list_top_active)
-	    ->assign('list_top_active_empty',$list_top_active_empty);
+	    ->assign('list_active',$list_active);
 	     
 	    $this->display();
     }

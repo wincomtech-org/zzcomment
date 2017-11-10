@@ -5,7 +5,7 @@
 	<div class="shop-message-container">
 		<p>留下您的足迹</p>
 		<form class="sm-form" action="{:U('User/Comment/add')}" method="post" enctype="multipart/form-data">
-			 <input type="hidden" name="sid" value={$sid}/>
+			 <input type="hidden" name="sid" value="{$sid}" />
 			<div class="sm-row">
 				<div class="sm-c1 lf">
 					<label for="user_message" class="must">内容</label>
@@ -27,7 +27,7 @@
 						<span class="lf btn-style">点击上传</span>
 						<input type="file" name="provedata" id="provedata">
 					</label>
-					<p class="sm-infor">登录后才能评级，必须上传评级证明材料--支持图片、录音、视频！</p>
+					<p class="sm-infor">登录后才能评级，必须上传评级证明材料--支持图片、录音、视频,最大4M！</p>
 					<input type="submit" value="提交留言" class="lg-signup" id="lgsignup" onclick="return userComment();">
 				</div>
 			</div>

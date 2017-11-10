@@ -44,6 +44,7 @@ class InfoController extends MemberbaseController {
             }
             $data=array();
             foreach ($info as $v){
+                 
                 switch ($v['key']){
                     case 'IDpic1':$avatar='user/'.$subname.'/'.$v['savename'];break;
                     case 'IDpic2':$pic1='user/'.$subname.'/'.$v['savename'];break;
@@ -72,14 +73,18 @@ class InfoController extends MemberbaseController {
         if(!empty($avatar)){
             $data['avatar']=$avatar;
         }
+        //有图片要保存还要更新实名认证状态
         if(!empty($pic1)){
             $data['name_pic1']=$pic1;
+            $data['name_status']=3;
         }
         if(!empty($pic2)){
             $data['name_pic2']=$pic2;
+            $data['name_status']=3;
         }
         if(!empty($pic3)){
             $data['name_pic3']=$pic3;
+            $data['name_status']=3;
         }
         
         $row=$m->data($data)->where('id='.($this->userid))->save();

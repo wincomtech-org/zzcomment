@@ -6,20 +6,24 @@
 			<li class="active"><a href="{:U('index')}">分类管理</a></li>
 			<li><a href="{:U('add')}">添加分类</a></li>
 		</ul>
-		
+		 <form class="well form-search" method="post" action="{:U('index')}">
 			<div class="table-actions">
-				 <select name="parent" id="fid">
+				 一级分类<select name="parent" id="fid">
 					<option value="0">所有一级分类</option>
 				<foreach name="list0" item="vo">
 					<option value="{$vo.id}" <if condition="$vo['id'] eq $fid">selected</if>>{$vo.name}</option>
 				</foreach>
 				</select>
 			</div>
+			<input type="submit" class="btn btn-primary" value="搜索" />
+			<a class="btn btn-danger" href="{:U('index')}">清空</a>
+		</form>
 			<table class="table table-hover table-bordered table-list">
 				<thead>
 					<tr>
 						<th width="50">排序</th>
 						<th width="50">ID</th>
+						<th>分类首字母</th>
 						<th>分类名称</th>
 						<th>创建时间</th>
 						<th>操作</th>
@@ -30,7 +34,8 @@
 					<tr>
 						
 						<td>{$vo.sort}</td>
-	                    <td>{$vo.id}</td>      
+	                    <td>{$vo.id}</td>  
+	                     <td> {$vo.first_char}</td>    
 	                    <td> {$vo.name}</td>
 	                   <td> {$vo.create_time|date="Y-m-d H:i:s",###}</td>
 	                    <td>
@@ -48,15 +53,7 @@
 					</tr>
 				</foreach>
 				</tbody>
-				<tfoot>
-					<tr>
-						<th width="50">排序</th>
-						<th width="50">ID</th>
-						<th>分类名称</th>
-						<th>创建时间</th>
-						<th>操作</th>
-					</tr>
-				</tfoot>
+				 
 			</table>
 			<div class="table-actions">
 				 
@@ -65,14 +62,6 @@
 		
 	</div>
 	<script src="__PUBLIC__/js/common.js"></script>
-	<script>
-		 $('#fid').change(function(){
-			var fid=$(this).val();
-			 
-			var href='{$Think.config.website}'+'/Admin/Cate/index.php?parent='+fid;
-			
-			location.href=href;
-		}); 
-	</script>
+	 
 </body>
 </html>

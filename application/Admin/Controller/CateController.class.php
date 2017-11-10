@@ -12,14 +12,14 @@ class CateController extends AdminbaseController {
 	public function _initialize() {
 	    parent::_initialize();
 	    $this->m = M('Cate');
-	    $this->order='sort desc,name asc';
+	    $this->order='sort desc,first_char asc';
 	}
     //分类管理首页
     public function index(){
         $m=$this->m ;
         //这是选择框的一级分类
         $list0=$m->where('fid=0')->order($this->order)->select();
-    	$fid=I('parent',0);
+    	$fid=I('parent',0,'intval');
     	$where=array('fid'=>$fid);
     	$total=$m->where($where)->count();
     	$page = $this->page($total, 10);
@@ -59,7 +59,7 @@ class CateController extends AdminbaseController {
         $firstChar=getFirstChar($name);
         if($firstChar===false){
             
-            $this->error('类名只能以数字字母或汉字开头');
+            $this->error('类名只能以字母或汉字开头');
         }
         
         $data=array(

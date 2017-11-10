@@ -6,6 +6,15 @@
 			<li class="active"><a>{:L('USER_INDEXADMIN_INDEX')}</a></li>
 		</ul>
 		<form class="well form-search" method="post" action="{:U('Indexadmin/index')}">
+			实名认证状态：
+			<select name="name_status" >
+				<option value="-1" <eq name="name_status" value="-1">selected</eq>>所有</option> 
+				<option value="0" <eq name="name_status" value="0">selected</eq>>未认证</option>
+				<option value="3" <eq name="name_status" value="3">selected</eq>>待审核</option>
+				<option value="1" <eq name="name_status" value="1">selected</eq>>已认证</option>
+				<option value="2" <eq name="name_status" value="2">selected</eq>>审核不通过</option>
+				  
+			<select>
 			用户ID： 
 			<input type="text" name="uid" style="width: 100px;" value="{:I('request.uid')}" placeholder="请输入用户ID">
 			关键字： 
@@ -47,9 +56,11 @@
 						<td>{$vo.update_time|date='Y-m-d H:i:s',###}</td>
 						<td>
 						<switch name='vo.name_status'>
+							<case value='3'>待审核</case>
 							<case value='0'>未认证</case>
 							<case value='1'>已认证</case>
-							<case value='2'>认证不通过</case>
+							<case value='2'>审核不通过</case>
+							
 						</switch>
 						</td>
 						<td>{$user_statuses[$vo['user_status']]}</td>

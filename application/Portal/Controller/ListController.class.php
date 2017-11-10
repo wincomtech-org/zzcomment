@@ -183,7 +183,7 @@ class ListController extends HomebaseController {
 	        $con = mb_substr($contents, 0, 100,"utf-8");//返回字符串中的前100字符串长度的字符
 	        $list[$k]['content']=$con;
 	    }
-	    $this->assign('list',$list)->assign('list_top_active',$list_top_active)
+	    $this->assign('list_active',$list)->assign('list_top_active',$list_top_active)
 	    ->assign('page',$page->show('Admin'));
 	    $this->display();
 	}

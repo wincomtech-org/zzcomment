@@ -5,9 +5,7 @@
 function getFirstChar($str){
     //$char为获取字符串首个字符
     $char=mb_substr($str, 0, 1,'utf8');
-    if(preg_match('/[0-9]/', $char)){
-        return $char;
-    }
+     
     if(preg_match('/[a-zA-Z]/', $char)){
         return strtoupper($char);
     }

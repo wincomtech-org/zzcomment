@@ -15,7 +15,7 @@ class CommentController extends MemberbaseController {
     // 会员评价
     public function index() {
         $where=array('uid'=>session('user.id'));
-        $status=I('status',-1);
+        $status=I('status',-1,'intval');
         if($status!=-1){
             $where['status']=$status;
         }
@@ -49,8 +49,8 @@ class CommentController extends MemberbaseController {
         foreach ($info as $v){
             $files.='comment/'.$subname.'/'.$v['savename'].';';
         }
-        $sid=I('sid',0);
-        $score=I('core',1);
+        $sid=I('sid',0,'intval');
+        $score=I('core',1,'intval');
         $data=array(
             'files'=>$files,
             'uid'=>$uid,
@@ -60,28 +60,32 @@ class CommentController extends MemberbaseController {
             'create_time'=>time(),
             'ip'=>get_client_ip(0,true),
         );
+       
        $m=$this->m;
        //实名认证的评级不审核
        if(session('user.name_status')==1){
-           $data['status']==2;
+           $data['status']=2;
            $row=$m->add($data);
            if($row>0){
                $m_seller=M('Seller');
-               $score=$m_seller->field('score')->where('id='.$sid)->find();
+              
+               $tmp=$m_seller->field('score')->where('id='.$sid)->find();
                //暂时是多少分就多少级,没有分级
-               $score=$score+$info['score'];
+               $score=$tmp['score']+$score;
                $data=array(
                    'score'=>$score,
                    'grade'=>$score,
                );
-               $m_seller->data($data)->where('id='.$info['sid'])->save();
+               $m_seller->data($data)->where('id='.$sid)->save();
                $this->success('评级上传成功');
            }else{
                $this->error('点评失败，请刷新重试');
            }
            exit;
+       }else{
+           $row=$m->add($data);
        }
-       $row=$m->add($data);
+      
        if($row>0){
            $this->success('评级上传成功，等待管理员审核');
        }else{
@@ -92,17 +96,13 @@ class CommentController extends MemberbaseController {
     //删除点评
     public function del(){
         $m=$this->m;
-        $id=I('id',0);
-        $where='id='.$id;
-        $info=$m->where($where)->find();
-        $row=$m->where($where)->delete();
+        $id=I('id',0,'intval'); 
+        $row=$m->where('id='.$id)->delete();
         if($row===1){
-            $data=array('errno'=>1,'error'=>'删除成功');
-            if($info['status']==2){
-                M('Reply')->delete('cid='.$id)->delete();
-            }
+            $data=array('errno'=>1,'error'=>'删除成功'.$row); 
+             M('Reply')->where('cid='.$id)->delete(); 
         }else{
-            $data=array('errno'=>2,'error'=>'删除失败');
+            $data=array('errno'=>2,'error'=>'删除失败'.$row);
         }
         $this->ajaxReturn($data);
         exit;
