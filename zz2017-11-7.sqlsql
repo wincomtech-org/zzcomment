@@ -1,29 +1,11 @@
-DROP TABLE IF EXISTS `cm_seller_edit`;--end_flag--
-CREATE TABLE `cm_seller_edit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sid` int(11) NOT NULL DEFAULT '0' COMMENT 'sellerid',
-  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0未审核，1未认领，2已认领,3已冻结',
-  `name` varchar(50) NOT NULL COMMENT '店铺名称',
-  `city` int(11) NOT NULL DEFAULT '0' COMMENT '所属地区',
-  `address` varchar(100) NOT NULL DEFAULT '' COMMENT '店铺地址',
-  `cid` int(11) NOT NULL DEFAULT '0' COMMENT '所属类别',
-  `create_time` int(11) NOT NULL COMMENT '创建时间',
-  `link` varchar(50) NOT NULL DEFAULT '' COMMENT '店铺链接',
-  `qrcode` varchar(50) NOT NULL DEFAULT '' COMMENT '店铺二维码',
-  `pic` varchar(50) NOT NULL DEFAULT '' COMMENT '店铺logo',
-  `pic0` varchar(50) NOT NULL DEFAULT '',
-  `corporation` varchar(50) NOT NULL DEFAULT '' COMMENT '法人代表',
-  `scope` varchar(100) NOT NULL DEFAULT '' COMMENT '经营范围',
-  `tel` varchar(50) NOT NULL DEFAULT '' COMMENT '店铺电话',
-  `mobile` varchar(50) NOT NULL DEFAULT '' COMMENT '手机',
-  `bussiness_time` varchar(50) NOT NULL DEFAULT '' COMMENT '经营时间',
-  `cards` varchar(50) NOT NULL DEFAULT '' COMMENT '营业执照图片',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='商家店铺信息表';--end_flag--
-insert into cm_seller_edit(`id`,`sid`,`status`,`name`,`city`,`address`,`cid`,`create_time`,`link`,`qrcode`,`pic`,`pic0`,`corporation`,`scope`,`tel`,`mobile`,`bussiness_time`,`cards`) values 
- ('10','14','2','名嘴快餐','340824','人民路188号','12','1510138681','','','','','汪竹波','快餐','0556-8251077','15202579047','',''),
-('16','14','0','名嘴快餐zz','340824','人民路188号','12','1510217766','','','','','汪竹波','快餐','0556-8251077','15202579047','','');--end_flag--
-insert into cm_seller_edit(`id`,`sid`,`status`,`name`,`city`,`address`,`cid`,`create_time`,`link`,`qrcode`,`pic`,`pic0`,`corporation`,`scope`,`tel`,`mobile`,`bussiness_time`,`cards`) values 
- ('1','14','2','名嘴快餐','340824','人民路188号','12','1510138681','','','','','汪竹波','快餐','0556-8251077','15202579047','',''),
-('2','14','0','名嘴快餐zz','340824','人民路188号','12','1510217766','','','','','汪竹波','快餐','0556-8251077','15202579047','','');--end_flag--
- 
+ALTER TABLE `cm_top_goods` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_goods` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_top_active` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_active` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_top_seller` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_seller` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_comment` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_users` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_top_active0` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_top_goods0` ENGINE = INNODB;--end_flag--
+ALTER TABLE `cm_active` ENGINE = INNODB;--end_flag--
