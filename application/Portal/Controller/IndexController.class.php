@@ -31,7 +31,7 @@ class IndexController extends HomebaseController {
 	    //此处直接比较时间，没有服务器检查过期
 	    $where_top['start_time']=array('lt',$time); 
 	    
-	    $tmp=M('TopSeller')->where($where_top)->limit('0,9')->select();
+	    $tmp=M('TopSeller')->where($where_top)->limit('0,10')->select();
 	    $sids=array();
 	    foreach ($tmp as $v){
 	        $sids[]=$v['pid'];
@@ -44,12 +44,12 @@ class IndexController extends HomebaseController {
 	    }
 	   
 	    //少于10个要有默认图片
-	    $list_top_seller_empty=array();
-	    $empty=session('company.top_seller_empty');
+	     $list_top_seller_empty=array();
+	     /*$empty=session('company.top_seller_empty');
 	    $price=session('company.top_seller_fee');
 	    for($i=$len;$i<10;$i++){
 	        $list_top_seller_empty[]=array('pic'=>$empty['content'],'name'=>$empty['title'],'price'=>$price['content']);
-	    }
+	    } */
 	    
 	       
 	    //商品上新

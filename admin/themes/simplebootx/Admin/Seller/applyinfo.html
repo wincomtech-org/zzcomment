@@ -27,7 +27,12 @@
 				 <div class="control-group fleft">
 					<span class="control-label">店铺状态：</span>
 					<div class="controls">
-						<input type="text" value="{$info.sstatusName}" class="red" readonly/> 
+						<input type="text" value='<switch name="info.sstatus">
+					<case value="0">未审核</case>
+					<case value="1">未认领</case>
+					<case value="2">已认领</case> 
+					<case value="3">已冻结</case> 
+					</switch>' class="red" readonly/> 
 					</div>
 				</div>
 				
@@ -151,27 +156,18 @@
 						 
 					</div>
 				</div>
-			<neq name="info.status"  value="0">
-				 <div class="control-group fleft">
-					<span class="control-label" >审核人：</span>
-					<div class="controls">
-						<input type="text" value="{$info.rname}" readonly/>
-					</div>
-				</div>
-				<div class="control-group fleft">
-					<span class="control-label">审核结果：</span>
-					<div class="controls">
-						<input type="text" value="{$info.statusName}" readonly/>
-					</div>
-				</div>
-				<div class="control-group fleft">
-					<span class="control-label">审核时间：</span>
-					<div class="controls">
-						<input type="text" value="{$info.review_time|date='Y-m-d H:i:s',###}" readonly/>
-					</div>
-				</div>
+			
 				 
-			</neq>
+				<div class="control-group fleft">
+					<span class="control-label" >审核状态：</span>
+					<div class="controls">
+						<input class="red" type="text" value="<switch name="info.status">
+					<case value="0">未审核</case>
+					<case value="1">审核不通过</case>
+					<case value="2">审核通过</case> 
+					</switch>" readonly/>
+					</div>
+				</div>
 			<div style="clear:both"></div>
 				<div class="form-actions">
 					<input type="hidden" name="id" value="{$info.id}">

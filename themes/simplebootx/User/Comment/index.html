@@ -21,8 +21,8 @@
 	                            	<case value="2">审核完成</case>
 	                            </switch>
 								</span>
-								<input type="hidden" class="id" value="{$vo.id}"/>
-	                            <span class="per_e5 delete"><img src="__TMPL__Public/img/delete.png"></span>
+								<!-- <input type="hidden" class="id" value="{$vo.id}"/>
+	                            <span class="per_e5 delete"><img src="__TMPL__Public/img/delete.png"></span> -->
                             </div> 
                             <div class="clear"></div>
                         </li>
@@ -36,7 +36,7 @@
 	<tc_include file="Public/user_footer" />
 <script>
 
-$('.delete').click(function(){
+/* $('.delete').click(function(){
 	var $li=$(this).parents('li');
 	var id=$li.find('.id').val();
 	$.post("{:U('User/Comment/del')}",{'id':id},function(data){
@@ -46,7 +46,7 @@ $('.delete').click(function(){
 		location.reload(true);
 	});
 	
-});
+}); */
 </script>
 </body>
 </html>

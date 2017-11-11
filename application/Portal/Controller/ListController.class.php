@@ -39,11 +39,11 @@ class ListController extends HomebaseController {
 	    //少于10个要有默认图片
 	    $list_top_seller_empty=array();
 	     
-	    $empty=session('company.top_seller_empty');
+	    /* $empty=session('company.top_seller_empty');
 	    $price=session('company.top_seller_fee');
 	    for($i=$len;$i<10;$i++){
 	        $list_top_seller_empty[]=array('pic'=>$empty['content'],'name'=>$empty['title'],'price'=>$price['content']);
-	    }
+	    } */
 	    
 	    
 	    //商家//商家排名10

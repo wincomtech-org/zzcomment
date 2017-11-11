@@ -76,7 +76,6 @@ class ActiveController extends AdminbaseController {
         if(empty($info) || $info['status']!=$status){
             $this->error('数据更新，请刷新重试');
         }
-         
         $time=time();
         $m_action=M('AdminAction');
         $data_action=array(
@@ -86,6 +85,31 @@ class ActiveController extends AdminbaseController {
             'sname'=>'active',
         );
         $desc='店铺'.$info['sid'].'的动态'.$id;
+        
+        $sql="select a.name as aname,s.name as sname,u.id,u.account
+        from cm_active as a
+        left join cm_seller as s on s.id=a.sid
+        left join cm_users as u on u.id=s.uid
+        where a.id={$id} limit 1";
+        $tmp=M()->query($sql);
+        $user=$tmp[0];
+        if( empty($user)){
+            if($review==3){
+                $data_action['desc']='用户找不到，删除了'.$desc;
+                $row=$m->where('id='.$id)->delete();
+                if($row===1){
+                    M('AdminAction')->add($data_action);
+                    if($url=='top'){
+                        $this->success('删除成功');
+                    }else{
+                        $this->success('删除成功',U('top'),3);
+                    }
+                    exit;
+                }
+            }
+            $this->error('找不到该用户，请检查数据或删除');
+        }
+      
         
         switch($review){
             case 1:
@@ -122,34 +146,46 @@ class ActiveController extends AdminbaseController {
                     foreach ($tmp as $v){
                         $price=bcadd($price, $v['price']);
                     }
-                    $m_top_active->startTrans();
+                    
                     $row_top=$m_top_active->where('pid='.$id)->delete();
                     if($row_top===false){
                         $m->rollback();
                         $this->error('操作失败，请刷新重试');
                     }
-                    $sql="select u.id,u.account
-                    from cm_seller as s 
-                    left join cm_users as u on u.id=s.uid
-                    where s.id={$info['sid']} limit 1";
-                    $tmp=M()->query($sql);
+                    //应通知用户消息，
+                    $data_msg=array(
+                        'uid'=>$user['id'],
+                        'aid'=>session('ADMIN_ID'),
+                        'time'=>$time,
+                        'content'=>'店铺'.$user['sname'].'的动态'.$user['aname'].'被删除了',
+                    );
                     
                     //价格没有或店铺不存在就不用还钱了
-                    if($price>0 && !empty($tmp) && !empty($tmp[0]) && !empty($tmp[0]['id'])){ 
+                    if($price>0 ){ 
                          
                         $data_action['descr'].='，且退还未生效的置顶费用￥'.$price;
-                        $account=bcadd($price, $tmp[0]['account']);
-                        $row_account=M('Users')->data(array('account'=>$account))->where('id='.$tmp[0]['id'])->save();
+                        $account=bcadd($price, $user['account']);
+                        $row_account=M('Users')->data(array('account'=>$account))->where('id='.$user['id'])->save();
                         if($row_account!==1){
                             $m->rollback();
-                            $m_top_active->rollback();
+                           
                             $this->error('操作失败，请刷新重试');
                         }
                          //应通知用户消息，添加pay记录
+                        $data_msg['content'].='，退还未生效的置顶费用￥'.$price;
+                        $data_pay=array(
+                            'uid'=>$user['id'],
+                            'money'=>$price,
+                            'time'=>$time,
+                            'content'=>'店铺'.$user['sname'].'的动态'.$user['aname'].'被删除了，退还未生效的置顶费用',
+                        );
+                        M('Pay')->add($data_pay);
                          
                     }
+                    M('Msg')->add($data_msg);
+                    M('Pay')->add($data_pay);
                     M('TopActive0')->where('pid='.$id)->delete();
-                    $m_top_active->commit();
+                    
                     $m->commit();
                 }elseif($row===1){
                     $m->commit();

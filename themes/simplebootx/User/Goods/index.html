@@ -21,7 +21,7 @@
                     <foreach name="list" item="vo">
                         <tr>
                         	<input type="hidden" class="id" value="{$vo.id}"/>
-                            <td><img class="pro" src="__UPLOAD__/{$vo.pic|default=$company['goods_empty']['content']}"></td>
+                            <td><img class="pro" src="__UPLOAD__/{$vo.pic}"></td>
                             <td>{$vo.name}</td>
                             <td>￥{$vo.price}</td>
                          <eq name="vo.status" value="2">

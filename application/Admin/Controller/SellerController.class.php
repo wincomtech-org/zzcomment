@@ -225,7 +225,7 @@ class SellerController extends AdminbaseController {
                     }
                     if(!empty($ids)){
                         M('TopActive')->where(array('pid'=>array('in',$ids)))->delete();
-                        M('TopActives0')->where(array('pid'=>array('in',$ids)))->delete();
+                        M('TopActive0')->where(array('pid'=>array('in',$ids)))->delete();
                     }
                      
                     $m->commit();
@@ -421,20 +421,7 @@ class SellerController extends AdminbaseController {
         $info=$m->query($sql);
         $info=$info[0];
         
-        //已审核,查找审核人
-        $m_user=M('Users');
-        if($info['status']>0){
-            $info['statusName']=($info['status']==1)?'通过':'不通过';
-            $review=$m_user->where('id='.$info['rid'])->find();
-            $info['rname']=$review['user_login'];
-        }
-        switch ($info['sstatus']){
-            case 1: $info['sstatusName']='未领用';break;
-            case 2: $info['sstatusName']='已领用';break;
-            case 3: $info['sstatusName']='已冻结';break;
-            default: $info['sstatusName']='状态异常';break;
-        }
-        
+         
         $this->assign('info',$info);
         
         $this->display();
@@ -515,6 +502,7 @@ class SellerController extends AdminbaseController {
                 $data_action['descr']='通过了'.$desc;
                 $data_msg['content'].='审核通过了';
                 $data2=array(
+                    'reply_time'=>$info['create_time'],
                     'status'=>2,
                     'uid'=>$info['uid'],
                     'tel'=>$info['tel'], 
@@ -790,7 +778,7 @@ class SellerController extends AdminbaseController {
         
         $count=M('TopSeller')->where(array('status'=>2,'start_time'=>$info['start_time']))->count();
         
-        $info['count']=9-$count;
+        $info['count']=10-$count;
         $this->assign('info',$info);
         
         $this->display();
@@ -868,7 +856,7 @@ class SellerController extends AdminbaseController {
                     $this->error('错误，已审核过');
                 }
                 $count=M('TopSeller')->where(array('status'=>2,'start_time'=>$info['start_time']))->count();
-                if($count>=9){
+                if($count>=10){
                     $m->rollback();
                     $this->error('置顶位已满');
                 }

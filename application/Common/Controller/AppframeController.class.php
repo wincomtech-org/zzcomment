@@ -11,7 +11,7 @@ class AppframeController extends Controller {
         //数学计算位数
         bcscale(2);
     }
-
+    
     /**
      * Ajax方式返回数据到客户端
      * @access protected

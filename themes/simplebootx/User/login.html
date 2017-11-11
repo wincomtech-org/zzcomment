@@ -11,7 +11,7 @@
 					<img src="__TMPL__Public/img/loginbg.jpg">
 				</div>
 				<div class="login-rt">
-					<form id="login_form" action="{:U('User/Login/dologin')}" method="post" class="login-form rt">
+					<form id="login_form" action="" method="post" class="login-form rt">
 						<p>登录</p>
 						<div class="row-box">
 							<i class="user-ico"></i>
@@ -30,7 +30,7 @@
 						</div>
 						<p class="lg-infor"></p>
 						<div class="clear remember-pw">
-							<label class="lf"><input type="checkbox" name="remember">下次自动登录</label>
+							<label class="lf"><input type="checkbox" name="remember" value="1">下次自动登录</label>
 							
 							<a href="{:U('User/Login/forgot_password')}" class="rt">忘记密码？</a>
 						</div> 
@@ -48,20 +48,26 @@
 	<tc_include file="Public:footer" />
  <script>
  $('#login_form').submit(function(){
+	 var remember=0;
+	 if($('.remember-pw input').prop('checked')==true){
+		 remember=1;
+	 } 
+	 
 	 var username=$.trim($('.username').val());
      var password=$.trim($('.password').val());
      var verify=$.trim($('.captcha').val());
-     if(verify.length!==4){
+     if(verify.length!=4){
        	 
 	   	  $('.captcha').focus();
 	   	 alert('请输入4位验证码');
 	   	  return false; 
     }
-	 $.post("{:U('User/Login/ajaxlogin')}",{'username':username,'password':password,'verify':verify},function(data){
+	 $.post("{:U('User/Login/ajaxlogin')}",{'username':username,'password':password,'verify':verify,'remember':remember},function(data){
 			if(data.errno==1){
 				location.href=data.error;
 			}else{
 				alert(data.error);
+				location.reload(false);
 			}
 		});
 	 return false;

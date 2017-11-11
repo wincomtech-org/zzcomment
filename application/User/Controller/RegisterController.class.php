@@ -15,18 +15,6 @@ class RegisterController extends HomebaseController {
 	        //$this->display(":register");
 	    }
 	}
-	// 用户注册协议1
-	public function register_protocol1(){
-	    
-	    $this->display(":register_protocol1");
-	    
-	}
-	// 用户注册协议2
-	public function register_protocol2(){
-	    
-	    $this->display(":register_protocol2");
-	    
-	}
 	
 	// 前台用户注册提交
 	public function doregister(){
@@ -115,12 +103,12 @@ class RegisterController extends HomebaseController {
 	    
 	    //验证码
 	    
-	    if (! sp_check_verify_code()) {
+	     if (! sp_check_verify_code()) {
 	        
 	        $data=array('errno'=>0,'error'=>'验证码错误');
 	        $this->ajaxReturn($data);
 	        exit;
-	    }
+	    } 
 	    $rules = array(
 	        //array(验证字段,验证规则,错误提示,验证条件,附加规则,验证时间)
 	        array('user_login', 'require', '用户名不能为空！', 1 ),
