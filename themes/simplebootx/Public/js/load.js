@@ -188,31 +188,7 @@ $(document).ready(function(){
 	})
 
 
-	$("#m_check").click(function(){
-		var status=true;
-		var mobile=$("input[name='mobile']").val();
-		if(mR.test(mobile)){
-			status=true;
-		}
-		else{
-			$("input[name='mobile']").parent("div").next(".lg-infor").text("请填写正确的手机号码！");
-			status=false;
-		}
-		var time=60;
-		if($("#m_check").hasClass("disabled")==false&&status==true){
-			$("#m_check").addClass("disabled");
-			var t=setInterval(function(){
-				time--;
-				$("#m_check").html(time+"秒后可重新获取");
-				if(time==0){
-					clearInterval(t);					
-					$("#m_check").html("重新获取");
-					$("#m_check").removeClass("disabled");
-				}
-			},1000)
-		}
-	})
-
+	 
 	$("#rm_check").click(function(){
 		var time=60;
 		if($("#rm_check").hasClass("disabled")==false){

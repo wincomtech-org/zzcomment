@@ -41,7 +41,7 @@
 						<p class="verify-infor lg-infor"></p>
 						<div class="telecheck1">
 							<label class="must">短信码</label>
-							<input type="text" name="telecaptcha" placeholder="手机验证码">
+							<input type="text" name="telecaptcha" placeholder="手机验证码" id="zzcode">
 							<a href="javascript:void(0);" class="btncheck1" id="m_check">发送验证码</a>
 						</div>
 						<p class="lg-infor"></p>
@@ -109,24 +109,27 @@ $("#m_check").click(function(){
 	 if( status==false){
 		 return false;
 	 }
-	
-		   
 	 
-		 $.ajax({
-				url: "https://sms.yunpian.com/v2/sms/single_send.json",
-				type:'post',
-				cacash:false,
-				async:false,	//不设置则默认true代表异步,false同步
-				data:{"apikey":'697655fbf93ebaedbaa7e411ad7cb619',"text":'1222',"mobile":'15261541317'},
-				dataType:'json',
-				error:function(data){
-					console.log('error');
-					console.log(data);
-				},
-				success:function(data){
-					console.log(data);
+	 $.ajax({
+			url: "{:U('User/Public/ajaxSend')}",
+			type:'post',
+			cacash:false,
+			async:false,	//不设置则默认true代表异步,false同步
+			data:{"mobile":mobile},
+			dataType:'json',
+			error:function(data){
+				status=false;
+			},
+			success:function(data){
+				if(data.errno!=1){
+					status=false;
+					alert(data.error);
 				}
-			});
+			}
+		});
+	 if( status==false){
+		 return false;
+	 }
 	var time=60;
 	if($("#m_check").hasClass("disabled")==false&&status==true){
 		$("#m_check").addClass("disabled");
@@ -147,15 +150,16 @@ $('.register-form').submit(function(){
    var mobile=$.trim($('#mobile').val());
   
    var verify=$.trim($('#verify').val());
-  
+   var code=$.trim($('#zzcode').val());
    
- $.post("{:U('User/Register/ajaxreg')}",{'user_login':username,'mobile':mobile,'password':password1,'verify':verify},function(data){
+ $.post("{:U('User/Register/ajaxreg')}",{'user_login':username,'mobile':mobile,'password':password1,'verify':verify,'code':code},function(data){
 	
 	  if(data.errno==1){
 			//返回上一页并刷新
 			self.location=document.referrer;
 		}else{
 			alert(data.error);
+			location.reload(false);
 			
 		}
 	});

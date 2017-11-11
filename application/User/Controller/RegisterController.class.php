@@ -10,9 +10,9 @@ class RegisterController extends HomebaseController {
 	    if(sp_is_user_login()){ //已经登录时直接跳到首页
 	        redirect(__ROOT__."/");
 	    }else{
-	        $this->error('暂不开放注册！',leuu('user/login/index',array('redirect'=>base64_encode($_SERVER['HTTP_REFERER']))));
+	       // $this->error('暂不开放注册！',leuu('user/login/index',array('redirect'=>base64_encode($_SERVER['HTTP_REFERER']))));
 	        
-	        //$this->display(":register");
+	        $this->display(":register");
 	    }
 	}
 	
@@ -102,13 +102,31 @@ class RegisterController extends HomebaseController {
 	public function ajaxreg(){
 	    
 	    //验证码
-	    
+	    $time=time();
 	     if (! sp_check_verify_code()) {
 	        
 	        $data=array('errno'=>0,'error'=>'验证码错误');
 	        $this->ajaxReturn($data);
 	        exit;
 	    } 
+	    if(empty('yunpianCode')){
+	        $data=array('errno'=>0,'error'=>'短信码错误');
+	    }else{
+	        $yun= session('yunpianCode');
+	        //短信10分钟
+	        if(($time-$yun[1])>600){
+	            $data=array('errno'=>0,'error'=>'短信码已过期');
+	            $this->ajaxReturn($data);
+	            exit;
+	        }else{
+	            $code=I('code','');
+	            if($code!=$yun[0]){
+	                $data=array('errno'=>0,'error'=>'短信码错误');
+	                $this->ajaxReturn($data);
+	                exit;
+	            }
+	        }
+	    }
 	    $rules = array(
 	        //array(验证字段,验证规则,错误提示,验证条件,附加规则,验证时间)
 	        array('user_login', 'require', '用户名不能为空！', 1 ),

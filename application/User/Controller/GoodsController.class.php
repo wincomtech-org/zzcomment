@@ -272,6 +272,7 @@ class GoodsController extends MemberbaseController {
         $image->open(C("UPLOADPATH").$pic0);
         // 生成一个固定大小为 的缩略图并保存为thumb.jpg
         $image->thumb(290, 175,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic);
+        $image->open(C("UPLOADPATH").$pic0);
         $image->thumb(978, 590,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic1);
         unlink(C("UPLOADPATH").$pic0);
         $data=array(
