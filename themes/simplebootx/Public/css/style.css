@@ -509,7 +509,7 @@ a.captcha img{width:100px;height:44px;}
 	.shop-nav-wrapper a{padding:0 5px;font-size:14px;}
 	.login-form{border:none;padding:0;width:244px;margin:0 auto;}
 	.row-box,.remember-pw,.lg-signup1{width:100%;}
-	.row-box>input[type="text"]，.row-box>input[type="password"]{width:200px;}
+	.row-box>input[type="text"]{width:200px;}
 	.row-box>input.captcha,.captcha-c a,.captcha-c a>img{width:120px;}
 	/*login register*/	
 	.lg-infor2{margin:0;}
