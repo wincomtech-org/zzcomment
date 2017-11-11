@@ -57,7 +57,7 @@
 
 .form1>span{display: inline-block;line-height:45px;width:85px;font-size: 16px;}
 .form1 input[type="text"]{width:380px;height:43px;border:1px solid #dcdcdc;padding-left:10px;}
-.sex{display: inline-block;width:50px;font-size:16px;}
+.sex{display: inline-block;width:60px;font-size:16px;}
 .form1 i{font-size: 16px;}  .form1 tt{font-size:16px;color:#666;margin-left:10px;white-space:nowrap}
 .red{color:#f00;white-space:nowrap}
 .form1 input[type="submit"],.form1 input[type="reset"]{width:105px;height:35px;line-height: 35px;background:#eb0000;color:#fff;text-align: center;margin-right:50px;cursor: pointer;font-size: 16px;}
