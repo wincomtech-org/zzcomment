@@ -10,9 +10,9 @@
 <!-- shop erwei -->
 <notempty name='info.qrcode'>
 	<div class="shop-erwei" id="shop_erwei">
-		<a href="javascript:void(0);"  title="商家二维码">
-			<img src="__UPLOAD__/{$info.qrcode}" alt="商家二维码">
-		</a>
+		
+		<img src="__UPLOAD__/{$info.qrcode}" alt="商家二维码">
+		
 		<div class="close2"><a href="javascript:void(0);">关闭</a></div>
 	</div>
 </notempty>
@@ -31,7 +31,7 @@
 				</div>
 				<div class="infor-rt">
 				<neq name="info.status" value="1">
-					<span class="shop-mark">认领商家</span>
+					<span class="shop-mark">已认领</span>
 				<else/>
 					<a href="{:U('User/Seller/apply',array('sid'=>$sid))}" class="shop-mark">去认领>></a>
 				</neq>

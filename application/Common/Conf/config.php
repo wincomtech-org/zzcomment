@@ -58,12 +58,12 @@ $configs= array(
         'SP_ADMIN_DEFAULT_THEME'=> 'simplebootx',       // 各个项目后台模板文件
         'SP_ADMIN_TMPL_ACTION_ERROR' 	=> 'Admin/error.html', // 默认错误跳转对应的模板文件,注：相对于后台模板路径
         'SP_ADMIN_TMPL_ACTION_SUCCESS' 	=> 'Admin/success.html', // 默认成功跳转对应的模板文件,注：相对于后台模板路径
-        'TMPL_EXCEPTION_FILE'   => SITE_PATH.'public/exception.html',
-        
+        'TMPL_EXCEPTION_FILE'   => SITE_PATH.'public/exception.html', // 异常
+         
         'AUTOLOAD_NAMESPACE' => array('plugins' => './plugins/'), //扩展模块列表
         
         'ERROR_PAGE'            =>'',//不要设置，否则会让404变302
-        
+       
         'VAR_SESSION_ID'        => 'session_id',
         
         "UCENTER_ENABLED"		=>0, //UCenter 开启1, 关闭0
@@ -98,6 +98,8 @@ $configs= array(
         'WEBSITE'=>'http://www.zypjw.cn/',
         'PAGE'=>5,          //前台展示列表分页，动态，评论
         'SIZE'=>4096000,    //上传文件大小4M
+        'YUNPIANKEY'=>'697655fbf93ebaedbaa7e411ad7cb619',
+    
         
          
 );

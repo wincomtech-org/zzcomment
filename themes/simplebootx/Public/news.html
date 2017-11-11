@@ -2,7 +2,7 @@
 <foreach name="list_top_active" item="vo">
 	<li>
 		<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf">
-			<img src="__UPLOAD__/{$vo.pic|default=$company['active_empty']['content']}" alt="{$vo.name}" title="{$vo.name}">
+			<img src="__UPLOAD__/{$vo.pic}" alt="{$vo.name}" title="{$vo.name}">
 		</a>
 		<div class="lf news-cont">
 			<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf news-title">{$vo.name}</a>
@@ -14,7 +14,7 @@
 <foreach name="list_active" item="vo">
 	<li>
 		<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf">
-			<img src="__UPLOAD__/{$vo.pic|default=$company['active_empty']['content']}" alt="{$vo.name}" title="{$vo.name}">
+			<img src="__UPLOAD__/{$vo.pic}" alt="{$vo.name}" title="{$vo.name}">
 		</a>
 		<div class="lf news-cont">
 			<a href="{:U('Portal/Seller/news_detail',array('id'=>$vo['id'],'sid'=>$vo['sid']))}" class="lf news-title">{$vo.name}</a>

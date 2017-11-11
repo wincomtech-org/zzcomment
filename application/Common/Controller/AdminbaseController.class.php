@@ -17,7 +17,7 @@ class AdminbaseController extends AppframeController {
 		$time=time();
 		$this->assign("js_debug",APP_DEBUG?"?v=$time":"");
 	}
-
+	
 	function _initialize(){
 	    parent::_initialize();
 	    define("TMPL_PATH", C("SP_ADMIN_TMPL_PATH"));
@@ -45,7 +45,10 @@ class AdminbaseController extends AppframeController {
 
 		}
 	}
-
+	//空方法, 访问不存在的方法时执行
+	public function _empty() {
+	    $this->display('./public/404.html');
+	} 
 	/**
 	 * 初始化后台菜单
 	 */

@@ -9,7 +9,7 @@ class SellerController extends HomebaseController {
      private $sid;
     function _initialize(){
         parent::_initialize();
-        $this->sid=I('sid',0);
+        $this->sid=I('sid',0,'intval');
         $sid=$this->sid;
         $m=M();
         //店铺信息
@@ -26,6 +26,9 @@ class SellerController extends HomebaseController {
         where s.id={$sid} limit 1";
         $info=$m->query($sql);
         $info=$info[0];
+        if(empty($info)){
+           $this->error('该店铺不存在'); 
+        }
         $this->assign('sid',$sid)->assign('info',$info);
         //店铺浏览量+1
         
@@ -144,14 +147,20 @@ class SellerController extends HomebaseController {
     //动态详情
     public function news_detail(){
         
-        $detail=M('Active')->where('id='.I('id',0))->find();
+        $detail=M('Active')->where('id='.I('id',0,'intval'))->find();
+        if(empty($detail)){
+            $this->error('该动态不存在');
+        }
         $this->assign('detail',$detail);
         $this->display();
     }
     //详情
     public function goods_detail(){
         
-        $detail=M('Goods')->where('id='.I('id',0))->find();
+        $detail=M('Goods')->where('id='.I('id',0,'intval'))->find();
+        if(empty($detail)){
+            $this->error('该商品不存在');
+        }
         $this->assign('detail',$detail);
         $this->display();
     }
