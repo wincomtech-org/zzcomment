@@ -186,7 +186,7 @@ class SellerController extends MemberbaseController {
             'corporation'=>I('fname',''),
             'cid'=>$cid,
             'scope'=>I('jyfw',''),
-            'jysj'=>I('bussiness_time',''),
+            'bussiness_time'=>I('jysj',''),
             'mobile'=>I('phone',''),
             'tel'=>I('tell',''),
             'city'=>$city,
