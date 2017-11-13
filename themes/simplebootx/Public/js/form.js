@@ -161,7 +161,7 @@ return false;
 
 function phone1(){
 var cval = $("input[name='phone']").val();       
-var telReg = cval.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/);
+var telReg = cval.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
 //如果手机号码不能通过验证
 if(cval!=""){ //如果非空 显示正确  
     if(telReg == null){

@@ -76,33 +76,10 @@ function anycheck(form){
         }
     }
     var p1=$("#price1").text();
-    var ds=toDecimal2(p1*total);
-    $("#price2").text(ds);
+    console.log(p1)
+     $("#price2").text(p1*total)
 }
 
-    //制保留2位小数，如：2，会在2后面补上00.即2.00    
-    function toDecimal2(p1) {    
-        var f = parseFloat(p1);    
-        if (isNaN(f)) {    
-            return false;    
-        }    
-        var f = Math.round(p1*100)/100;    
-        var s = f.toString();    
-        var rs = s.indexOf('.');    
-        console.log(f)
-        console.log(s)
-        console.log(rs)
-        if (rs < 0) {    
-            rs = s.length;    
-            s += '.';    
-        }    
-        console.log(s)
-        console.log(rs)
-        while (s.length <= rs + 2) {    
-            s += '0';    
-        }    
-        return s;    
-    }
 function wei(){
     var dd=$("#weixin").is(":checked");
     if(dd==true){
