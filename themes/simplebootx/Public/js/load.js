@@ -187,23 +187,6 @@ $(document).ready(function(){
 		})
 	})
 
-
-	 
-	$("#rm_check").click(function(){
-		var time=60;
-		if($("#rm_check").hasClass("disabled")==false){
-			$("#rm_check").addClass("disabled");
-			var t=setInterval(function(){
-				time--;
-				$("#rm_check").html(time+"秒后可重新获取");
-				if(time==0){
-					clearInterval(t);					
-					$("#rm_check").html("重新获取");
-					$("#rm_check").removeClass("disabled");
-				}
-			},1000)
-		}
-	})
 	// checkbox
 	$(".must:checkbox").on("change",function(){
 		if($(".must:checkbox").is(":checked")){
