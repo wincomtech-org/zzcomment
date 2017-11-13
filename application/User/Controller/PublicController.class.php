@@ -17,7 +17,30 @@ class PublicController extends HomebaseController {
          $this->ajaxReturn($data);
          exit;
      }
-     
+     //检测手机号是否占用
+     public function ajaxMobile(){
+         $mobile=I('mobile',0);
+         $tmp=M('Users')->where(array('mobile'=>$mobile))->find();
+         if(empty($tmp)){
+             $data=array('errno'=>2,'error'=>'该手机号不存在');
+         } else{
+             $data=array('errno'=>1,'error'=>'该手机号已存在');
+         }
+         $this->ajaxReturn($data);
+         exit;
+     }
+     //检测用户名是否占用
+     public function ajaxUsername(){
+         $mobile=I('username',0);
+         $tmp=M('Users')->where(array('user_login'=>$mobile))->find();
+         if(empty($tmp)){
+             $data=array('errno'=>2,'error'=>'该用户名不存在');
+         } else{
+             $data=array('errno'=>1,'error'=>'该用户名已存在');
+         }
+         $this->ajaxReturn($data);
+         exit;
+     }
      
       
      //短信码发送
@@ -25,22 +48,23 @@ class PublicController extends HomebaseController {
          header("Content-Type:text/html;charset=utf-8");
          $apikey = "697655fbf93ebaedbaa7e411ad7cb619"; //修改为您的apikey(https://www.yunpian.com)登录官网后获取
          $mobile = I('mobile',''); //请用自己的手机号代替
+         $type=I('type','');
          $time=time();
          $num='';
         for($i=0;$i<4;$i++){
             $num.=rand(0,9);
         }
         
-         if(empty('yunpianCode')){
-             session('yunpianCode',array($num,$time));
+        if(empty(session($type))){
+             session($type,array($num,$time));
          }else{
-             $yun= session('yunpianCode');
+             $yun= session($type);
              if(($time-$yun[1])<60){
                  $data=array('errno'=>0,'error'=>'短信发送还没满60秒');
                  $this->ajaxReturn($data);
                  exit;
              }else{
-                 session('yunpianCode',array($num,$time));
+                 session($type,array($num,$time));
              }
          }
          $text="您的验证码是".$num;
@@ -72,7 +96,7 @@ class PublicController extends HomebaseController {
         }
          
         $array = json_decode($arr,true);
-        if($array['code']==0) {
+        if((isset($array['code'])) && $array['code']==0) {
              $data=array('errno'=>1,'error'=>'发送成功');
          } else{
              $data=array('errno'=>2,'error'=>'发送失败，请检查手机号或一小时内发送超过3次短信');

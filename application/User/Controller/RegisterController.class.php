@@ -11,7 +11,7 @@ class RegisterController extends HomebaseController {
 	        redirect(__ROOT__."/");
 	    }else{
 	       // $this->error('暂不开放注册！',leuu('user/login/index',array('redirect'=>base64_encode($_SERVER['HTTP_REFERER']))));
-	        
+	      
 	        $this->display(":register");
 	    }
 	}
@@ -110,12 +110,15 @@ class RegisterController extends HomebaseController {
 	        exit;
 	    } 
 	    if(empty('yunpianCode')){
-	        $data=array('errno'=>0,'error'=>'短信码错误');
+	        $data=array('errno'=>0,'error'=>'无有效短信码');
+	        $this->ajaxReturn($data);
+	        exit;
 	    }else{
 	        $yun= session('yunpianCode');
 	        //短信10分钟
 	        if(($time-$yun[1])>600){
 	            $data=array('errno'=>0,'error'=>'短信码已过期');
+	            session('yunpianCode',null);
 	            $this->ajaxReturn($data);
 	            exit;
 	        }else{
@@ -127,6 +130,8 @@ class RegisterController extends HomebaseController {
 	            }
 	        }
 	    }
+	    //成功后清除短信验证码
+	    session('yunpianCode',null);
 	    $rules = array(
 	        //array(验证字段,验证规则,错误提示,验证条件,附加规则,验证时间)
 	        array('user_login', 'require', '用户名不能为空！', 1 ),

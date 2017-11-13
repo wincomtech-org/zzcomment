@@ -10,10 +10,10 @@
 			<div class="lgwide-container">
 				<div>
 					<form action="{:U('User/Register/doregister')}" method="post" class="register-form">
-						<p class="lg-infor2">中英文均可，最长14个英文或7个汉字<br>可加下划线</p>
+						<p class="lg-infor2">中英文和数字均可，最长14个字符<br>可加下划线，不可为手机号码</p>
 						<div>
 							<label class="must">用户名</label>
-							<input type="text" name="user_login" placeholder="请设置用户名" class="username" id="username">
+							<input type="text" name="username" placeholder="请设置用户名" class="username" id="username">
 						</div>
 						<p class="lg-infor"></p>
 						<div>
@@ -71,13 +71,22 @@
 <script>
 $("#m_check").click(function(){
 	var status=true;
-	var mR0= /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/;
+ 
+	var mR0=/^(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/;
 	var mobile=$("input[name='mobile']").val();
+	 var username=$.trim($('#username').val());
+	
+	  
 	if(mR0.test(mobile)){
 		status=true;
 	}else{
 		$("input[name='mobile']").parent("div").next(".lg-infor").text("请填写正确的手机号码！");
 		status=false;
+		return false;
+	}
+	if(mR0.test(username)){
+		status=false;
+		 $(".username").parent("div").next(".lg-infor").text("用户名不能为手机号");
 		return false;
 	}
 	var verify=$.trim($('#verify').val());
@@ -86,7 +95,50 @@ $("#m_check").click(function(){
 	   	$(".captcha").parent("div").next(".lg-infor").text("请填写正确的验证码！");
 	   	 return false; 
     }
-	 
+	$.ajax({
+		url: "{:U('User/Public/ajaxUsername')}",
+		type:'post',
+		cacash:false,
+		async:false,	//不设置则默认true代表异步,false同步
+		data:{'username':username},
+		dataType:'json',
+		error:function(data){
+			alert('错误，刷新页面');
+			location.reload(true);
+		},
+		success:function(data){
+			if(data.errno!=2){
+			  status=false;
+			  $(".username").parent("div").next(".lg-infor").text("该用户名已存在");
+			   
+			}
+		}
+	});
+	 if( status==false){
+		 return false;
+	 }
+	 $.ajax({
+			url: "{:U('User/Public/ajaxMobile')}",
+			type:'post',
+			cacash:false,
+			async:false,	//不设置则默认true代表异步,false同步
+			data:{'mobile':mobile},
+			dataType:'json',
+			error:function(data){
+				alert('错误，刷新页面');
+				location.reload(true);
+			},
+			success:function(data){
+				if(data.errno!=2){
+				  status=false;
+				  $("#mobile").parent("div").next(".lg-infor").text("该手机号已存在");
+				  
+				}
+			}
+		});
+	 if( status==false){
+		 return false;
+	 }
 	 $.ajax({
 		url: "{:U('User/Public/ajaxVerify')}",
 		type:'post',
@@ -115,7 +167,7 @@ $("#m_check").click(function(){
 			type:'post',
 			cacash:false,
 			async:false,	//不设置则默认true代表异步,false同步
-			data:{"mobile":mobile},
+			data:{"mobile":mobile,'type':'yunpianCode'},
 			dataType:'json',
 			error:function(data){
 				status=false;

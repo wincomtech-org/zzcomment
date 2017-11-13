@@ -231,7 +231,8 @@ hello;
 	    $username=I('post.username');
 	    $where = array("user_status"=>1);
 	    $password=I('post.password');
-	    if(preg_match('/(^(13\d|15[^4\D]|17[13678]|18\d)\d{8}|170[^346\D]\d{7})$/', $username)){//手机号登录
+	    $mR0='/^(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/';
+	    if(preg_match($mR0, $username)){//手机号登录
 	         $where['mobile']=$username;
 	        
 	    }else{
