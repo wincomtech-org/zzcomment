@@ -49,11 +49,18 @@ class HomebaseController extends AppframeController {
 		    if (md5($value.$key) == $str) {
 		        $user_old=unserialize($value);
 		        $users_model=M('Users');
-		        $where['id']=$user_old;
+		       
+		        $where=array(
+		            'id'=>$user_old['id'],
+		            'user_status'=>1,
+		            'user_type'=>2,
+		        );
 		        $user=$users_model->where($where)->find();
-		        if(!empty($user) && $user['user_status']==1){
+		        if(!empty($user) && md5($key.$user['user_pass'])==$user_old['psw']){
 		            $is_login=true;
 		            session('user',$user);
+		        }else{
+		            setcookie('zypjwLogin', null,time()-2,'/');
 		        }
 		       
 		    }
@@ -68,6 +75,16 @@ class HomebaseController extends AppframeController {
 		    session('online_time',$time);
 		    session('company',null);
 		    session('browse',null);
+		    $tmp=session('user');
+		    if(!empty($tmp)){
+		        $where=array('id'=>$tmp['id'],'user_status'=>1,'user_type'=>2,'user_pass'=>$tmp['user_pass']);
+		        $user=M('Users')->where($where)->find();
+		        if(empty($user)){
+		            session('user',null);
+		            setcookie('zypjwLogin', null,time()-2,'/');
+		        }
+		    }
+		   
 		   
 		}
 		//给头文件读取数据保存到session 

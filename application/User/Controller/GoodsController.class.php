@@ -52,8 +52,15 @@ class GoodsController extends MemberbaseController {
        
         $m=$this->m;
         $id=I('id',0);
-        $time=time();
         $data=array('errno'=>0,'error'=>'未执行');
+        $info=$m->where(array('id'=>$id,'status'=>2))->find();
+        if(empty($info)){
+            $data['error']='不能推荐'; 
+            $this->ajaxReturn($data);
+            exit;
+        }
+        $time=time();
+        
         $price=session('company.top_goods_fee0');
         $price=$price['content'];
         //检查价格是否更新
@@ -93,7 +100,7 @@ class GoodsController extends MemberbaseController {
                     'uid'=>$this->uid,
                     'money'=>'-'.$price,
                     'time'=>$time,
-                    'content'=>'推荐商品'.$id, 
+                    'content'=>'推荐商品'.$id.'-'.$info['name'], 
                 );
                 M('Pay')->add($data_pay);
                 $data_top0=array(
@@ -174,6 +181,12 @@ class GoodsController extends MemberbaseController {
             $this->ajaxReturn($data);
             exit;
         }
+        $info=M('Goods')->where(array('id'=>$id,'status'=>2))->find();
+        if(empty($info)){
+            $data['error']='不能置顶';
+            $this->ajaxReturn($data);
+            exit;
+        }
         $uid=$this->userid;
         $price0=session('company.top_goods_fee');
         //检查价格是否更新
@@ -226,7 +239,7 @@ class GoodsController extends MemberbaseController {
                     'uid'=>$uid,
                     'money'=>'-'.$price,
                     'time'=>$time,
-                    'content'=>'置顶商品'.$id,
+                    'content'=>'置顶商品'.$id.'-'.$info['name'],
                 );
                 M('Pay')->add($data_pay);
                 $m_user->commit();

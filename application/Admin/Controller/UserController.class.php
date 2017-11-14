@@ -18,13 +18,13 @@ class UserController extends AdminbaseController{
 		$where = array("user_type"=>1);
 		/**搜索条件**/
 		$user_login = I('request.user_login');
-		$user_email = trim(I('request.user_email'));
+		$mobile= trim(I('request.mobile'));
 		if($user_login){
 			$where['user_login'] = array('like',"%$user_login%");
 		}
 		
-		if($user_email){
-			$where['user_email'] = array('like',"%$user_email%");;
+		if($mobile){
+		    $where['mobile'] = array('like',"%$mobile%");;
 		}
 		
 		$count=$this->users_model->where($where)->count();

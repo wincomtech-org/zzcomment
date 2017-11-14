@@ -296,6 +296,12 @@ class SellerController extends MemberbaseController {
             exit;
         }
         $uid=$this->userid;
+        $info=M('Seller')->where(array('id'=>$id,'status'=>2))->find();
+        if(empty($info) || $info['uid']!=$uid){
+            $data['error']='不能购买推荐位';
+            $this->ajaxReturn($data);
+            exit;
+        }
         $price0=session('company.top_seller_fee');
         //检查价格是否更新
         $tmp=M('Company')->where(array('name'=>'top_seller_fee'))->find();
@@ -349,7 +355,7 @@ class SellerController extends MemberbaseController {
                     'uid'=>$uid,
                     'money'=>'-'.$price,
                     'time'=>$time,
-                    'content'=>'置顶店铺'.$id,
+                    'content'=>'推荐店铺'.$id.'-'.$info['name'],
                 );
                 M('Pay')->add($data_pay);
                 $m_user->commit();

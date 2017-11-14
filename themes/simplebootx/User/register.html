@@ -10,7 +10,7 @@
 			<div class="lgwide-container">
 				<div>
 					<form action="{:U('User/Register/doregister')}" method="post" class="register-form">
-						<p class="lg-infor2">中英文和数字均可，最长14个字符<br>可加下划线，不可为手机号码</p>
+						<p class="lg-infor2">中英文和数字均可，最长14个字符<br>可加._，不可为手机号码</p>
 						<div>
 							<label class="must">用户名</label>
 							<input type="text" name="username" placeholder="请设置用户名" class="username" id="username">
@@ -24,7 +24,7 @@
 						
 						<div>
 							<label class="must">密码</label>
-							<input type="password" name="password" placeholder="请设置6-14位字符作为登录密码" id="password">
+							<input type="password" name="password" placeholder="请设置6-15位字符作为登录密码" id="password">
 						</div>
 						<p class="lg-infor"></p>
 						<div>
@@ -70,6 +70,9 @@
  
 <script>
 $("#m_check").click(function(){
+	if($("#rm_check").hasClass("disabled")==true){
+		return false;
+	}
 	var status=true;
  
 	var mR0=/^(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/;
@@ -167,7 +170,7 @@ $("#m_check").click(function(){
 			type:'post',
 			cacash:false,
 			async:false,	//不设置则默认true代表异步,false同步
-			data:{"mobile":mobile,'type':'yunpianCode'},
+			data:{"mobile":mobile,'type':'regCode'},
 			dataType:'json',
 			error:function(data){
 				status=false;

@@ -178,62 +178,8 @@ class SellerController extends AdminbaseController {
                 }
                 break;
             case 3:
-                $desc='删除了'.$desc;
-                $row=$m->where('id='.$id)->delete();
-                if($row===1){
-                    $where='sid='.$id;
-                    //删除店铺后还要删除店铺动态，，商品，点评回复，各种推荐
-                    //店铺推荐
-                    M('TopSeller')->where('pid='.$id)->delete();
-                    M('SellerEdit')->where($where)->delete();
-                    M('SellerApply')->where($where)->delete();
-                    
-                    //动态
-                   
-                   
-                    //点评,还要删除回复
-                    $m_comment=M('Comment');
-                    $comments=$m_comment->field('id')->where($where)->select();
-                    $m_comment->where($where)->delete();
-                    $ids=array();
-                    foreach ($comments as $v){
-                        $ids[]=$v['id'];
-                    }
-                    if(!empty($ids)){
-                        M('Reply')->where(array('cid'=>array('in',$ids)))->delete();
-                    }
-                    //商品
-                    $m_goods=M('Goods');
-                    $goods=$m_goods->field('id')->where($where)->select();
-                    $m_goods->where($where)->delete();
-                    $ids=array();
-                    foreach ($goods as $v){
-                        $ids[]=$v['id'];
-                    }
-                    if(!empty($ids)){
-                        M('TopGoods')->where(array('pid'=>array('in',$ids)))->delete();
-                        M('TopGoods0')->where(array('pid'=>array('in',$ids)))->delete();
-                    }
-                    
-                    //商品
-                    $m_active=M('Active');
-                    $goods=$m_active->field('id')->where($where)->select();
-                    $m_active->where($where)->delete();
-                    $ids=array();
-                    foreach ($goods as $v){
-                        $ids[]=$v['id'];
-                    }
-                    if(!empty($ids)){
-                        M('TopActive')->where(array('pid'=>array('in',$ids)))->delete();
-                        M('TopActive0')->where(array('pid'=>array('in',$ids)))->delete();
-                    }
-                     
-                    $m->commit();
-                    $data_action['descr']=$desc;
-                    $m_action->add($data_action);
-                    $this->success($desc,U('index'));
-                    exit;
-                }
+                $m->commit();
+                  $this->redirect(U('seller_del',array('id'=>$id)));
                 break;
             default:break;
         }
@@ -241,10 +187,87 @@ class SellerController extends AdminbaseController {
         $this->error('操作失败，请刷新重试');
         exit;
     }
-    //新创建店铺 待审核
-    public function create(){
-        
+    //删除店铺
+    public function seller_del(){
+      
+        $id=I('id',0,'intval');
        
+        $m=$this->m;
+        if( $id==0){
+            $this->error('数据错误');
+        }
+        $info=$m->where('id='.$id)->find();
+        
+        //查看是否被他人操作
+        if(empty($info)){
+            $this->error('错误，店铺不存在');
+        }
+        $m_action=M('AdminAction');
+        $data_action=array(
+            'uid'=>session('ADMIN_ID'),
+            'time'=>time(),
+            'sid'=>$id,
+            'sname'=>'seller',
+        );
+        $desc='店铺'.$id;
+        $m->startTrans();
+        $desc='删除了'.$desc;
+        $row=$m->where('id='.$id)->delete();
+        if($row===1){
+            $where='sid='.$id;
+            //删除店铺后还要删除店铺动态，，商品，点评回复，各种推荐
+            //店铺推荐
+            M('TopSeller')->where('pid='.$id)->delete();
+            M('SellerEdit')->where($where)->delete();
+            M('SellerApply')->where($where)->delete(); 
+            //商品
+            $m_goods=M('Goods');
+            $goods=$m_goods->field('id')->where($where)->select();
+            $m_goods->where($where)->delete();
+            $ids=array();
+            foreach ($goods as $v){
+                $ids[]=$v['id'];
+            }
+            if(!empty($ids)){
+                M('TopGoods')->where(array('pid'=>array('in',$ids)))->delete();
+                M('TopGoods0')->where(array('pid'=>array('in',$ids)))->delete();
+            }
+            
+            //商品
+            $m_active=M('Active');
+            $goods=$m_active->field('id')->where($where)->select();
+            $m_active->where($where)->delete();
+            $ids=array();
+            foreach ($goods as $v){
+                $ids[]=$v['id'];
+            }
+            if(!empty($ids)){
+                M('TopActive')->where(array('pid'=>array('in',$ids)))->delete();
+                M('TopActive0')->where(array('pid'=>array('in',$ids)))->delete();
+            }
+            //点评,还要删除回复
+            $m_comment=M('Comment');
+            $comments=$m_comment->field('id')->where($where)->select();
+            $m_comment->where($where)->delete();
+            $ids=array();
+            foreach ($comments as $v){
+                $ids[]=$v['id'];
+            }
+            if(!empty($ids)){
+                M('Reply')->where(array('cid'=>array('in',$ids)))->delete();
+            }
+            $m->commit();
+            $data_action['descr']=$desc;
+            $m_action->add($data_action);
+            $this->success($desc,U('index')); 
+        }else{
+            $m->rollback();
+            $this->error('操作失败，请刷新重试'); 
+        }
+        exit;
+    }
+    //新创建店铺 待审核
+    public function create(){ 
         //$where=array();
         $where=' where s.status=0 ';
         $order=' order by id desc ';

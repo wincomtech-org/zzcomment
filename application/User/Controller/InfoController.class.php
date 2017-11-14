@@ -96,5 +96,109 @@ class InfoController extends MemberbaseController {
         
     }
     
+    public function psw(){
+        $this->display();
+    }
+    public function psw_ajax(){
+       $id=session('user.id');
+       $oldpw=I('oldpw','');
+       $newpw=I('newpw','');
+       $psw=C('PSW');
+       if(preg_match($psw, $oldpw)!=1 || preg_match($psw, $newpw)!=1){
+           $data=array('errno'=>0,'error'=>'密码格式错误');
+           $this->ajaxReturn($data);
+           exit;
+       }
+       $oldpsw=sp_password($oldpw);
+       $newpsw=sp_password($newpw);
+       $m=M('Users');
+       $where=array(
+           'id'=>$id,
+           'user_status'=>1,
+           'user_type'=>2,
+       );
+       $tmp=$m->where($where)->find();
+       if(empty($tmp) ){
+           session('user',null);
+           setcookie('zypjwLogin', null,time()-2,'/');
+           $data=array('errno'=>2,'error'=>'用户信息错误,将退出登录');
+           $this->ajaxReturn($data);
+           exit;
+       }elseif($tmp['user_pass']!=$oldpsw){
+           $data=array('errno'=>2,'error'=>'原密码不匹配');
+           $this->ajaxReturn($data);
+           exit;
+       }
+            
+       $row=$m->data(array('user_pass'=>$newpsw))->where($where)->save();
+       if($row===1){
+          $data=array('errno'=>1,'error'=>'密码修改成功');
+        }else{
+            $data=array('errno'=>3,'error'=>'密码修改失败');
+        }
+        $this->ajaxReturn($data);
+        exit;
+       
+    }
+    //更改手机号
+    public function mobile(){
+        $this->display();
+    }
+    public function mobile_ajax(){
+        $id=session('user.id');
+        $psw=I('psw','');
+        $code=I('code','');
+        $mobile=I('mobile','');
+        if(preg_match(C('PSW'), $psw)!=1 || preg_match(C('MOBILE'), $mobile)!=1){
+            $data=array('errno'=>0,'error'=>'密码或手机号错误');
+            $this->ajaxReturn($data);
+            exit;
+        }
+        //检测短信码
+        $res=checkMsg($code,$mobile,'mobileCode');
+        if(empty($res)){
+            $data=array('errno'=>0,'error'=>'短信码验证失败，请刷新页面重试');
+            $this->ajaxReturn($data);
+            exit;
+        }elseif($res['errno']!=1){
+            $data=array('errno'=>0,'error'=>$res['error']);
+            $this->ajaxReturn($data);
+            exit;
+        }
+        
+        $oldpsw=sp_password($psw);
+       
+        $m=M('Users');
+        $where=array(
+            'id'=>$id,
+            'user_status'=>1,
+            'user_type'=>2,
+        );
+        $tmp=$m->where($where)->find();
+        if(empty($tmp) ){
+            session('user',null);
+            setcookie('zypjwLogin', null,time()-2,'/');
+            $data=array('errno'=>2,'error'=>'用户信息错误,将退出登录');
+            $this->ajaxReturn($data);
+            exit;
+        }elseif($tmp['user_pass']!=$oldpsw){
+            $data=array('errno'=>2,'error'=>'原密码不匹配');
+            $this->ajaxReturn($data);
+            exit;
+        }
+        
+        $row=$m->data(array('mobile'=>$mobile))->where($where)->save();
+        if($row===1){
+            //成功后清除短信验证码
+            session('msgCode',null);
+            $data=array('errno'=>1,'error'=>'手机号修改成功');
+        }else{
+            $data=array('errno'=>3,'error'=>'手机号修改失败');
+        }
+        $this->ajaxReturn($data);
+        exit;
+        
+    }
+    
     
 }

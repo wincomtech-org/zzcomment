@@ -20,10 +20,11 @@
 							<label class="sex"><input name="sex" <eq name='user.sex' value='1'>checked</eq> type="radio" value="1">&nbsp;男</label>
 							<label class="sex"><input name="sex" <eq name='user.sex' value='2'>checked</eq> type="radio" value="2">&nbsp;女</label>
 						</div>
-						<div class="form1"><span>手机号：</span><i>{$user.mobile}</i></div>
-					<!--  <a class="red" href="#">(点击修改)</a> -->
-						
-					<!-- 	<div class="form1"><span>密码：</span><a class="red" href="#">更改</a></div> -->
+						<div class="form1">
+							<span>手机号：</span><i>{$user.mobile}</i>
+					 		<a class="red" href="{:U('User/Info/mobile')}">(点击修改)</a> 
+						</div>
+						<div class="form1"><span>密码：</span><a class="red" href="{:U('User/Info/psw')}">更改</a></div> 
 						<div class="form1">
 						<eq name="user.name_status" value="1">
 							<span class="lf rz">已实名验证</span>

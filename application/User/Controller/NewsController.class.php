@@ -111,7 +111,7 @@ class NewsController extends MemberbaseController {
                     'uid'=>$this->uid,
                     'money'=>'-'.$price,
                     'time'=>$time,
-                    'content'=>'推荐动态'.$id, 
+                    'content'=>'推荐动态'.$id.'-'.$info['name'], 
                 );
                 M('Pay')->add($data_pay);
                 $data_top0=array(
@@ -196,6 +196,12 @@ class NewsController extends MemberbaseController {
             $this->ajaxReturn($data);
             exit;
         }
+        $info=M('Active')->where(array('id'=>$id,'status'=>2))->find();
+        if(empty($info)){
+            $data['error']='不能置顶';
+            $this->ajaxReturn($data);
+            exit;
+        }
         $uid=$this->userid;
         $price0=session('company.top_active_fee');
         //检查价格是否更新
@@ -248,7 +254,7 @@ class NewsController extends MemberbaseController {
                     'uid'=>$uid,
                     'money'=>'-'.$price,
                     'time'=>$time,
-                    'content'=>'置顶动态'.$id,
+                    'content'=>'置顶动态'.$id.'-'.$info['name'],
                 );
                 M('Pay')->add($data_pay);
                 $m_user->commit();

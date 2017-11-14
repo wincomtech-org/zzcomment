@@ -27,13 +27,17 @@ class AdminActionController extends AdminbaseController {
         $actions=array(
             'seller'=>'店铺',
             'seller_apply'=>'店铺领用',
+            'seller_edit'=>'店铺编辑',
             'top_seller'=>'店铺推荐',
             'active'=>'店铺动态',
             'top_active'=>'动态置顶',
+            'top_active0'=>'动态推荐',
             'goods'=>'店铺商品',
             'top_goods'=>'商品推荐',
+            'top_goods'=>'商品置顶',
             'comment'=>'点评',
             'reply'=>'回复',
+            'users'=>'用户',
         );
         $sname=I('sname','0');
         $uname=trim(I('uname',''));

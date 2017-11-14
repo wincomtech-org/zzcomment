@@ -9,8 +9,8 @@
         <form class="well form-search" method="post" action="{:U('User/index')}">
             用户名:
             <input type="text" name="user_login" style="width: 100px;" value="{:I('request.user_login/s','')}" placeholder="请输入{:L('USERNAME')}">
-            邮箱:
-            <input type="text" name="user_email" style="width: 100px;" value="{:I('request.user_email/s','')}" placeholder="请输入{:L('EMAIL')}">
+            手机:
+            <input type="text" name="mobile" style="width: 100px;" value="{:I('request.mobile/s','')}" placeholder="请输入{:L('MOBILE')}">
             <input type="submit" class="btn btn-primary" value="搜索" />
             <a class="btn btn-danger" href="{:U('User/index')}">清空</a>
         </form>
@@ -21,7 +21,7 @@
 					<th>{:L('USERNAME')}</th>
 					<th>{:L('LAST_LOGIN_IP')}</th>
 					<th>{:L('LAST_LOGIN_TIME')}</th>
-					<th>{:L('EMAIL')}</th>
+					<th>{:L('MOBILE')}</th>
 					<th>{:L('STATUS')}</th>
 					<th width="120">{:L('ACTIONS')}</th>
 				</tr>
@@ -40,7 +40,7 @@
 							{$vo.last_login_time}
 						</if>
 					</td>
-					<td>{$vo.user_email}</td>
+					<td>{$vo.mobile}</td>
 					<td>{$user_statuses[$vo['user_status']]}</td>
 					<td>
 						<if condition="$vo['id'] eq 1 || $vo['id'] eq sp_get_current_admin_id()">

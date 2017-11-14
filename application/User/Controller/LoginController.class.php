@@ -45,9 +45,97 @@ class LoginController extends HomebaseController {
 	
 	// 前台用户忘记密码
 	public function forgot_password(){
-		$this->display(":forgot_password");
+		$this->display(":forgot_password1");
+	}
+	// 前台用户忘记密码
+	public function forgot_do1(){
+	    $username=I('user','','trim');
+	    if($username==''){
+	        $this->error('未输入用户名或手机号');
+	    }
+	    if(!sp_check_verify_code()){
+	        $this->error('验证码错误');
+	    }
+	    $where=array(
+	        'user_status'=>1,
+	        'user_type'=>2,
+	    );
+	    if(preg_match(C('MOBILE'), $username)){//手机号登录
+	        $where['mobile']=$username;
+	        
+	    }else{
+	        $where['user_login']=$username;
+	    }
+	    $tmp=M('Users')->where($where)->find();
+	    if(empty($tmp)){
+	        $this->error('用户不存在或被禁用');
+	    }
+	    $mobile=substr($tmp['mobile'], 0,3).'****'.substr($tmp['mobile'], 7);
+	    $this->assign('userid',$tmp['id'])->assign('mobile0',$mobile)->assign('mobile',$tmp['mobile']);
+	    $this->display(":forgot_password2");
 	}
 	
+	// 前台用户忘记密码,短信验证
+	public function forgot_do2(){
+	    $id=I('id',0,'intval');
+	    if($id==0){
+	        $this->error('数据错误');
+	    }
+	    
+	    $tmp=M('Users')->where('id='.$id)->find();
+	    if(empty($tmp)){
+	        $this->error('数据错误');
+	    }
+	    $code=I('telecaptcha','');
+	    //验证码
+	    $time=time();
+	    $res=checkMsg($code,$tmp['mobile'],'pswCode');
+	    if(empty($res)){ 
+	        $this->error('短信码验证失败，请刷新页面重试');
+	    }elseif($res['errno']!=1){
+	        
+	        $this->error($res['error']);
+	    }
+	    session('msgCode',null);
+	    session('pswCode',array($id,$time));
+	    
+	    $this->assign('userid',$id)->assign('username',$tmp['user_login']);
+	    $this->display(":forgot_password3");
+	}
+	// 前台用户忘记密码,密码重置
+	public function forgot_do3(){
+	     
+	    $id=I('post.id',0,'intval');
+	    $psw=I('password','','trim');
+	    $psw1=I('repassword','','trim');
+	    
+	    if(preg_match(C('PSW'), $psw)!=1){
+	       $this->error('密码格式错误');
+	    }
+	    if($psw!=$psw1){
+	        $this->error('2次密码不一致');
+	    }
+	    $tmp=session('pswCode');
+	    $time=time();
+	    if(empty($tmp) || $tmp[0]!=$id || ($time-$tmp[1])>600){
+	        $this->error('短信验证已过期，请重新验证',U('User/Login/forgot_password'));
+	    }
+	    $where['id']=$id;
+	    
+	    $users_model=M("Users");
+	    $result = $users_model->where($where)->count();
+	    if($result){
+	        $result=$users_model->where($where)->save(array('user_pass' => sp_password($psw)));
+	        if($result!==false){
+	            $this->success("密码重置成功！",U('User/Login/index'));
+	        }else{
+	            $this->error("密码重置失败！");
+	        }
+	    }else{
+	        $this->error('数据错误',U('User/Login/forgot_password'));
+	    }
+	    
+	}
 	// 前台用户忘记密码提交(邮件方式找回)
 	public function doforgot_password(){
 		if(IS_POST){
@@ -229,10 +317,10 @@ hello;
 	    }
 	    
 	    $username=I('post.username');
-	    $where = array("user_status"=>1);
+	    $where = array("user_status"=>1,'user_type'=>2);
 	    $password=I('post.password');
-	    $mR0='/^(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/';
-	    if(preg_match($mR0, $username)){//手机号登录
+	    
+	    if(preg_match(C('MOBILE'), $username)){//手机号登录
 	         $where['mobile']=$username;
 	        
 	    }else{
@@ -255,9 +343,11 @@ hello;
 	            //如果选中记住，就将登录信息放入Cookie中
 	            $remember=I('remember',0,'intval');
 	            if($remember== 1){
+	               
 	                $key='zzcomment';
+	                $tmp=array('id'=>$result['id'],'psw'=>md5($key.$result['user_pass']));
 	                //将登录信息，存放在Cookie中
-	                $value = serialize($result['id']);
+	                $value = serialize($tmp);
 	                $str   = md5($value.$key);
 	                setcookie('zypjwLogin', $str.$value,time()+3600*24*30,'/');
 	            }

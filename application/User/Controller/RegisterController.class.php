@@ -59,7 +59,7 @@ class RegisterController extends HomebaseController {
             array('mobile', 'require', '手机号不能为空！', 1 ),
             array('mobile','','手机号已被注册！！',0,'unique',3),
             array('password','require','密码不能为空！',1),
-            array('password','6,14',"密码长度至少6位，最多14位！",1,'length',3),
+            array('password','6,15',"密码长度至少6位，最多15位！",1,'length',3),
         );
         	
 	    $users_model=M("Users");
@@ -100,38 +100,53 @@ class RegisterController extends HomebaseController {
 	
 	// ajax手机注册
 	public function ajaxreg(){
+	    $mobile=I('post.mobile','');
+	    $code=I('code','');
+	    $password=I('post.password');
 	    
+	    $username=I('post.user_login');
+	    //用户名需过滤的字符的正则
+	    $stripChar = '?<*.>\'"';
+	    if(preg_match('/['.$stripChar.']/is', $username)==1){
+	        
+	        $data=array('errno'=>0,'error'=>'用户名中包含'.$stripChar.'等非法字符！');
+	        $this->ajaxReturn($data);
+	        exit;
+	    }
+	    if(preg_match(C('USERNAME'), $username)!=1){
+	        $data=array('errno'=>0,'error'=>'用户名格式错误');
+	        $this->ajaxReturn($data);
+	        exit;
+	    }
+	    if(preg_match(C('PSW'), $password)!=1){
+	        $data=array('errno'=>0,'error'=>'密码格式错误');
+	        $this->ajaxReturn($data);
+	        exit;
+	    }
+	    if(preg_match(C('MOBILE'), $mobile)!=1){
+	        $data=array('errno'=>0,'error'=>'手机号格式错误');
+	        $this->ajaxReturn($data);
+	        exit;
+	    }
 	    //验证码
 	    $time=time();
 	     if (! sp_check_verify_code()) {
-	        
-	        $data=array('errno'=>0,'error'=>'验证码错误');
-	        $this->ajaxReturn($data);
-	        exit;
+	         $data=array('errno'=>0,'error'=>'验证码错误');
+	         $this->ajaxReturn($data);
+	         exit;
+	       
 	    } 
-	    if(empty('yunpianCode')){
-	        $data=array('errno'=>0,'error'=>'无有效短信码');
+	    $res=checkMsg($code,$mobile,'regCode');
+	    if(empty($res)){
+	        $data=array('errno'=>0,'error'=>'短信码验证失败，请刷新页面重试');
 	        $this->ajaxReturn($data);
 	        exit;
-	    }else{
-	        $yun= session('yunpianCode');
-	        //短信10分钟
-	        if(($time-$yun[1])>600){
-	            $data=array('errno'=>0,'error'=>'短信码已过期');
-	            session('yunpianCode',null);
-	            $this->ajaxReturn($data);
-	            exit;
-	        }else{
-	            $code=I('code','');
-	            if($code!=$yun[0]){
-	                $data=array('errno'=>0,'error'=>'短信码错误');
-	                $this->ajaxReturn($data);
-	                exit;
-	            }
-	        }
+	    }elseif($res['errno']!=1){
+	        $data=array('errno'=>0,'error'=>$res['error']);
+	        $this->ajaxReturn($data);
+	        exit;
 	    }
-	    //成功后清除短信验证码
-	    session('yunpianCode',null);
+	    
 	    $rules = array(
 	        //array(验证字段,验证规则,错误提示,验证条件,附加规则,验证时间)
 	        array('user_login', 'require', '用户名不能为空！', 1 ),
@@ -139,7 +154,7 @@ class RegisterController extends HomebaseController {
 	        array('mobile', 'require', '手机号不能为空！', 1 ),
 	        array('mobile','','手机号已被注册！！',0,'unique',3),
 	        array('password','require','密码不能为空！',1),
-	        array('password','6,14',"密码长度至少6位，最多14位！",1,'length',3),
+	        array('password','6,15',"密码长度至少6位，最多15位！",1,'length',3),
 	    );
 	    
 	    
@@ -152,9 +167,7 @@ class RegisterController extends HomebaseController {
 	        exit;
 	    }
 	    
-	    $password=I('post.password');
-	    $mobile=I('post.mobile');
-	    $username=I('post.user_login');
+	    
 	    $data=array(
 	        'user_login' => $username,
 	        'user_email' => '',
@@ -174,6 +187,8 @@ class RegisterController extends HomebaseController {
 	        $data['id']=$result;
 	        session('user',$data);
 	        $data=array('errno'=>1,'error'=>'注册成功');
+	        //成功后清除短信验证码
+	        session('msgCode',null);
 	        $this->ajaxReturn($data);
 	        exit;
 	        

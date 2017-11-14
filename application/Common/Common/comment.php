@@ -66,7 +66,76 @@ function getCityNames($city){
 }
 
 /* 
- * 更新动态过期时间 */
-function updateTime($list){
-   
+ * 检查短信码
+ *  */
+function checkMsg($num,$mobile,$type){
+    $time=time();
+    $yun= session('msgCode');
+    $array=array('errno'=>0,'error'=>'验证码已失效,请重新点击发送');
+    if(!empty($yun) && $type==$yun[3] && $mobile==$yun[2] && ($time-$yun[1])<600){ 
+        if($num==$yun[0]){
+            $array=array('errno'=>1,'error'=>'短信验证码正确');
+        }else{
+            $array=array('errno'=>2,'error'=>'短信验证码错误');
+        }
+        
+    }
+    return $array;
+}
+
+/*
+ * 发送短信码
+ *  */
+function sendMsg($mobile,$type){
+    header("Content-Type:text/html;charset=utf-8");
+    $apikey = "697655fbf93ebaedbaa7e411ad7cb619"; //修改为您的apikey(https://www.yunpian.com)登录官网后获取
+    $data=array('errno'=>0,'error'=>'短信发送失败');
+    $time=time();
+    $num='';
+    for($i=0;$i<4;$i++){
+        $num.=rand(0,9);
+    }
+    
+    
+    $yun= session('msgCode');
+    if(!empty($yun) && ($time-$yun[1])<60){
+        $data=array('errno'=>0,'error'=>'短信发送还没满60秒');
+       return $data;
+    }
+    $text="您的验证码是".$num;
+    $ch = curl_init();
+    
+    /* 设置验证方式 */
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept:text/plain;charset=utf-8',
+        'Content-Type:application/x-www-form-urlencoded', 'charset=utf-8'));
+    /* 设置返回结果为流 */
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    /* 设置超时时间*/
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    
+    /* 设置通信方式 */
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    
+    // 发送短信
+    $data_mag=array('text'=>$text,'apikey'=>$apikey,'mobile'=>$mobile);
+    curl_setopt ($ch, CURLOPT_URL, 'https://sms.yunpian.com/v2/sms/single_send.json');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data_mag));
+    $result = curl_exec($ch);
+    $error = curl_error($ch);
+    if($result === false){
+        $arr= $error;
+    }else{
+        $arr= $result;
+    }
+    
+    $array = json_decode($arr,true);
+    if((isset($array['code'])) && $array['code']==0) {
+        $data=array('errno'=>1,'error'=>'发送成功');
+        session('msgCode',array($num,$time,$mobile,$type));
+    } else{
+        $data=array('errno'=>2,'error'=>'发送失败，请检查手机号或一小时内发送超过3次短信');
+    }
+   return $data;
 }
