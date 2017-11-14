@@ -69,6 +69,7 @@
 	<tc_include file="Public:footer" />
  
 <script>
+var send=0;
 $("#m_check").click(function(){
 	if($("#rm_check").hasClass("disabled")==true){
 		return false;
@@ -178,7 +179,11 @@ $("#m_check").click(function(){
 			success:function(data){
 				if(data.errno!=1){
 					status=false;
-					alert(data.error);
+					send=0;
+					$('#zzcode').parent("div").next(".lg-infor").text(data.error);
+					 
+				}else{
+					send=1;
 				}
 			}
 		});
@@ -200,6 +205,10 @@ $("#m_check").click(function(){
 	}
 });
 $('.register-form').submit(function(){
+	if(send==0){
+		$('.lg-signup2').parent("div").next(".lg-infor").text('请点击发送短信验证码');
+		return false;
+	}
    var username=$.trim($('#username').val());
    var password1=$.trim($('#password').val());
    var mobile=$.trim($('#mobile').val());

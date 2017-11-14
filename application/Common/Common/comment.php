@@ -71,7 +71,7 @@ function getCityNames($city){
 function checkMsg($num,$mobile,$type){
     $time=time();
     $yun= session('msgCode');
-    $array=array('errno'=>0,'error'=>'验证码已失效,请重新点击发送');
+    $array=array('errno'=>0,'error'=>'短信验证码已失效,请重新点击发送');
     if(!empty($yun) && $type==$yun[3] && $mobile==$yun[2] && ($time-$yun[1])<600){ 
         if($num==$yun[0]){
             $array=array('errno'=>1,'error'=>'短信验证码正确');

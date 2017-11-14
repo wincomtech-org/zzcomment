@@ -137,7 +137,7 @@ class RegisterController extends HomebaseController {
 	         exit;
 	       
 	    } 
-	    $res=checkMsg($code,$mobile,'regCode');
+	     $res=checkMsg($code,$mobile,'regCode');
 	    if(empty($res)){
 	        $data=array('errno'=>0,'error'=>'短信码验证失败，请刷新页面重试');
 	        $this->ajaxReturn($data);
@@ -146,7 +146,7 @@ class RegisterController extends HomebaseController {
 	        $data=array('errno'=>0,'error'=>$res['error']);
 	        $this->ajaxReturn($data);
 	        exit;
-	    }
+	    } 
 	    
 	    $rules = array(
 	        //array(验证字段,验证规则,错误提示,验证条件,附加规则,验证时间)
