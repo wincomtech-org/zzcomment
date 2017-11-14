@@ -157,7 +157,7 @@ $("#m_check").click(function(){
 			if(data.errno!=1){
 			  status=false;
 			  $(".captcha").parent("div").next(".lg-infor").text("请填写正确的验证码或点击刷新验证码！");
-			  location.reload(false);
+			  $('.verify_img').attr('src',$('.verify_img').attr('src')+'&time=1');
 			}
 		}
 	});
@@ -213,9 +213,10 @@ $('.register-form').submit(function(){
 			//返回上一页并刷新
 			self.location=document.referrer;
 		}else{
-			alert(data.error);
-			location.reload(false);
-			
+			 
+			$('.lg-signup2').parent("div").next(".lg-infor").text(data.error);
+			$('.verify_img').attr('src',$('.verify_img').attr('src')+'&time=1');
+			 
 		}
 	});
  return false;

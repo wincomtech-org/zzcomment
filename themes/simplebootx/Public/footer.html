@@ -73,4 +73,43 @@ $('.reply-form').submit(function(){
 	 
 	 return false;
 });
+$('.shop-add-form').submit(function(){
+	var id=parseInt("{$Think.session.user.id}");
+	if(!(id>0)){
+		alert('未登录不能创建');
+		return false;
+	} 
+	 
+	var verify=$('#captcha').val();
+	if(verify.length!=4){
+		alert('验证码不正确');
+		return false;
+	}
+	var status=true;
+	$.ajax({
+		url: "{:U('User/Public/ajaxVerify')}",
+		type:'post',
+		cacash:false,
+		async:false,	//不设置则默认true代表异步,false同步
+		data:{'verify':verify},
+		dataType:'json',
+		error:function(data){
+			alert('错误，刷新页面');
+			location.reload(true);
+		},
+		success:function(data){
+			if(data.errno!=1){
+			  status=false;
+			   alert(data.error);
+			  $('.verify_img').attr('src',$('.verify_img').attr('src')+'&time=1');
+			}
+		}
+	});
+	 if( status==false){
+		 return false;
+	 }else{
+		 return true;
+	 }
+	return false;
+});
 </script>

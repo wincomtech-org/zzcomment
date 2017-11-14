@@ -113,11 +113,12 @@ class RegisterController extends HomebaseController {
 	        $this->ajaxReturn($data);
 	        exit;
 	    }
-	    if(preg_match(C('USERNAME'), $username)!=1){
-	        $data=array('errno'=>0,'error'=>'用户名格式错误');
+	    $strlen=mb_strlen($username);
+	    if($strlen<2 || $strlen>14){
+	        $data=array('errno'=>0,'error'=>'用户名格式错误'.$strlen);
 	        $this->ajaxReturn($data);
 	        exit;
-	    }
+	    } 
 	    if(preg_match(C('PSW'), $password)!=1){
 	        $data=array('errno'=>0,'error'=>'密码格式错误');
 	        $this->ajaxReturn($data);

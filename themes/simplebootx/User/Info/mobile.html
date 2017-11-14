@@ -110,7 +110,8 @@
 							if(data.errno!=1){
 								send=0;
 								status=false;
-								alert(data.error);
+								$("input[name='telecaptcha']").parent("div").next(".lg-infor").text(data.error);
+							  	 
 							}else{
 								send=1;
 							}

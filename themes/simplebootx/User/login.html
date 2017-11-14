@@ -58,16 +58,18 @@
      var verify=$.trim($('.captcha').val());
      if(verify.length!=4){
        	 
-	   	  $('.captcha').focus();
-	   	 alert('请输入4位验证码');
-	   	  return false; 
+	   	$('.captcha').focus();
+	   	$('.captcha').parent("div").next(".lg-infor").text('请输入4位验证码');
+	   return false; 
     }
 	 $.post("{:U('User/Login/ajaxlogin')}",{'username':username,'password':password,'verify':verify,'remember':remember},function(data){
 			if(data.errno==1){
 				location.href=data.error;
 			}else{
-				alert(data.error);
-				location.reload(false);
+				 
+				//location.reload(false);
+				$('.lg-signup1').parent("div").next(".lg-infor").text(data.error);
+				$('.verify_img').attr('src',$('.verify_img').attr('src')+'&time=1');
 			}
 		});
 	 return false;
