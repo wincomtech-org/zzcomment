@@ -220,7 +220,7 @@ label.core>span{font-size:18px;line-height:23px;}
 label.upload{width:215px;height:36px;position:relative;overflow: hidden;}
 .upload>span:first-child{display:inline-block;width:108px;font-size:18px;line-height:36px;}
 .upload>span.btn-style{display:inline-block;width:107px;text-align:center;font-size: 18px;line-height: 36px;background: #d00000;color: #fff;}
-.upload>input[type="file"]{position:absolute;right:0;top:0;opacity: 0;opacity: 0;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter: alpha(opacity=0);}
+.upload>input[type="file"]{width:1px;height:1px;clip:rect(0,0,0,0);position:absolute;right:0;top:0;opacity: 0;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter: alpha(opacity=0);}
 
 .sm-infor{clear:both;font-size:16px;line-height: 26px;padding:20px 0;color:#666;}
 
