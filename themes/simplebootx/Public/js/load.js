@@ -22,6 +22,7 @@ $(document).ready(function(){
     
 	// add shop
 	$("#shopadd_btn").click(function() {
+		$('.verify_img').attr('src',$('.verify_img').attr('src')+'&time=1');
 		$("#pop_layer").fadeIn();
 	})	
 	$("#close").click(function() {
