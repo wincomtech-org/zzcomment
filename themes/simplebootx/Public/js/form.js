@@ -37,9 +37,11 @@ $(".msg3").text("请正确上传正反两张图片");//显示必填
 return false;
 }
     };
-
+function asd(){
+    $("input[type='submit']").val("正在保存中");
+}
 function send(){ 
-    return (name1()&&qq1()) ;
+    return (name1()&&qq1()&&asd()) ;
 }
 function tit1(){
 var cval = $("input[name='title']").val();    
@@ -64,7 +66,7 @@ return false;
 }
     };
 function send1(){
-    return(tit1()&&time())
+    return(tit1()&&time()&&asd())
 }
 function shopname1(){
 var cval = $("input[name='shopname']").val();    
@@ -100,7 +102,7 @@ return false;
 }
     };
 function send2(){
-    return(shopname1()&&shopprice1()&&shoppic())
+    return(shopname1()&&shopprice1()&&shoppic()&&asd())
 }
     
 function sname1(){
@@ -212,7 +214,7 @@ return false;
 }
     };
 function send3(){ 
-    return(sname1()&&fname1()&&jyfw1()&&jysj1()&&phone1()&&tell1()&&shopaddr1())
+    return(sname1()&&fname1()&&jyfw1()&&jysj1()&&phone1()&&tell1()&&shopaddr1()&&asd())
 }
 function sp(){
 var cval1= $("#p5").val(); 
@@ -226,5 +228,5 @@ return false;
 }
     };
 function send4(){
-    return(fname1()&&sp())
+    return(fname1()&&sp()&&asd())
 }
