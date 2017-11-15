@@ -130,7 +130,7 @@ $(document).ready(function(){
 		$(this).blur(function(){
 			var infor=$(this).val();
 			if(infor.length<2||infor.length>150){
-				$(".comment-infor").text("请按要求填写信息！");
+				$(".comment-infor").text("请输入2-150个字！");
 			}
 			if(infor==""||infor==null){
 				$(".comment-infor").text("请输入留言信息！");
@@ -142,10 +142,10 @@ $(document).ready(function(){
 	})
 	$("#provedata").on("change",function(){
 		if($(this).val()==""){
-			$("span.btn-style").text("未上传");
+			$("span.btn-style").text("未选择");
 		}
 		else{
-			$("span.btn-style").text("已上传");
+			$("span.btn-style").text("已选择");
 		}
 	})
 
@@ -206,7 +206,7 @@ var mR=/^(0|86|17951)?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$
 	function userComment(){
 		var infor=$("#user_message").val();
 		if(infor.length<2||infor.length>150){
-			$(".comment-infor").text("请按要求填写信息！");
+			$(".comment-infor").text("请输入2-150个字！");
 			return false;
 		}
 		if(infor==""||infor==null){
@@ -223,6 +223,7 @@ var mR=/^(0|86|17951)?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$
 			$(".comment-infor").text("请上传评分材料！");
 			return false;
 		}
+		$(".comment-infor").text("正在上传评分材料，不要重复提交！");
 	}
 
 
