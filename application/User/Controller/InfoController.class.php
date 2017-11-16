@@ -19,6 +19,7 @@ class InfoController extends MemberbaseController {
     
     // 会员中心资料
     public function info() {
+       
         $this->assign('user',$this->user);
         $this->display();
     }
@@ -28,7 +29,9 @@ class InfoController extends MemberbaseController {
        
         set_time_limit(C('TIMEOUT'));
         $time=time();
-         
+        $user0=M('Users')->where('id='.($this->userid))->find();
+        
+       
         if(!empty($_FILES['IDpic1']['name']) || !empty($_FILES['IDpic2']['name']) || !empty($_FILES['IDpic3']['name'])){
          
             $subname=date('Y-m-d',$time);
@@ -96,6 +99,8 @@ class InfoController extends MemberbaseController {
         
         $row=$m->data($data)->where('id='.($this->userid))->save();
         if($row===1){
+            $user=M('Users')->where('id='.($this->userid))->find();
+            session('user',$user);
             $this->success('信息保存成功');
         }else{
             $this->error('保存失败');
@@ -139,6 +144,8 @@ class InfoController extends MemberbaseController {
             
        $row=$m->data(array('user_pass'=>$newpsw))->where($where)->save();
        if($row===1){
+           $user=M('Users')->where('id='.$id)->find();
+           session('user',$user);
           $data=array('errno'=>1,'error'=>'密码修改成功');
         }else{
             $data=array('errno'=>3,'error'=>'密码修改失败');

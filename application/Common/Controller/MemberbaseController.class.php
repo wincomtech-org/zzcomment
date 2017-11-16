@@ -19,6 +19,12 @@ class MemberbaseController extends HomebaseController{
 			$this->userid=sp_get_current_userid();
 			$this->users_model=D("Common/Users");
 			$this->user=$this->users_model->where(array("id"=>$this->userid))->find();
+			$user=$this->user;
+			$user0=session('user');
+			if($user['user_pass']!=$user0['user_pass']){
+			    session('user',null);
+			    $this->error('密码已修改，你需要重新登录');
+			}
 		}
 		//查询店铺数
 		$where=array(
