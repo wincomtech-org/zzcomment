@@ -257,6 +257,7 @@ class GoodsController extends MemberbaseController {
     
     //add_do
     public function add_do(){
+        set_time_limit(C('TIMEOUT'));
         $pic='';
         $time=time();
         $subname=date('Y-m-d',$time);
@@ -288,13 +289,17 @@ class GoodsController extends MemberbaseController {
         $image->open(C("UPLOADPATH").$pic0);
         $image->thumb(978, 590,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic1);
         unlink(C("UPLOADPATH").$pic0);
+        $price=trim(I('shopprice',0));
+        if(!preg_match('/^\d{1,8}(\.\d{1,2})?$/', $price)){
+            $price=0;
+        }
         $data=array(
             'sid'=>$this->sid,
             'pic'=>$pic,
             'create_time'=>$time,
             'start_time'=>$time, 
             'name'=>I('shopname',''),
-            'price'=>trim(I('shopprice','')),
+            'price'=>$price,
             'pic0'=>$pic1,
         );
         //实名认证无需审核

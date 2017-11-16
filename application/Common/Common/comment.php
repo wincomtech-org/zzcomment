@@ -139,3 +139,4 @@ function sendMsg($mobile,$type){
     }
    return $data;
 }
+

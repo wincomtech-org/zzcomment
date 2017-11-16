@@ -1,9 +1,9 @@
 <div class="shop-nav-wrapper" id="shop_nav">
 	<div class="wide-container">
-		<a href="{:U('Portal/Seller/home',array('sid'=>$sid))}" class="<eq name='seller_flag' value='home'>current</eq>">店铺首页</a>
-		<a href="{:U('Portal/Seller/news',array('sid'=>$sid))}" class="<eq name='seller_flag' value='news'>current</eq>">店铺动态</a>
-		<a href="{:U('Portal/Seller/goods',array('sid'=>$sid))}" class="<eq name='seller_flag' value='goods'>current</eq>">商品展示</a>
-		<a href="{:U('Portal/Seller/comment',array('sid'=>$sid))}" class="<eq name='seller_flag' value='comment'>current</eq>">最新评论</a>
+		<a href="{:U('Portal/Seller/home',array('sid'=>$sid))}" class="<eq name='seller_flag' value='home'>current</eq>"><eq name='info.cid0' value='9'>官方<else/>店铺</eq>首页</a>
+		<a href="{:U('Portal/Seller/news',array('sid'=>$sid))}" class="<eq name='seller_flag' value='news'>current</eq>"><eq name='info.cid0' value='9'>官方<else/>店铺</eq>动态</a>
+		<a href="{:U('Portal/Seller/goods',array('sid'=>$sid))}" class="<eq name='seller_flag' value='goods'>current</eq>"><eq name='info.cid0' value='9'>官方<else/>店铺</eq>展示</a>
+		<a href="{:U('Portal/Seller/comment',array('sid'=>$sid))}" class="<eq name='seller_flag' value='comment'>current</eq>"><eq name='info.cid0' value='9'>官方<else/>店铺</eq>评论</a>
 	</div>
 </div>
 <div class="wide-container">
@@ -31,7 +31,7 @@
 				</div>
 				<div class="infor-rt">
 				<neq name="info.status" value="1">
-					<span class="shop-mark">已认领</span>
+					<span class="shop-mark">已认领</span> 
 				<else/>
 					<a href="{:U('User/Seller/apply',array('sid'=>$sid))}" class="shop-mark">去认领>></a>
 				</neq>

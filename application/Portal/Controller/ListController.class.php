@@ -85,7 +85,7 @@ class ListController extends HomebaseController {
 	            $where_seller['cid']=array('in',$cids);
 	        }
 	        $total=$m_seller->where($where_seller)->count();
-	        $page = $this->page($total, 10);
+	        $page = $this->page($total, 20);
 	        $list_score_seller=$m_seller->where($where_seller)->order('score desc')->limit($page->firstRow,$page->listRows)->select();
 	        
 	    } 
@@ -126,7 +126,7 @@ class ListController extends HomebaseController {
 	    //少于$active_len个要有其他动态
 	    //置顶的动态不变
 	    $total=$m->where($where_top)->count();
-	    $page = $this->page($total, 16-$len);
+	    $page = $this->page($total, 20-$len);
 	    
 	    $list=$m->where($where_top)->order('start_time desc')->limit($page->firstRow,$page->listRows)->select();
 	    

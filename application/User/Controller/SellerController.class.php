@@ -54,6 +54,7 @@ class SellerController extends MemberbaseController {
     }
     //领用店铺
     public function apply_do(){
+        set_time_limit(C('TIMEOUT'));
         $fname=trim(I('fname',''));
         if($fname==''){
             $this->error('法人为必填项');
@@ -148,6 +149,7 @@ class SellerController extends MemberbaseController {
     }
     
     public function edit(){
+        set_time_limit(C('TIMEOUT'));
         $sid=I('sid',0);
         $name=I('sname','');
         $cid=I('cate2',0);

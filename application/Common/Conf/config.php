@@ -102,10 +102,10 @@ $configs= array(
         'MOBILE'=>'/^(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/',  //手机号正则
         'PSW'=>'/^([a-zA-Z0-9]|[._]){6,15}$/',  //密码正则
         'USERNAME'=>'/^[\dA-Za-z_\u4e00-\u9fa5]{2,14}$/',   //用户名
+        'TIMEOUT'=>400, //操作超时，400s
+      
     
-    
-        
-         
+          
 );
 
 return  array_merge($configs,$db,$runtime_config);

@@ -13,9 +13,9 @@ class SellerController extends HomebaseController {
         $sid=$this->sid;
         $m=M();
         //店铺信息
-        $sql="select s.*,concat(c1.name,'-',c2.name,'-',c3.name) as citys,
+        $sql="select s.*,concat(c1.name,'-',c2.name,'-',c3.name) as citys, cate2.fid as cid0,
         u.user_login as uname,au.user_login as author_name,concat(cate1.name,'-',cate2.name) as cname
-        from cm_seller as s
+         from cm_seller as s
         left join cm_city as c3 on c3.id=s.city
         left join cm_city as c2 on c2.id=c3.fid
         left join cm_city as c1 on c1.id=c2.fid
