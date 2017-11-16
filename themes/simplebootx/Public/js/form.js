@@ -38,7 +38,7 @@ return false;
 }
     };
 function asd(){
-    $("input[type='submit']").val("正在保存中");
+    $(".per_right input[type='submit']").val("正在保存中");
 }
 function send(){ 
     return (name1()&&qq1()&&asd()) ;

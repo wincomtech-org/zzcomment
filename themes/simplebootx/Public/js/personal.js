@@ -126,5 +126,5 @@ for (var i =0; i<=s1-1; i++) {
             a1.setAttribute("disabled", "disabled"); 
         }
 }
-$(".per_right input[type='file']").attr("accept","image/png,image/jpeg,image/jpg");
+$("input[type='file']").attr("accept","image/png,image/jpeg,image/jpg");
 
