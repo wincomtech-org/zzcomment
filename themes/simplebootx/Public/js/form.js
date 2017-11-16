@@ -79,17 +79,7 @@ $(".msg1").text("请填写商品名称");//显示必填
 return false;
 }
     };
-function shopprice1(){
-var cval = $("input[name='shopprice']").val();    
-if(cval!=""){ //如果非空 显示正确
-$(".msg2").text("");
-    return true;
-}
-else{
-$(".msg2").text("请填写商品价格");//显示必填
-return false;
-}
-    };
+
 function shoppic(){
 var cval1= $("#p6").val(); 
 if(cval1!=""){ //如果非空 显示正确
@@ -102,7 +92,7 @@ return false;
 }
     };
 function send2(){
-    return(shopname1()&&shopprice1()&&shoppic()&&asd())
+    return(shopname1()&&shoppic()&&asd())
 }
     
 function sname1(){
