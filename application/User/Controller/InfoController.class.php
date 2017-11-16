@@ -32,8 +32,8 @@ class InfoController extends MemberbaseController {
         $user0=M('Users')->where('id='.($this->userid))->find();
         
        
-        if(!empty($_FILES['IDpic1']['name']) || !empty($_FILES['IDpic2']['name']) || !empty($_FILES['IDpic3']['name'])){
-         
+        if(!empty($_FILES['IDpic1']['name']) || !empty($_FILES['IDpic2']['name']) || !empty($_FILES['IDpic3']['name']) || !empty($_FILES['IDpic8']['name'])){
+             
             $subname=date('Y-m-d',$time);
             $upload = new \Think\Upload();// 实例化上传类
             //20M
