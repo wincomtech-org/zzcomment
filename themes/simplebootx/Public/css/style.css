@@ -377,6 +377,7 @@ a.captcha img{width:100px;height:44px;}
 
 .infor-cont{width:515px;margin:100px auto 200px;padding:0 0 0 75px;min-height: 72px;position: relative;}
 .infor-cont:before{content: "";position:absolute;top:0;left:0;display: block;width:75px;height:72px;background: url(../img/resetbg.png) no-repeat 0 -30px;}
+.infor-cont.error:before{background: url(../img/error.png) no-repeat 0 5px;}
 .infor-cont p{font-size:16px;line-height: 26px;padding:5px 0;}
 .infor-cont a{color:#d00000;}
 .infor-cont a:hover{text-decoration: underline;}
