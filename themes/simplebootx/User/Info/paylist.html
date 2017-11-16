@@ -1,0 +1,29 @@
+<tc_include file="Public/user_head" />
+	<div class="per_right">
+    <div class="per_rnav"><a class="" href="">网银充值</a><a class="rb" href="">消费记录</a></div>
+            <div class="table-container">
+                <table class="webmsg">
+                    <thead> 
+                        <tr>
+                            <th class="webmsg_t2">时间</th>
+                            <th class="webmsg_t5">价格</th>
+                            <th class="webmsg_t3">内容</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lk">
+                    <foreach name="list" item="vo">
+                        <tr>
+                            <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
+                            <td>999</td>
+                            <td>{$vo.content}</td>
+                        </tr>
+                    </foreach>   
+                      </tbody>
+                </table>           
+            </div>
+            <div class="page">{$page}</div>
+            </div>
+        </div>
+	<tc_include file="Public/user_footer" />
+</body>
+</html>
