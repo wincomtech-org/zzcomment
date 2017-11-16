@@ -24,7 +24,9 @@ $(".msg2").text("填写错误");
     else  {
 $(".msg2").text("填写正确");
     return true;
-    }}};
+    }}else{
+        return true;
+    }};
 function idcard(){
 var cval1= $("#p2").val();
 var cval2=$("#p3").val(); 
