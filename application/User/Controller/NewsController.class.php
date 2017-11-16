@@ -273,7 +273,7 @@ class NewsController extends MemberbaseController {
     //add_do
     public function add_do(){
         
-        
+        set_time_limit(C('TIMEOUT'));
         $pic='';
         $time=time();
         $subname=date('Y-m-d',$time);

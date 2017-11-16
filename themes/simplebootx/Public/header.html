@@ -25,9 +25,9 @@
 			<empty name="Think.session.user">
 				<a href="{:U('User/Login/index')}">登录</a>
 				<a href="{:U('User/Register/index')}">注册</a>
-			<else/>
+			<else/> 
 				<a href="{:U('User/Info/index')}" class="login-status"><img src="__UPLOAD__/{$Think.session.user.avatar|default=$company['avatar']['content']}" title="个人头像"></a>
-				<a href="{:U('User/Index/logout')}" class="login-status">退出登录</a>
+				<a href="{:U('User/Index/logout')}" class="login-status ">退出登录</a>
 				 
 			</empty>	
 			</div>

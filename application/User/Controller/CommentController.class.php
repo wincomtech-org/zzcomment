@@ -29,7 +29,14 @@ class CommentController extends MemberbaseController {
        $this->display();
     }
     public function add(){
+        set_time_limit(C('TIMEOUT'));
         $uid=session('user.id');
+        $m=$this->m;
+        $sid=I('sid',0,'intval');
+        $seller=M('Seller')->where('id='.$sid)->find();
+        if(empty($seller)|| $seller['uid']==$uid){
+            $this->error('错误，用户不能为自己的店铺上传评级');
+        }
         $subname=date('Ymd');
         //provedata
         if(empty($_FILES['provedata']['name'][0])){
@@ -37,7 +44,7 @@ class CommentController extends MemberbaseController {
         }
         $upload = new \Think\Upload();// 实例化上传类
         //20M
-        $upload->maxSize   =  C('SIZE') ;// 设置附件上传大小
+        $upload->maxSize   =  C('SIZE');// 设置附件上传大小
         $upload->rootPath=getcwd().'/';
         $upload->subName = $subname;
         $upload->savePath  =C("UPLOADPATH").'/comment/';
@@ -49,7 +56,7 @@ class CommentController extends MemberbaseController {
         foreach ($info as $v){
             $files.='comment/'.$subname.'/'.$v['savename'].';';
         }
-        $sid=I('sid',0,'intval');
+        
         $score=I('core',1,'intval');
         $data=array(
             'files'=>$files,
@@ -61,7 +68,7 @@ class CommentController extends MemberbaseController {
             'ip'=>get_client_ip(0,true),
         );
        
-       $m=$this->m;
+      
        //实名认证的评级不审核
        if(session('user.name_status')==1){
            $data['status']=2;
@@ -93,18 +100,5 @@ class CommentController extends MemberbaseController {
        }
        exit;
     }
-   /*  //删除点评
-    public function del(){
-        $m=$this->m;
-        $id=I('id',0,'intval'); 
-        $row=$m->where('id='.$id)->delete();
-        if($row===1){
-            $data=array('errno'=>1,'error'=>'删除成功'.$row); 
-             M('Reply')->where('cid='.$id)->delete(); 
-        }else{
-            $data=array('errno'=>2,'error'=>'删除失败'.$row);
-        }
-        $this->ajaxReturn($data);
-        exit;
-    } */
+   
 }
