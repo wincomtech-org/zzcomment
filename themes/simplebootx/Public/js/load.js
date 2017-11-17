@@ -1,4 +1,24 @@
 $(document).ready(function(){
+	//shop type sub
+	$(".shop-type-sub a").click(function(){
+		$(this).addClass("select").siblings().removeClass("select");
+	});
+	var $sub_height=$(".shop-type-sub").height();
+	if($sub_height<=144){
+		$(".more-less").hide();
+	}
+	else{		
+		$(".more-less").show();
+		$(".shop-type-sub").css("height","144px")
+	}
+	$("#more_less").click(function(){
+		if($(this).text()=="展开"){
+			$(this).text("收起").parents(".shop-type-subcontain").find(".shop-type-sub").css("height","auto");
+		}
+		else{
+			$(this).text("展开").parents(".shop-type-subcontain").find(".shop-type-sub").css("height","144px");
+		}
+	});
 	// level color
 	$(".level-color i").each(function(){
 		var levelNum=Number($(this).html());
