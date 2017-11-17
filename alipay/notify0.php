@@ -17,7 +17,7 @@ if($verify_result) {//验证成功
         $total_fee=$_POST['total_fee'];
         $buyer_id=$_POST['buyer_id'];
         $total_fee=$_POST['total_fee'];
-        error_log(date('Y-m-d H:i:s').'订单号'.$out_trade_no.'支付宝交易号'.$trade_no.'交易金额'.$total_fee.
+        error_log(date('Y-m-d H:i:s').'充值订单号'.$out_trade_no.'支付宝交易号'.$trade_no.'交易金额'.$total_fee.
             '交易账号'.$buyer_id.'支付状态'.$_POST['trade_status']."开始操作".$line,3,$log);
         if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS') {
             echo "success";
@@ -41,7 +41,7 @@ if($verify_result) {//验证成功
                  $mysqli->query($sql);
                  $paypayid=$mysqli->insert_id;
                  if($paypayid>0){
-                     $content='支付宝充值'.$trade_no;
+                     $content='支付宝充值，充值订单号'.$out_trade_no.'支付宝交易号'.$trade_no;
                      
                      $sql="insert into cm_pay(uid,money,time,content)
                      values({$uid},{$total_fee},{$time},'{$content}')";

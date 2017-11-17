@@ -1,0 +1,25 @@
+<tc_include file="Public:head" />
+</head>
+<body>
+  <!-- lgtop -->
+		<tc_include file="Public:login_head" />
+	<!-- lgtop end -->
+   
+     <!-- main -->
+		<div class="lgmain-wrapper">
+			<div class="lgwide-container">
+				<div class="infor-cont <empty name='status'>error</empty>">
+					<p>充值订单号{$msg}</p>
+					<p>充值订单号{$trade.out_trade_no}</p>
+					<p>支付宝交易号{$trade.trade_no}</p>
+					<p>交易金额{$trade.total_fee}</p>
+				 
+					<p>回到<a href="{:U('User/Info/index')}">个人中心</a></p>
+				</div>
+			</div>
+		</div>
+	<!-- main end --> 
+	<tc_include file="Public:footer" />
+  
+</body>
+</html>

@@ -270,4 +270,34 @@ class InfoController extends MemberbaseController {
         echo $html_text;
     }
     
+    public function alipay_return(){
+        if(empty($_GET['out_trade_no'])){
+            $this->error('页面信息错误');
+        }
+       /*  $out_trade_no = $_GET['out_trade_no'];//商户订单号
+        $trade_no = $_GET['trade_no'];//支付宝交易号
+        $trade_status = $_GET['trade_status'];//交易状态
+        $total_fee=$_GET['total_fee'];//支付金额
+        $buyer_id=$_GET['buyer_id']; //买家付款账号buyer_id */
+        
+        if($_GET['trade_status']== 'TRADE_FINISHED' || $_GET['trade_status']== 'TRADE_SUCCESS' ) {
+            $msg='支付成功';
+            $paypay=M('Paypay')->where(array('oid'=>$_GET['out_trade_no']))->find();
+            if(empty($pay)){
+                $status=0;
+                $msg='支付成功，但网站数据异常，请记住支付信息联系客服';
+            }else{
+                $status=1;
+                $msg='支付成功';
+            }
+        }else{
+            $status=0;
+            $msg='支付失败';
+        }
+        $status=1;
+       $this->assign('trade',$_GET)->assign('msg',$msg)->assign('status',$status);  
+       $this->display();
+            
+    }
+    
 }
