@@ -57,43 +57,45 @@ class ListController extends HomebaseController {
 	    }
 	    //大类
 	    $m_cate=M('Cate');
-	    $cid0=I('cid0',0);
+	    $cid0=I('cid0',0,'intval');
 	    //小类首字母
 	    $char=I('char','');
+	    //二级分类
+	    $cid1=I('cid1',0,'intval');
+	    $where_cate=array();
 	    if($cid0>0){
-	        if($char!=''){
-	            $where=array('first_char'=>$char,'fid'=>$cid0); 
-	            $tmp_cid=$m_cate->where($where)->select(); 
-	        }else{
-	            $tmp_cid=$m_cate->where('fid='.$cid0)->select(); 
-	        }
-	        
-	        
-	    }elseif($char!=''){
-	        $where=array('first_char'=>$char);
-	        $tmp_cid=$m_cate->where($where)->select(); 
+	        $where_cate['fid']=$cid0; 
 	    }
+	    if($char!=''){
+	        $where_cate['first_char']=$char;  
+	    }
+	    $cate1=$m_cate->where($where_cate)->order('first_char asc')->select(); 
+	    
 	    //如果有点击分类
-	    if(isset($tmp_cid) && empty($tmp_cid)){
-	        $page = $this->page(0, 10);
-	        $list_score_seller=array();
+	    if($cid1>0){
+	        $where_seller['cid']=array('eq',$cid1); 
 	    }else{
-	        if(!empty($tmp_cid)){
-	            foreach($tmp_cid as $v){
+	        if(!empty($cate1)){
+	            foreach($cate1 as $v){
 	                $cids[]=$v['id'];
 	            }
 	            $where_seller['cid']=array('in',$cids);
-	        }
-	        $total=$m_seller->where($where_seller)->count();
-	        $page = $this->page($total, 20);
-	        $list_score_seller=$m_seller->where($where_seller)->order('score desc')->limit($page->firstRow,$page->listRows)->select();
-	        
+	        } 
 	    } 
+	    $total=$m_seller->where($where_seller)->count();
+	    $page = $this->page($total, 20);
+	    $list_score_seller=$m_seller->where($where_seller)->order('score desc')->limit($page->firstRow,$page->listRows)->select();
+	    
 	    $this->assign('list_score_seller',$list_score_seller)
 	    ->assign('list_top_seller',$list_top_seller)
 	    ->assign('list_top_seller_empty',$list_top_seller_empty)
 	    ->assign('page',$page->show('Admin'));
-	   $this->assign('chars',$chars)->assign('char',$char)->assign('cid0',$cid0)->assign('keyword',$keyword);
+	   $this->assign('chars',$chars)
+	   ->assign('char',$char)
+	   ->assign('cid0',$cid0)
+	   ->assign('keyword',$keyword)
+	   ->assign('cid1',$cid1)
+	   ->assign('cate1',$cate1);
 	   $this->display();
 	    
 	}

@@ -29,6 +29,7 @@ class SellerController extends HomebaseController {
         if(empty($info)){
            $this->error('该店铺不存在'); 
         }
+        $info['stype']=($info['cid0']==9)?'官方':'店铺';
         $this->assign('sid',$sid)->assign('info',$info);
         //店铺浏览量+1
         

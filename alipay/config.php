@@ -8,5 +8,9 @@ $mysqli->set_charset('utf8');
 //$index="http://zzhuachuang.com/user/order/index";
 $index="http://127.0.0.1/zzcomment/User/Info/index";
 $log='alipay.log';
+$line=PHP_EOL;
+$time=time(); 
+$date=date('Y-m-d H:i:s');
+error_log($date.'alipay-config'.$line,3,$log);
  
 

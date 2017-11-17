@@ -36,7 +36,8 @@ class HomebaseController extends AppframeController {
 			}
 		} */
 		//如果Session中没有登录信息，尝试从Cookie中加载用户信息
-		if (empty($_SESSION['user'])) {
+		if (empty(session('user'))) {
+		    
 		    $value=$_COOKIE['zypjwLogin'];
 		    // 去掉魔术引号
 		    if (get_magic_quotes_gpc()) {
@@ -146,11 +147,12 @@ class HomebaseController extends AppframeController {
 	 */
 	protected function  check_user(){
 	    $user_status=M('Users')->where(array("id"=>sp_get_current_userid()))->getField("user_status");
-		if($user_status==2){
-			$this->error('您还没有激活账号，请激活后再使用！',U("user/login/active"));
-		}
+		/* if($user_status==2){
+			//$this->error('您还没有激活账号，请激活后再使用！',U("user/login/active"));
+		} */
 		
-		if($user_status==0){
+		if($user_status!=1){
+		    session('user',null);
 			$this->error('此账号已经被禁止使用，请联系管理员！',__ROOT__."/");
 		}
 	}
