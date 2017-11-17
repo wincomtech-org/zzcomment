@@ -21,6 +21,7 @@ $(function () {
             var money = $(this).attr("hide") < 1 ? 1 : $(this).attr("hide");
         $(".pri").html("￥" + powAmount(money, 2));
         $("#price").val(powAmount(money, 2));
+        $("input[name='money']").val(powAmount(money, 2));
     });
     $(".acount li a.ot").click(function () {
         $(".other").show();
@@ -34,7 +35,7 @@ $(function () {
                 $(this).val(powAmount(money, 2));
             }
         $(".pri").html("￥" + powAmount(money, 2));
-        $("#price").val(powAmount(money, 2));
+        $("input[name='money']").val(powAmount(money, 2));
     });
 });        
 function powAmount(amount, _pow_) {
