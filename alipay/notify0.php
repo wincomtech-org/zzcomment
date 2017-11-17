@@ -1,6 +1,6 @@
 <?php
 require_once("config.php");
-require_once("alipay_notify.class.php");
+require_once 'AlipayNotify.class.php';
 error_log("AlipayNotify-start".$line,3,$log);
 $alipayNotify = new AlipayNotify($alipay_config);
 $verify_result = $alipayNotify->verifyNotify();

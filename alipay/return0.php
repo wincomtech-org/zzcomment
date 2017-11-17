@@ -1,6 +1,6 @@
 <?php
 require_once 'AlipayNotify.class.php';
-require_once 'AlipaySubmit.class.php';
+ 
 require_once 'config.php';
 //计算得出通知验证结果 
 $alipayNotify = new AlipayNotify($alipay_config);
