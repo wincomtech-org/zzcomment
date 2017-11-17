@@ -34,6 +34,7 @@ $(function () {
                 $(this).val(powAmount(money, 2));
             }
         $(".pri").html("￥" + powAmount(money, 2));
+        $("#price").val(powAmount(money, 2));
     });
 });        
 function powAmount(amount, _pow_) {
