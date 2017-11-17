@@ -4,7 +4,7 @@
 				<div class="per_t1"><span>{$user.user_login}</span>，欢迎您！</div>
   				<div class="per_t2">
 	  				我的余额：<span>{$user.account}</span>
-	  				<a href="#">充值</a>
+	  				<a href="{:U('User/Info/pay')}">充值</a>
 	  				<span class="line">丨</span>
   				<eq name="user.name_status" value="1">
   					<span class="rz">已实名验证</span>
