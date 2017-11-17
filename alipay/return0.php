@@ -27,13 +27,12 @@ if($verify_result) {//验证成功
          $res=$mysqli->query($sql);
          $pay=$res->fetch_assoc();
          if(empty($pay['trade_no'])){
-             //error_log($date.'alipay-return'.$out_trade_no.$line,3,$log);
+             error_log($date.'alipay-return'.$out_trade_no.$line,3,$log);
              $arr=explode('-', $out_trade_no);
              $uid=$arr[0];
              
              $mysqli->autocommit(FALSE);
-             //$mysqli->rollback();
-             //$mysqli->commit();
+             
              $sql="insert into cm_paypay(uid,oid,money,trade_no,buyer_id,time,type) 
              values({$uid},'{$out_trade_no}',{$total_fee},'{$trade_no}','{$buyer_id}',{$time},1)";
              $mysqli->query($sql);
@@ -77,7 +76,7 @@ if($verify_result) {//验证成功
          }
     }else {
         
-        //error_log(date('Y-m-d H:i:s').':订单'.$out_trade_no.'支付失败'."\r\n",3,$log);
+        error_log(date('Y-m-d H:i:s').':订单'.$out_trade_no.'支付失败'."\r\n",3,$log);
         echo '支付失败';
         
     }
@@ -86,7 +85,7 @@ if($verify_result) {//验证成功
     //验证失败
     //如要调试，请看alipay_notify.php页面的verifyReturn函数
     
-    //error_log(date('Y-m-d H:i:s').':订单'.$out_trade_no.'验证失败'."\r\n",3,$log);
+    error_log(date('Y-m-d H:i:s').':订单'.$out_trade_no.'验证失败'."\r\n",3,$log);
     echo '验证失败';
     
 }
