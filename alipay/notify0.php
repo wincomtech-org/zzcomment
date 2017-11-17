@@ -1,12 +1,12 @@
 <?php
 require_once("config.php");
 require_once("alipay_notify.class.php");
-error_log("AlipayNotify-start".$line,3,$log);
+//error_log("AlipayNotify-start".$line,3,$log);
 $alipayNotify = new AlipayNotify($alipay_config);
 $verify_result = $alipayNotify->verifyNotify();
-error_log($date.'AlipayNotify-start'.$line,3,$log);
+//error_log($date.'AlipayNotify-start'.$line,3,$log);
 if($verify_result) {//验证成功
-    error_log("AlipayNotify-验证成功".$line,3,$log);
+    //error_log("AlipayNotify-验证成功".$line,3,$log);
     $notify_data = $alipayNotify->decrypt($_POST['notify_data']);
     $doc = new DOMDocument();
     $doc->loadXML($notify_data);
@@ -20,17 +20,17 @@ if($verify_result) {//验证成功
         $total_fee=$_POST['total_fee'];
         $buyer_id=$_POST['buyer_id'];
         $total_fee=$_POST['total_fee'];
-        error_log($date.'订单号'.$out_trade_no.'支付宝交易号'.$trade_no.'交易金额'.$total_fee.
+        //error_log($date.'订单号'.$out_trade_no.'支付宝交易号'.$trade_no.'交易金额'.$total_fee.
             '交易账号'.$buyer_id.'支付状态'.$_POST['trade_status']."开始操作".$line,3,$log);
         if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS') {
             //以下是数据库操作代码
-            error_log($out_trade_no."验证支付成功开始查询数据".$line,3,$log);
+            //error_log($out_trade_no."验证支付成功开始查询数据".$line,3,$log);
            
              $sql="select * from cm_paypay where oid='{$out_trade_no}' limit 1";
              $res=$mysqli->query($sql);
              $pay=$res->fetch_assoc();
              if(empty($pay['trade_no'])){
-                 error_log($out_trade_no."支付成功开始处理数据".$line,3,$log);
+                 //error_log($out_trade_no."支付成功开始处理数据".$line,3,$log);
                 
                  $arr=explode('-', $out_trade_no);
                  $uid=$arr[0];
@@ -59,35 +59,35 @@ if($verify_result) {//验证成功
                          $mysqli->query($sql);
                          $row=$mysqli->affected_rows;
                          if($row===1){
-                             error_log($out_trade_no."支付数据保存成功".$line,3,$log);
+                             //error_log($out_trade_no."支付数据保存成功".$line,3,$log);
                              $mysqli->commit();
                          }else{
                              $mysqli->rollback();
-                              error_log($out_trade_no."用户余额保存失败".$line,3,$log);
+                              //error_log($out_trade_no."用户余额保存失败".$line,3,$log);
                          }
                      }else{
                          $mysqli->rollback();
                         
-                         error_log($out_trade_no."用户收支记录保存失败".$line,3,$log);
+                         //error_log($out_trade_no."用户收支记录保存失败".$line,3,$log);
                      }
                      //
                  }else{
                      $mysqli->rollback(); 
-                     error_log($out_trade_no."但网站支付记录保存失败".$line,3,$log);
+                     //error_log($out_trade_no."但网站支付记录保存失败".$line,3,$log);
                  }
                  
                  
              }else{
-                 error_log($out_trade_no."数据早已存在".$line,3,$log);
+                 //error_log($out_trade_no."数据早已存在".$line,3,$log);
                  
              }
         }else{
-            error_log($out_trade_no."支付失败".$line,3,$log);
+            //error_log($out_trade_no."支付失败".$line,3,$log);
            
         }
     }
 }
 else {
-    error_log("AlipayNotify-验证失败".$_POST['out_trade_no'].$line,3,$log);
+    //error_log("AlipayNotify-验证失败".$_POST['out_trade_no'].$line,3,$log);
     
 }

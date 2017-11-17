@@ -38,7 +38,7 @@ class AlipayNotify {
      * @return 验证结果
      */
 	function verifyNotify(){
-	    logResult('verifyNotify--');
+	  
 		if(empty($_POST)) {//判断POST来的数组是否为空
 		    //生成签名结果
 		    $isSign = $this->getSignVeryfy($_POST, $_GET["sign"]);
@@ -53,9 +53,7 @@ class AlipayNotify {
 		    else {
 		        $isSignStr = 'false';
 		    }
-		    $log_text = "get-responseTxt=".$responseTxt."\n notify_url_log:isSign=".$isSignStr.",";
-		    $log_text = $log_text.createLinkString($_GET);
-		    
+		     
 		    if (preg_match("/true$/i",$responseTxt) && $isSign) {
 		        return true;
 		    } else {
@@ -77,9 +75,7 @@ class AlipayNotify {
 			else {
 				$isSignStr = 'false';
 			}
-			$log_text = "post-responseTxt=".$responseTxt."\n notify_url_log:isSign=".$isSignStr.",";
-			$log_text = $log_text.createLinkString($_POST);
-			logResult($log_text);
+			 
 			//验证
 			//$responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关
 			//isSign的结果不是true，与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
