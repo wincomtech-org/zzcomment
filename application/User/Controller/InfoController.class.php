@@ -281,9 +281,9 @@ class InfoController extends MemberbaseController {
         $buyer_id=$_GET['buyer_id']; //买家付款账号buyer_id */
         
         if($_GET['trade_status']== 'TRADE_FINISHED' || $_GET['trade_status']== 'TRADE_SUCCESS' ) {
-            $msg='支付成功';
+            
             $paypay=M('Paypay')->where(array('oid'=>$_GET['out_trade_no']))->find();
-            if(empty($pay)){
+            if(empty($paypay)){
                 $status=0;
                 $msg='支付成功，但网站数据异常，请记住支付信息联系客服';
             }else{
@@ -294,7 +294,7 @@ class InfoController extends MemberbaseController {
             $status=0;
             $msg='支付失败';
         }
-        $status=1;
+      
        $this->assign('trade',$_GET)->assign('msg',$msg)->assign('status',$status);  
        $this->display();
             
