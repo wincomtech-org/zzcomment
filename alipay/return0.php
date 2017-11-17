@@ -27,7 +27,7 @@ if($verify_result) {//验证成功
          $res=$mysqli->query($sql);
          $pay=$res->fetch_assoc();
          if(empty($pay['trade_no'])){
-             error_log($date.'alipay-return'.$out_trade_no.$line,3,$log);
+             error_log(date('Y-m-d H:i:s').'alipay-return'.$out_trade_no.$line,3,$log);
              $arr=explode('-', $out_trade_no);
              $uid=$arr[0];
              

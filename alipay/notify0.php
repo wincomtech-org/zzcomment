@@ -4,23 +4,20 @@ require_once 'AlipayNotify.class.php';
 error_log("AlipayNotify-start".$line,3,$log);
 $alipayNotify = new AlipayNotify($alipay_config);
 $verify_result = $alipayNotify->verifyNotify();
-error_log($date.'AlipayNotify-start'.$line,3,$log);
+ 
+error_log(date('Y-m-d H:i:s').'AlipayNotify-start'.$line,3,$log);
 if($verify_result) {//验证成功
     error_log("AlipayNotify-验证成功".$line,3,$log);
-    $notify_data = $alipayNotify->decrypt($_POST['notify_data']);
-    $doc = new DOMDocument();
-    $doc->loadXML($notify_data);
-    if( ! empty($doc->getElementsByTagName( "notify" )->item(0)->nodeValue) ) {
+  
+    $out_trade_no = $_POST['out_trade_no'];
         
-        $out_trade_no = $doc->getElementsByTagName( "out_trade_no" )->item(0)->nodeValue;
+    $trade_no = $_POST['trade_no'];
         
-        $trade_no = $doc->getElementsByTagName( "trade_no" )->item(0)->nodeValue;
-        
-        $trade_status = $doc->getElementsByTagName( "trade_status" )->item(0)->nodeValue;
+    $trade_status =$_POST['trade_status'];
         $total_fee=$_POST['total_fee'];
         $buyer_id=$_POST['buyer_id'];
         $total_fee=$_POST['total_fee'];
-        error_log($date.'订单号'.$out_trade_no.'支付宝交易号'.$trade_no.'交易金额'.$total_fee.
+        error_log(date('Y-m-d H:i:s').'订单号'.$out_trade_no.'支付宝交易号'.$trade_no.'交易金额'.$total_fee.
             '交易账号'.$buyer_id.'支付状态'.$_POST['trade_status']."开始操作".$line,3,$log);
         if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS') {
             echo "success";
@@ -86,7 +83,7 @@ if($verify_result) {//验证成功
             error_log($out_trade_no."支付失败".$line,3,$log);
            
         }
-    }
+    
 }
 else {
     echo "fail";
