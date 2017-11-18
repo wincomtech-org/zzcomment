@@ -47,6 +47,8 @@ if($verify_result) {//验证成功
                      $sql="insert into cm_pay(uid,money,time,content)
                       values({$uid},{$total_fee},{$time},'{$content}')";
                      $mysqli->query($sql);
+                     $er=$mysqli->error;
+                     error_log($er.$line,3,$log);
                      $payid=$mysqli->insert_id;
                      if($payid>0){
                          error_log('$uid'.$uid.'$$payid'.$payid.$line,3,$log);
