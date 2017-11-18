@@ -183,7 +183,7 @@ class ActiveController extends AdminbaseController {
                          
                     }
                     M('Msg')->add($data_msg);
-                    M('Pay')->add($data_pay);
+                  
                     M('TopActive0')->where('pid='.$id)->delete();
                     
                     $m->commit();

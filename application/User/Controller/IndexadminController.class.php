@@ -128,9 +128,9 @@ class IndexadminController extends AdminbaseController {
     }
     public function account_do(){
         $id= I('id',0,'intval');
-        $account=I('account',0,'intval');
+        $account0=I('account',0,'intval');
         $content=I('content','');
-        if($account==0 || $id==0){
+        if($account0==0 || $id==0){
             $this->error('输入不正确');
         }
         $m=M('Users');
@@ -138,26 +138,26 @@ class IndexadminController extends AdminbaseController {
         if(empty($info)){
             $this->error('没有该用户');
         }
-        $account=bcadd($account, $info['account']);
+        $account=bcadd($account0, $info['account']);
         $row=$m->where('id='.$id)->data(array('account'=>$account))->save();
         $time=time();
        if($row===1){
            $data_pay=array(
                'uid'=>$id,
                'time'=>$time,
-               'money'=>$account,
-               'content'=>'管理员充值￥'.$account,
+               'money'=>$account0,
+               'content'=>'管理员充值￥'.$account0,
            );
            $data_msg=array(
                'uid'=>$id,
                'time'=>$time,
                'aid'=>session('ADMIN_ID'),
-               'content'=>'管理员充值￥'.$account,
+               'content'=>'管理员充值￥'.$account0,
            );
            $data_action=array(
                'time'=>$time,
                'uid'=>session('ADMIN_ID'),
-               'descr'=>'为用户'.$id.'充值￥'.$account.'.管理员备注：'.$content,
+               'descr'=>'为用户'.$id.'充值￥'.$account0.'.管理员备注：'.$content,
                'sid'=>$id,
                'sname'=>'users',
            );

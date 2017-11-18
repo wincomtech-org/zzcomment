@@ -114,6 +114,8 @@ class NewsController extends MemberbaseController {
                     'content'=>'推荐动态'.$id.'-'.$info['name'], 
                 );
                 M('Pay')->add($data_pay);
+                $m_user->commit();
+            }
                 $data_top0=array(
                     'pid'=>$id,
                     'status'=>2,
@@ -121,8 +123,7 @@ class NewsController extends MemberbaseController {
                     'price'=>$price,
                 );
                 M('TopActive0')->add($data_top0);
-                $m_user->commit();
-            }
+                
         }else{
             if(!empty($row_user)){
                 $m_user->rollback();
