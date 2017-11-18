@@ -145,7 +145,7 @@ class IndexadminController extends AdminbaseController {
            $data_pay=array(
                'uid'=>$id,
                'time'=>$time,
-               'money'=>$account,
+               'money'=>$account0,
                'content'=>'管理员充值￥'.$account0,
            );
            $data_msg=array(
