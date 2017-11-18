@@ -235,7 +235,7 @@ class InfoController extends MemberbaseController {
         $subject =$title['content'].'充值￥'.$money; 
         //付款金额，必填
         
-        $total_fee =0.01; 
+        $total_fee =$money; 
         //商品描述，可空
         $body = $subject;
         $alipay_config=C("ALIPAY_CONFIG");
@@ -294,7 +294,7 @@ class InfoController extends MemberbaseController {
             $status=0;
             $msg='支付失败';
         }
-      
+       
        $this->assign('trade',$_GET)->assign('msg',$msg)->assign('status',$status);  
        $this->display();
             
@@ -305,7 +305,7 @@ class InfoController extends MemberbaseController {
         $m=M('Pay');
         $where=array('uid'=>($this->userid));
         $total=$m->where($where)->count();
-        $page = $this->page($total, 5);
+        $page = $this->page($total, C('PAGE'));
         $list=$m->where($where)->order('id desc')->limit($page->firstRow,$page->listRows)->select();
         
         $this->assign('page',$page->show('Admin'));

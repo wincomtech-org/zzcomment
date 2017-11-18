@@ -16,7 +16,7 @@ class TestController extends AdminbaseController {
     } 
    public function index(){
        echo 'test<br/>';
-       
+      
        echo "<a href='Admin/Test/restore'>还原</a>";
        
    }
