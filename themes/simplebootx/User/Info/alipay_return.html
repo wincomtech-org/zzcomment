@@ -14,12 +14,34 @@
 					<p>支付宝交易号{$trade.trade_no}</p>
 					<p>交易金额{$trade.total_fee}</p>
 				 
-					<p>回到<a href="{:U('User/Info/index')}">个人中心</a></p>
+					<p id="zz-return">
+						回到<a href="{:U('User/Info/index')}">个人中心</a>
+						<eq name='status' value="1">
+						剩余<span>10</span>秒自动返回
+						</eq>
+						
+					</p>
 				</div>
 			</div>
 		</div>
 	<!-- main end --> 
 	<tc_include file="Public:footer" />
- 
+ <script>
+ var status=parseInt("{$status}");
+ if(status==1){
+	 var s=parseInt($('#zz-return span').text());
+	 var inter=setInterval(getRTime,1000); 
+ }
+
+ function getRTime(){
+	s--;
+	$('#zz-return span').text(s);
+    if(s<=0){
+      /***倒计时结束***/ 
+      location.href=$('#zz-return a').attr('href');
+      clearInterval(inter); 
+    }
+}
+ </script>
 </body>
 </html>

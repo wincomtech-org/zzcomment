@@ -1,14 +1,19 @@
-<tc_include file="Public/user_head" />
+<tc_include file="Public/user_head" /> 
 	<div class="per_right rt">
-                <div class="per_rnav"><p>充值</p></div>
+                <div class="per_rnav">
+                 
+                	<a class="rb" href="{:U('User/Info/pay')}">充值</a>
+                	<a class="" href="{:U('User/Info/paylist')}">消费/充值记录</a>
+                	 
+                </div>
                 <div class="pay_main">
-                    <div>充值的面额：</div>
+                    <div>充值的面额(默认￥100.00)：</div>
                     <ul class="acount">
-                        <li><a  href="#" hide="50">¥&nbsp;50</a></li>
-                        <li><a href="#" hide="100">100</a></li>
-                        <li><a href="#" hide="200">200</a></li>
-                        <li><a href="#" hide="500">500</a></li>
-                        <li><a class="ot" href="#" >其他金额</a></li>
+                        <li><a  href="javascript:void(0);" hide="50">¥&nbsp;50</a></li>
+                        <li><a href="javascript:void(0);" hide="100">¥&nbsp;100</a></li>
+                        <li><a href="javascript:void(0);" hide="200">¥&nbsp;200</a></li>
+                        <li><a href="javascript:void(0);" hide="500">¥&nbsp;500</a></li>
+                        <li><a class="ot" href="javascript:void(0);" >其他金额</a></li>
                         <div class="clear"></div>
                     </ul>
                     <form action="{:U('User/Info/alipay')}" method="post" class="pay_cont_m">
@@ -16,8 +21,8 @@
                         <p class="mt15">支付金额:<span class="pri red"></span></p>
                         <p >选择支付方式：</p>
                         <input type="radio" name="payment" value="alipayjs" checked id="alipay"> <img src="__TPML__Public/img/zhi.png" alt="支付宝即时到账" title="支付宝即时到账">
-                         <input type="radio" name="payment" value="weixin_native" id="weixin" onchange="wei()"  style="margin-left:50px;"> <img src="__TPML__Public/img/wei.png" alt="微信扫码支付二" title="微信扫码支付二">
-                       
+                        <!--  <input type="radio" name="payment" value="weixin_native" id="weixin" onchange="wei()"  style="margin-left:50px;"> <img src="__TPML__Public/img/wei.png" alt="微信扫码支付二" title="微信扫码支付二">
+                        -->
                         <input type="hidden" name="money" value="100">
                         <div class="pay_f">
                         <input type="submit"  value="立即充值" class="btn_normal">

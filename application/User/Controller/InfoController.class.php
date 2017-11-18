@@ -300,4 +300,18 @@ class InfoController extends MemberbaseController {
             
     }
     
+    //支付记录
+    public function paylist(){
+        $m=M('Pay');
+        $where=array('uid'=>($this->userid));
+        $total=$m->where($where)->count();
+        $page = $this->page($total, 5);
+        $list=$m->where($where)->order('id desc')->limit($page->firstRow,$page->listRows)->select();
+        
+        $this->assign('page',$page->show('Admin'));
+        $this->assign('list',$list);
+        
+        $this->display();
+    }
+    
 }

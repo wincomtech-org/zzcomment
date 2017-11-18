@@ -69,7 +69,7 @@ class ListController extends HomebaseController {
 	    if($char!=''){
 	        $where_cate['first_char']=$char;  
 	    }
-	    $cate1=$m_cate->where($where_cate)->order('first_char asc')->select(); 
+	    $cate1=$m_cate->where($where_cate)->order('sort desc,first_char asc')->select(); 
 	    
 	    //如果有点击分类
 	    if($cid1>0){

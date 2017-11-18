@@ -18,10 +18,15 @@
 				<div class="control-group">
 					<label class="control-label">内容</label>
 					<div class="controls">
-						<textarea  style="width:80%" name="content" id="content1" required>{$info.content}</textarea>
+						<textarea  style="width:80%" name="content" id="content1">{$info.content}</textarea>
 					</div>
 				</div>
-				
+				<div class="control-group">
+					<label class="control-label">排序</label>
+					<div class="controls">
+						<input type="text" name="sort" value="{$info.sort}">
+					</div>
+				</div>
 			</fieldset>
 			<div class="form-actions">
 				<input type="hidden" name="id" value="{$info.id}" />
