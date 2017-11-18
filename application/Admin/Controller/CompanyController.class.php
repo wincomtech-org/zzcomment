@@ -14,7 +14,7 @@ class CompanyController extends AdminbaseController {
     public function _initialize() {
         parent::_initialize();
         $this->m = M('Company');
-        $this->order='type asc,name asc,sort desc';
+        $this->order='sort desc,type asc,name asc';
         
     }
     
@@ -72,21 +72,20 @@ class CompanyController extends AdminbaseController {
    
     //添加配置
     public function add(){
-        $list=C('COMPANY');
-        $this->assign('list',$list);
+        
         $this->display();
     }
     
     //添加配置执行
     public function add_do(){
-        $list=C('COMPANY');
+        
         $m=$this->m;
-        $name=I('name','');
+        
         $data=array(
-            'name'=>$name,
+            'name'=>I('name',''),
             'title'=>I('title',''),
-            'sort'=>I('sort',0),
-            'type'=>$list[$name],
+            'sort'=>I('sort',0,'intval'),
+            'type'=>I('type',1,'intval'),
         );
         $row=$m->data($data)->add();
         if($row>=1){

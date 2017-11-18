@@ -4,7 +4,7 @@
 	<div class="wrap js-check-wrap">
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="{:U('index')}">配置列表</a></li>
-			 
+			 <li><a href="{:U('add')}">添加配置</a></li>
 		</ul>
         
 		<table class="table table-hover table-bordered">
@@ -28,7 +28,9 @@
                     <td>{$vo.title}</td>      
                     <td>{$vo.content}</td> 
                     <td>
-                    <a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a> 
+                    <a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a>
+                     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
+                     <a class="js-ajax-dialog-btn"  href="{:U('del',array('id'=>$vo['id']))}" data-msg="确认删除吗？">删除</a> 
                     </td>
 					
 				</tr>
