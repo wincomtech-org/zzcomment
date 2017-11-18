@@ -41,11 +41,11 @@ if($verify_result) {//验证成功
                  $mysqli->query($sql);
                  $paypayid=$mysqli->insert_id;
                  if($paypayid>0){
-                     error_log('$uid'.$uid.'$paypayid'.$paypayid.$line,3,$log);
+                    
                      $content='支付宝充值，充值订单号'.$out_trade_no.'支付宝交易号'.$trade_no;
-                     
+                     error_log('$uid'.$uid.'$paypayid'.$paypayid.$content.$line,3,$log);
                      $sql="insert into cm_pay(uid,money,time,content)
-                     values({$uid},{$total_fee},{$time},'{$content}')";
+                      values({$uid},{$total_fee},{$time},'{$content}')";
                      $mysqli->query($sql);
                      $payid=$mysqli->insert_id;
                      if($payid>0){
