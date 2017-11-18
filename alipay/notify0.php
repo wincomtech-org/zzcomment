@@ -34,8 +34,7 @@ if($verify_result) {//验证成功
                  $uid=$arr[0];
                  
                  $mysqli->autocommit(FALSE);
-                 //$mysqli->rollback();
-                 //$mysqli->commit();
+                
                  $sql="insert into cm_paypay(uid,oid,money,trade_no,buyer_id,time,type)
                  values({$uid},'{$out_trade_no}',{$total_fee},'{$trade_no}','{$buyer_id}',{$time},1)";
                  $mysqli->query($sql);
@@ -47,10 +46,9 @@ if($verify_result) {//验证成功
                      $sql="insert into cm_pay(uid,money,time,content)
                       values({$uid},{$total_fee},{$time},'{$content}')";
                      $mysqli->query($sql);
-                     $er=$mysqli->error;
-                     error_log($er.$line,3,$log);
+                    
                      $payid=$mysqli->insert_id;
-                     if($payid>0){
+                     if($payid>0 && $payid!=$paypayid){
                          error_log('$uid'.$uid.'$$payid'.$payid.$line,3,$log);
                          $sql="select account from cm_users where id={$uid}";
                          $res=$mysqli->query($sql);
@@ -68,12 +66,16 @@ if($verify_result) {//验证成功
                               error_log($out_trade_no."用户余额保存失败".$line,3,$log);
                          }
                      }else{
+                         $er=$mysqli->error;
+                         error_log('保存pay错误信息'.$er.$line,3,$log);
                          $mysqli->rollback();
                         
                          error_log($out_trade_no."用户收支记录保存失败".$line,3,$log);
                      }
                      //
                  }else{
+                     $er=$mysqli->error;
+                     error_log('保存paypay错误信息'.$er.$line,3,$log);
                      $mysqli->rollback(); 
                      error_log($out_trade_no."但网站支付记录保存失败".$line,3,$log);
                  }
