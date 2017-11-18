@@ -42,7 +42,7 @@ function powAmount(amount, _pow_) {
     var amount_bak = amount;
     var base = 10;
     if (isNaN(amount)) {
-        return "500.00";
+        return "100.00";
     }
     amount = Math.round((amount - Math.floor(amount)) * Math.pow(base, _pow_));
     amount = amount < 10 ? '.0' + amount : '.' + amount
