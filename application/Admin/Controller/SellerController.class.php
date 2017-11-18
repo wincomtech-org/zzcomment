@@ -544,6 +544,28 @@ class SellerController extends AdminbaseController {
                     $this->error('审核失败，请刷新重试');
                     exit;
                 } 
+                //领用赠余额
+                $gift=M('Company')->where(array('name'=>'seller_gift'))->find();
+                if($gift['content']>0){
+                    $m_user=M('Users');
+                    $user0=$m_user->where('id='.$info['uid'])->find();
+                    $account=bcadd($gift['content'],$user0['account']);
+                    $row_user=$m_user->data(array('account'=>$account))->where('id='.$info['uid'])->save();
+                    $data_pay=array(
+                        'uid'=>$info['uid'],
+                        'money'=>$gift['content'],
+                        'content'=>'成功领用店铺，赠送余额￥'.$gift['content'],
+                        'time'=>$time,
+                    );
+                    
+                    $row_pay=M('Pay')->add($data_pay);
+                    if($row_user!==1 || $row_pay<=0){
+                        $m->rollback();
+                        $this->error('审核失败，请刷新重试');
+                        exit;
+                    }
+                }
+                
             }else{
                 $data_action['descr']='不同意'.$desc;
                 $data_msg['content'].='审核不通过';
