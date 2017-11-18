@@ -102,6 +102,8 @@ class GoodsController extends MemberbaseController {
                     'time'=>$time,
                     'content'=>'推荐商品'.$id.'-'.$info['name'], 
                 );
+                $m_user->commit();
+            }
                 M('Pay')->add($data_pay);
                 $data_top0=array(
                     'pid'=>$id,
@@ -110,8 +112,7 @@ class GoodsController extends MemberbaseController {
                     'price'=>$price,
                 );
                 M('TopGoods0')->add($data_top0);
-                $m_user->commit();
-            }
+               
         }else{
             if(!empty($row_user)){
                 $m_user->rollback();
