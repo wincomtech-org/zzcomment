@@ -13,15 +13,15 @@ function preview(file,o)
     }  
 }
 $(function () {
-    $("#price").val(powAmount(1000, 2));
+    $("#price").val(toDecimal2(100));
     $(".acount li a").click(function () {
         $(".other").hide();
         $(".acount li a").removeClass("ss");
         $(this).addClass("ss");
             var money = $(this).attr("hide") < 1 ? 1 : $(this).attr("hide");
-        $(".pri").html("￥" + powAmount(money, 2));
-        $("#price").val(powAmount(money, 2));
-        $("input[name='money']").val(powAmount(money, 2));
+        $(".pri").html("￥" + toDecimal2(money));
+        $("#price").val(toDecimal2(money));
+        $("input[name='money']").val(toDecimal2(money));
     });
     $(".acount li a.ot").click(function () {
         $(".other").show();
@@ -30,14 +30,14 @@ $(function () {
         var money = $(this).val();
             if (money < 1) {
                 money = 1;
-                $(this).val(powAmount(money, 2));
+                $(this).val(toDecimal2(money));
             } else {
-                $(this).val(powAmount(money, 2));
+                $(this).val(toDecimal2(money));
             }
-        $(".pri").html("￥" + powAmount(money, 2));
-        $("input[name='money']").val(powAmount(money, 2));
+        $(".pri").html("￥" + toDecimal2(money));
+        $("input[name='money']").val(toDecimal2(money));
     });
-});        
+});          
 function powAmount(amount, _pow_) {
     var amount_bak = amount;
     var base = 10;
@@ -77,10 +77,35 @@ function anycheck(form){
             total+=1;
         }
     }
-    var p1=$("#price1").text();
-    console.log(p1)
-     $("#price2").text(p1*total)
+    var money=$("#price1").text();
+    console.log(ds)
+    var ds=toDecimal2(money*total);
+     $("#price2").text(ds);
+
 }
+    //制保留2位小数，如：2，会在2后面补上00.即2.00    
+    function toDecimal2(money) {    
+        var f = parseFloat(money);    
+        if (isNaN(f)) {    
+            return "100.00";    
+        }    
+        var f = Math.round(money*100)/100;    
+        var s = f.toString();    
+        var rs = s.indexOf('.');    
+        console.log(f)
+        console.log(s)
+        console.log(rs)
+        if (rs < 0) {    
+            rs = s.length;    
+            s += '.';    
+        }    
+        console.log(s)
+        console.log(rs)
+        while (s.length <= rs + 2) {    
+            s += '0';    
+        }    
+        return s;    
+    }
 
 function wei(){
     var dd=$("#weixin").is(":checked");
