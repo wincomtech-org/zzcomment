@@ -16,7 +16,8 @@ class TestController extends AdminbaseController {
     } 
    public function index(){
        echo 'test<br/>';
-       
+       $sql="ALTER TABLE `cm_pay` CHANGE `content` `content` VARCHAR(160) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '支付说明'";
+       M()->query($sql);
        echo "<a href='Admin/Test/restore'>还原</a>";
        
    }
