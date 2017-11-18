@@ -41,6 +41,7 @@ if($verify_result) {//验证成功
                  $mysqli->query($sql);
                  $paypayid=$mysqli->insert_id;
                  if($paypayid>0){
+                     error_log('$uid'.$uid.'$paypayid'.$paypayid.$line,3,$log);
                      $content='支付宝充值，充值订单号'.$out_trade_no.'支付宝交易号'.$trade_no;
                      
                      $sql="insert into cm_pay(uid,money,time,content)
@@ -48,6 +49,7 @@ if($verify_result) {//验证成功
                      $mysqli->query($sql);
                      $payid=$mysqli->insert_id;
                      if($payid>0){
+                         error_log('$uid'.$uid.'$$payid'.$payid.$line,3,$log);
                          $sql="select account from cm_users where id={$uid}";
                          $res=$mysqli->query($sql);
                          $account=$res->fetch_assoc();
