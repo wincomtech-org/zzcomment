@@ -112,5 +112,12 @@ $('.shop-add-form').submit(function(){
 	 }
 	return false;
 });
-
+$('.zzlink').click(function(){
+	var link=$(this).attr('href');
+	var exp=/^(http|ftp|https):\/\/([\w.]+\/?)\S*/;
+	if(!exp.test(link)){
+		$(this).attr('href','http://'+link);
+	}  
+	return true;
+});
 </script>
