@@ -26,8 +26,8 @@
 .pms{line-height: 25px;color:#ccc;text-align: center;}
 .imgbox{width:110px;height:110px;border:none;position: relative;margin:0 auto;}
 .imgbox1{width:110px;height:110px;border-radius: 50%;border:0;background:#e5e4e4;overflow: hidden;}
-.imgbox2{width:200px;position: relative;margin-right:10px;top:15px;}
-.imgbox3{width:200px;position: relative;top:15px;}
+.imgbox2{width:200px;position: relative;margin-right:10px;}
+.imgbox3{width:200px;position: relative;}
 .imgbox4{width:200px;height:120px;position: relative;}
 .imgbox5{width:200px;height:120px;position: relative;}
 .imgbox6{width:290px;position: relative;}
@@ -45,8 +45,8 @@
 .btn{position: absolute;left:0;top:0;display: inline-block;z-index: 9;text-align: center;}
 .btn span{display: inline-block;color:#fff;font-size:20px;width:100%;line-height: 25px;background:#f00;}
 .btn1{width:110px;height:110px;line-height: 110px;}
-.btn2{width:200px;height:120px;line-height: 120px;}
-.btn3{width:200px;height:120px;line-height: 120px;}
+.btn2{width:200px;height:120px;line-height: 120px;top:15px;}
+.btn3{width:200px;height:120px;line-height: 120px;top:15px;}
 .btn4{width:200px;height:120px;line-height: 120px;}
 .btn5{width:200px;height:120px;line-height: 120px;}
 .btn6{width:290px;height:175px;line-height: 175px;}
