@@ -10,7 +10,7 @@
 			
 			<tc_include file="Public:seller_home" />
 				<div class="shop-head head1">
-					<span class="">推荐商品</span>
+					<span class="">{$seller_info.goods_top}</span>
 				</div>
 				<div class="column-product-wrapper">
 					<ul class="column-product-container">
@@ -32,7 +32,7 @@
  				<tc_include file="Public/tocomment" />
 				 
 				<div class="shop-head head5">
-					<span class="">网友点评（{$count_comment}）</span>
+					<span class="">{$seller_info.comment_top}（{$count_comment}）</span>
 				</div>
 				<div class="shop-colcontainer">
 				 <tc_include file="Public/comment" />

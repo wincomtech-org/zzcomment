@@ -40,15 +40,21 @@
 	                   <td> {$vo.create_time|date="Y-m-d H:i:s",###}</td>
 	                    <td>
 	                    <eq name="vo.fid" value="0">
-	                    	<a href="{:U('add',array('fid'=>$vo['id']))}">添加子类</a> 
-	                    <else/>
-	                    	<a href="{:U('Seller/index',array('fid2'=>$vo['id'],'fid1'=>$vo['fid']))}">所属店铺</a>
-	                    </eq>	
+	                    	<a href="{:U('add',array('fid'=>$vo['id']))}">添加子类</a>
 	                    	&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
 	                    	<a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a> 
 	                    	&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+	                    	<span>删除</span>
+	                     
+	                    <else/>
+	                    	<a href="{:U('Seller/index',array('fid2'=>$vo['id'],'fid1'=>$vo['fid']))}">所属店铺</a>
+	                   		&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+	                    	<a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a> 
+	                    	&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
 	                    	<a  class="js-ajax-dialog-btn" href="{:U('del',array('id'=>$vo['id']))}" data-msg="确认删除吗？">删除</a> 
-	                    </td>
+	               
+	                    </eq>	
+	                  </td>
 						
 					</tr>
 				</foreach>

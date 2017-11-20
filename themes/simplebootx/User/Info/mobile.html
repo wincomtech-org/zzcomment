@@ -82,7 +82,7 @@
 						case 1:break;
 						case 2: 
 							status=false;
-						  	$("input[name='password']").parent("div").next(".lg-infor").text("请填写正确的密码！");
+						  	$("input[name='telecaptcha']").parent("div").next(".lg-infor").text("请填写正确的密码！");
 						  	break;
 						defult:
 							status=false;
@@ -96,6 +96,36 @@
 				 if( status==false){
 					 return false;
 				 }
+				 $.ajax({
+						url: "{:U('User/Public/ajaxMobile')}",
+						type:'post',
+						cacash:false,
+						async:false,	//不设置则默认true代表异步,false同步
+						data:{'mobile':mobile},
+						dataType:'json',
+						error:function(data){
+							alert('错误，刷新页面');
+							location.reload(true);
+						},
+						success:function(data){
+							switch(data.errno){
+							case 2:status=true;break;
+							case 1: 
+								status=false;
+							  	$("input[name='telecaptcha']").parent("div").next(".lg-infor").text(data.error);
+							  	break;
+							defult:
+								status=false;
+							  	location.reload(true);
+							  	break;
+							}
+						}
+							 
+						 
+					});
+					 if( status==false){
+						 return false;
+					 }
 				 $.ajax({
 						url: "{:U('User/Public/ajaxSend')}",
 						type:'post',
@@ -114,6 +144,7 @@
 							  	 
 							}else{
 								send=1;
+								status=true;
 							}
 						}
 					});

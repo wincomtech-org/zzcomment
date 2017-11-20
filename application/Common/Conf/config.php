@@ -98,11 +98,66 @@ $configs= array(
         'WEBSITE'=>'http://www.zypjw.cn/',
         'PAGE'=>5,          //前台展示列表分页，动态，评论
         'SIZE'=>4096000,    //上传文件大小4M
-        'YUNPIANKEY'=>'697655fbf93ebaedbaa7e411ad7cb619',
+     
         'MOBILE'=>'/^(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/',  //手机号正则
         'PSW'=>'/^([a-zA-Z0-9]|[._]){6,15}$/',  //密码正则
         'USERNAME'=>'/^[\dA-Za-z_\u4e00-\u9fa5]{2,14}$/',   //用户名
         'TIMEOUT'=>400, //操作超时，400s
+    'YUNPIANKEY'=>'697655fbf93ebaedbaa7e411ad7cb619',
+        //行政，企业，个体，个人的前台显示
+        'SELLERINFO1'=>array(
+            'home'=>'官方首页',
+            'news'=>'官方动态',
+            'goods'=>'官方展示',
+            'comment'=>'网友点评',
+            'scope'=>'服务范围',
+            'bussiness_time'=>'服务时间',
+            'goods_top'=>'最新官方展示',
+            'comment_top'=>'网友点评',
+            'goods_all'=>'官方展示',
+            'corporation'=>'法人',
+            'news_top'=>'最新官方动态',
+        ),
+    'SELLERINFO2'=>array(
+        'home'=>'企业首页',
+        'news'=>'企业动态',
+        'goods'=>'产品中心',
+        'comment'=>'企业评级',
+        'scope'=>'经营范围',
+        'bussiness_time'=>'经营时间',
+        'goods_top'=>'企业最新产品',
+        'comment_top'=>'会员评级',
+        'goods_all'=>'所有产品',
+        'corporation'=>'法人',
+        'news_top'=>'最新企业动态',
+    ),
+    'SELLERINFO3'=>array(
+        'home'=>'店铺首页',
+        'news'=>'店铺动态',
+        'goods'=>'店铺商品',
+        'comment'=>'最新评级',
+        'scope'=>'经营范围',
+        'bussiness_time'=>'经营时间',
+        'goods_top'=>'店铺最新商品',
+        'comment_top'=>'会员评级', 
+        'goods_all'=>'所有商品',
+        'corporation'=>'法人',
+        'news_top'=>'最新店铺动态',
+    ),
+    'SELLERINFO4'=>array(
+        'home'=>'个人首页',
+        'news'=>'店铺动态',
+        'goods'=>'店铺商品',
+        'comment'=>'会员评级',
+        'scope'=>'经营范围',
+        'bussiness_time'=>'经营时间',
+        'goods_top'=>'店铺最新商品',
+        'comment_top'=>'会员评级',
+        'goods_all'=>'所有商品',
+        'corporation'=>'个人',
+        'news_top'=>'最新店铺动态',
+        
+    ),
       
     
           

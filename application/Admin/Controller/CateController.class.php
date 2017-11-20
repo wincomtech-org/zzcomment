@@ -12,7 +12,7 @@ class CateController extends AdminbaseController {
 	public function _initialize() {
 	    parent::_initialize();
 	    $this->m = M('Cate');
-	    $this->order='sort desc,first_char asc';
+	    $this->order='sort desc,first_char asc,id asc';
 	}
     //分类管理首页
     public function index(){

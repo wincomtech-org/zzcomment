@@ -29,8 +29,16 @@ class SellerController extends HomebaseController {
         if(empty($info)){
            $this->error('该店铺不存在'); 
         }
-        $info['stype']=($info['cid0']==9)?'官方':'店铺';
-        $this->assign('sid',$sid)->assign('info',$info);
+       
+        //行政，企业，个体，个人的前台显示
+        switch($info['cid0']){
+            case 9:$seller_info=C('SELLERINFO1');break;
+            case 10:$seller_info=C('SELLERINFO2');break;
+            case 4:$seller_info=C('SELLERINFO3');break;
+            case 8:$seller_info=C('SELLERINFO4');break;
+            default:$this->error('该店铺不存在'); break;
+        }
+        $this->assign('sid',$sid)->assign('info',$info)->assign('seller_info',$seller_info);
         //店铺浏览量+1
         
         $m_seller=M('Seller'); 

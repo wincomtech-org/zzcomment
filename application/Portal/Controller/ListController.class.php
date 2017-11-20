@@ -80,7 +80,9 @@ class ListController extends HomebaseController {
 	                $cids[]=$v['id'];
 	            }
 	            $where_seller['cid']=array('in',$cids);
-	        } 
+	        }else{
+	            $where_seller['cid']=array('eq',0);
+	        }
 	    } 
 	    $total=$m_seller->where($where_seller)->count();
 	    $page = $this->page($total, 20);

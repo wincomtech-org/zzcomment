@@ -88,7 +88,8 @@ function checkMsg($num,$mobile,$type){
  *  */
 function sendMsg($mobile,$type){
     header("Content-Type:text/html;charset=utf-8");
-    $apikey = "697655fbf93ebaedbaa7e411ad7cb619"; //修改为您的apikey(https://www.yunpian.com)登录官网后获取
+    //$apikey = "697655fbf93ebaedbaa7e411ad7cb619"; //修改为您的apikey(https://www.yunpian.com)登录官网后获取
+    $apikey=C('YUNPIANKEY');
     $data=array('errno'=>0,'error'=>'短信发送失败');
     $time=time();
     $num='';
@@ -131,9 +132,14 @@ function sendMsg($mobile,$type){
     }
     
     $array = json_decode($arr,true);
-    if((isset($array['code'])) && $array['code']==0) {
-        $data=array('errno'=>1,'error'=>'发送成功');
-        session('msgCode',array($num,$time,$mobile,$type));
+    if(isset($array['code'])) {
+        if($array['code']==0){
+            $data=array('errno'=>1,'error'=>'发送成功');
+            session('msgCode',array($num,$time,$mobile,$type));
+        }else{
+            $data=array('errno'=>2,'error'=>$array['msg']);
+        }
+        
     } else{
         $data=array('errno'=>2,'error'=>'发送失败，请检查手机号或一小时内发送超过3次短信');
     }
