@@ -26,8 +26,8 @@
 .pms{line-height: 25px;color:#ccc;text-align: center;}
 .imgbox{width:110px;height:110px;border:none;position: relative;margin:0 auto;}
 .imgbox1{width:110px;height:110px;border-radius: 50%;border:0;background:#e5e4e4;overflow: hidden;}
-.imgbox2{width:200px;height:120px;position: relative;margin-right:10px;}
-.imgbox3{width:200px;height:120px;position: relative;}
+.imgbox2{width:200px;position: relative;margin-right:10px;top:15px;}
+.imgbox3{width:200px;position: relative;top:15px;}
 .imgbox4{width:200px;height:120px;position: relative;}
 .imgbox5{width:200px;height:120px;position: relative;}
 .imgbox6{width:290px;position: relative;}
