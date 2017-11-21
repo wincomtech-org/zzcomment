@@ -1,16 +1,4 @@
-DROP TABLE IF EXISTS `cm_paypay`;--end_flag--
-CREATE TABLE `cm_paypay` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '充值',
-  `oid` varchar(20) NOT NULL COMMENT '订单号',
-  `money` decimal(10,2) NOT NULL COMMENT '充值金额',
-  `trade_no` varchar(65) NOT NULL COMMENT '交易号',
-  `buyer_id` varchar(30) NOT NULL COMMENT '购买账号id',
-  `time` int(11) NOT NULL,
-  `type` smallint(1) NOT NULL DEFAULT '1' COMMENT '1支付宝，2微信',
-  `uid` int(11) NOT NULL COMMENT '用户',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;--end_flag--
-ALTER TABLE `cm_pay` ENGINE = INNODB;--end_flag--
-ALTER TABLE `cm_paypay` ENGINE = INNODB;--end_flag--
-INSERT INTO `cm_paypay` VALUES ('1', '11-20171117-115058', '0.01', '2017111721001104590505314571', '2088902171858597', '1510890685', '1', '11');--end_flag--
- 
+ALTER TABLE `cm_seller` CHANGE `link` `link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '店铺链接';--end_flag--
+ALTER TABLE `cm_seller_apply` CHANGE `link` `link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '店铺链接';--end_flag--
+ALTER TABLE `cm_seller_edit` CHANGE `link` `link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '店铺链接';--end_flag--
+ALTER TABLE `cm_seller_apply` CHANGE `link` `link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '店铺链接';--end_flag--
