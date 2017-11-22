@@ -16,7 +16,18 @@ class TestController extends AdminbaseController {
     } 
    public function index(){
        echo 'test<br/>';
+       $time=time();
       
+      
+      $data=array(
+          'status'=>2,
+          'pid'=>24,
+          'create_time'=>$time,
+          'start_time'=>$time,
+          'end_time'=>strtotime('2017-11-27')-2,
+          'price'=>100
+      );
+      M('TopSeller')->add($data);
        echo "<a href='Admin/Test/restore'>还原</a>";
        
    }
