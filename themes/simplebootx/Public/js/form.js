@@ -206,7 +206,7 @@ return false;
 }
     };
 function send3(){ 
-    return(sname1()&&fname1()&&jyfw1()&&jysj1()&&phone1()&&tell1()&&shopaddr1()&&asd())
+    return(sname1()&&fname1()&&jyfw1()&&jysj1()&&phone1()&&shopaddr1()&&asd())
 }
 function sp(){
 var cval1= $("#p5").val(); 
