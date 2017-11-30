@@ -216,11 +216,11 @@ function send3(){
 function sp(){
 var cval1= $("#p5").val(); 
 if(cval1!=""){ //如果非空 显示正确
-$(".msg3").text("");
+$(".msg11").text("");
     return true;
 }
 else{
-$(".msg3").text("请上传商品图片");//显示必填
+$(".msg11").text("请上传证明");//显示必填
 return false;
 }
     };
