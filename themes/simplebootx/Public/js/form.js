@@ -1,8 +1,15 @@
 function name1(){
-var cval = $("input[name='usename']").val();    
-if(cval!=""){ //如果非空 显示正确
-$(".msg1").text("");
-    return true;
+var cval = $("input[name='user_login']").val(); 
+var len=$("input[name='user_login']").val().length;  
+var telReg = cval.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
+if(len>=2&&len<=14){ //如果非空 显示正确
+    if(telReg == null){
+        $(".msg1").text("");
+        return true;
+    }else{
+        $(".msg1").text("用户名不能为手机号");
+        return false;
+         }
 }
 else{
 $(".msg1").text("请填写用户名");//显示必填
@@ -15,9 +22,7 @@ var telReg = cval.match(/^\d{5,10}$/);
 //如果手机号码不能通过验证
 if(cval!=""){ //如果非空 显示正确
 $(".msg2").text("");
-    
     if(telReg == null){
-    
 $(".msg2").text("填写错误");
     return false;
     }
