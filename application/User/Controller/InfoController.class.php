@@ -29,9 +29,22 @@ class InfoController extends MemberbaseController {
        
         set_time_limit(C('TIMEOUT'));
         $time=time();
-        $user0=M('Users')->where('id='.($this->userid))->find();
         
-       
+        $user_login=trim(I('user_login',''));
+        if(preg_match(C('MOBILE'), $user_login)==1){
+            $this->error('用户名不能为手机号样式');
+        }
+        //用户名需过滤的字符的正则
+        $stripChar = '?<*.>\'"';
+        if(preg_match('/['.$stripChar.']/is', $user_login)==1){
+            $this->error('用户名格式错误，请去除非法字符');
+            
+        }
+        $strlen=mb_strlen($user_login);
+        if($strlen<2 || $strlen>14){
+            $this->error('用户名格式错误，请输入2到14位字符');
+        }
+        
         if(!empty($_FILES['IDpic1']['name']) || !empty($_FILES['IDpic2']['name']) || !empty($_FILES['IDpic3']['name']) || !empty($_FILES['IDpic8']['name'])){
              
             $subname=date('Y-m-d',$time);
@@ -63,7 +76,7 @@ class InfoController extends MemberbaseController {
             'qq'=>I('qq',''),
             
         );
-        $user_login=I('user_login','');
+       
         $m=M('Users');
         if($user_login!=session('user.user_login')){
             $tmp=$m->where(array('user_login'=>$user_login))->find();
