@@ -115,10 +115,15 @@ class RegisterController extends HomebaseController {
 	    }
 	    $strlen=mb_strlen($username);
 	    if($strlen<2 || $strlen>14){
-	        $data=array('errno'=>0,'error'=>'用户名格式错误'.$strlen);
+	        $data=array('errno'=>0,'error'=>'用户名长度错误');
 	        $this->ajaxReturn($data);
 	        exit;
 	    } 
+	    if(preg_match(C('MOBILE'), $username)==1){
+	        $data=array('errno'=>0,'error'=>'用户名格式错误');
+	        $this->ajaxReturn($data);
+	        exit;
+	    }
 	    if(preg_match(C('PSW'), $password)!=1){
 	        $data=array('errno'=>0,'error'=>'密码格式错误');
 	        $this->ajaxReturn($data);
