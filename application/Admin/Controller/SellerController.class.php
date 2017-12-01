@@ -189,7 +189,8 @@ class SellerController extends AdminbaseController {
     }
     //删除店铺
     public function seller_del(){
-      
+        //设置超时
+        set_time_limit(300);
         $id=I('id',0,'intval');
        
         $m=$this->m;
@@ -214,48 +215,7 @@ class SellerController extends AdminbaseController {
         $desc='删除了'.$desc;
         $row=$m->where('id='.$id)->delete();
         if($row===1){
-            $where='sid='.$id;
-            //删除店铺后还要删除店铺动态，，商品，点评回复，各种推荐
-            //店铺推荐
-            M('TopSeller')->where('pid='.$id)->delete();
-            M('SellerEdit')->where($where)->delete();
-            M('SellerApply')->where($where)->delete(); 
-            //商品
-            $m_goods=M('Goods');
-            $goods=$m_goods->field('id')->where($where)->select();
-            $m_goods->where($where)->delete();
-            $ids=array();
-            foreach ($goods as $v){
-                $ids[]=$v['id'];
-            }
-            if(!empty($ids)){
-                M('TopGoods')->where(array('pid'=>array('in',$ids)))->delete();
-                M('TopGoods0')->where(array('pid'=>array('in',$ids)))->delete();
-            }
-            
-            //商品
-            $m_active=M('Active');
-            $goods=$m_active->field('id')->where($where)->select();
-            $m_active->where($where)->delete();
-            $ids=array();
-            foreach ($goods as $v){
-                $ids[]=$v['id'];
-            }
-            if(!empty($ids)){
-                M('TopActive')->where(array('pid'=>array('in',$ids)))->delete();
-                M('TopActive0')->where(array('pid'=>array('in',$ids)))->delete();
-            }
-            //点评,还要删除回复
-            $m_comment=M('Comment');
-            $comments=$m_comment->field('id')->where($where)->select();
-            $m_comment->where($where)->delete();
-            $ids=array();
-            foreach ($comments as $v){
-                $ids[]=$v['id'];
-            }
-            if(!empty($ids)){
-                M('Reply')->where(array('cid'=>array('in',$ids)))->delete();
-            }
+            seller_del($info);
             $m->commit();
             $data_action['descr']=$desc;
             $m_action->add($data_action);

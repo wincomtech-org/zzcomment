@@ -50,10 +50,12 @@ class NewsController extends MemberbaseController {
         $m=$this->m;
         $id=I('id',0);
         $where='id='.$id; 
+        $info=$m->where($where)->find();
         $row=$m->where($where)->delete();
         if($row===1){
             $data=array('errno'=>1,'error'=>'删除成功');
-             M('TopActive')->where('pid='.$id)->delete();
+             
+             active_del($info);
         }else{
             $data=array('errno'=>2,'error'=>'删除失败');
         }

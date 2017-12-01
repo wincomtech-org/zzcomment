@@ -16,11 +16,16 @@ class TestController extends AdminbaseController {
     } 
    public function index(){
        echo 'test<br/>';
-       $time=time();
       
-       
+       echo "<a href='Admin/Test/test'>执行</a>";
        echo "<a href='Admin/Test/restore'>还原</a>";
        
+   }
+   //数据库还原
+   public function test()
+   {
+       echo 'test<br/>';
+       exit;
    }
    //数据库还原
    public function restore()

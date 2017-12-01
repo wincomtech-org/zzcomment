@@ -144,21 +144,12 @@ class CommentController extends AdminbaseController {
                 } 
                 break;
             case 3:
-                //删除其关联的回复也需删除
-               
-                
+                //删除其关联的回复也需删除 
                 $desc.='删除';
                 $row=$m->where('id='.$id)->delete();
                 //之前审核通过且未过期的动态才计算退置顶费
-                if($row===1 && $info['status']=2){
-                    //删除关联的回复 
-                    $row_link=M('Reply')->where('cid='.$id)->delete();
-                    if($row_link===false){
-                        $m->rollback();
-                        $this->error('操作失败，请刷新重试');
-                    }elseif($row_link>=1){
-                        $desc.='，且删除关联的回复';
-                    } 
+                if($row===1){
+                    comment_del($info); 
                 } 
                 break;
         }

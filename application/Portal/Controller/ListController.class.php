@@ -207,7 +207,7 @@ class ListController extends HomebaseController {
 	    $list=D('Comment0View')->where($where_comment)->order('id desc')->limit($page->firstRow,$page->listRows)->select();
 	    $m_reply=D('Reply0View');
 	    foreach ($list as $k=>$v){
-	        $list[$k]['reply']=$m_reply->where('cid='.$v['id'])->select();
+	        $list[$k]['reply']=$m_reply->where('cid='.$v['id'])->order('id desc')->select();
 	    }
 	     
 	    $this->assign('list_comment',$list)

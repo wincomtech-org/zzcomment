@@ -9,6 +9,7 @@ class IndexController extends HomebaseController {
 	
     //首页
 	public function index() {
+	     
 	     $m=M();
 	    $time=time();
 	    //banner图
@@ -100,7 +101,7 @@ class IndexController extends HomebaseController {
 	    $list_comment=D('Comment0View')->where(array('status'=>2))->order('create_time desc')->limit('0,3')->select();
 	    $m_reply=D('Reply0View');
 	    foreach ($list_comment as $k=>$v){
-	        $list_comment[$k]['reply']=$m_reply->where('cid='.$v['id'])->select();
+	        $list_comment[$k]['reply']=$m_reply->where('cid='.$v['id'])->order('id desc')->select();
 	    }
 	    //最新动态
 	   
@@ -173,10 +174,11 @@ class IndexController extends HomebaseController {
         }
         $uid=empty(session('user.id'))?0:session('user.id');
         $ip=get_client_ip(0,true);
-        $time=time();
+        $time=time(); 
+        $content0=str_replace(C('FILTER_CHAR'), '**', $content);
         $add=array(
             'uid'=>$uid,
-            'content'=>$content,
+            'content'=>$content0,
             'cid'=>$cid,
             'create_time'=>$time,
             'ip'=>$ip,
@@ -184,13 +186,14 @@ class IndexController extends HomebaseController {
         $row=M('Reply')->add($add);
         if($row>=1){
             $uname=($uid==0)?'游客'.$ip:session('user.user_login');
-            
+          
+           
             $data=array(
                 'errno'=>1,
                 'error'=>'回复成功',
                 'uname'=>$uname,
                 'time'=>date('Y-m-d',$time),
-                'content'=>$content,
+                'content'=>$content0,
                 'cid'=>$cid,
                 
             );

@@ -98,6 +98,7 @@ class ActiveController extends AdminbaseController {
                 $data_action['desc']='用户找不到，删除了'.$desc;
                 $row=$m->where('id='.$id)->delete();
                 if($row===1){
+                    active_del($info);
                     M('AdminAction')->add($data_action);
                     if($url=='top'){
                         $this->success('删除成功');
@@ -147,11 +148,7 @@ class ActiveController extends AdminbaseController {
                         $price=bcadd($price, $v['price']);
                     }
                     
-                    $row_top=$m_top_active->where('pid='.$id)->delete();
-                    if($row_top===false){
-                        $m->rollback();
-                        $this->error('操作失败，请刷新重试');
-                    }
+                    
                     //应通知用户消息，
                     $data_msg=array(
                         'uid'=>$user['id'],
@@ -183,9 +180,8 @@ class ActiveController extends AdminbaseController {
                          
                     }
                     M('Msg')->add($data_msg);
-                  
-                    M('TopActive0')->where('pid='.$id)->delete();
-                    
+                   
+                    active_del($info);
                     $m->commit();
                 }elseif($row===1){
                     $m->commit();

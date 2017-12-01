@@ -103,7 +103,7 @@ $configs= array(
         'PSW'=>'/^([a-zA-Z0-9]|[._]){6,15}$/',  //密码正则
         'USERNAME'=>'/^[\dA-Za-z_\u4e00-\u9fa5]{2,14}$/',   //用户名
         'TIMEOUT'=>400, //操作超时，400s
-     
+    
         //行政，企业，个体，个人的前台显示
         'SELLERINFO1'=>array(
             'home'=>'官方首页',

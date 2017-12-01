@@ -71,7 +71,7 @@ class SellerController extends HomebaseController {
 	     $list_comment=D('Comment0View')->where($where_comment)->order('create_time desc')->limit('0,2')->select();
 	     $m_reply=D('Reply0View');
 	     foreach ($list_comment as $k=>$v){
-	         $list_comment[$k]['reply']=$m_reply->where('cid='.$v['id'])->select();
+	         $list_comment[$k]['reply']=$m_reply->where('cid='.$v['id'])->order('id desc')->select();
 	     }
 	     $this->assign('seller_flag','home')
 	       ->assign('list_goods',$list_goods)
@@ -144,7 +144,7 @@ class SellerController extends HomebaseController {
         $list=D('Comment0View')->where($where_comment)->order('id desc')->limit($page->firstRow,$page->listRows)->select();
         $m_reply=D('Reply0View');
         foreach ($list as $k=>$v){
-            $list[$k]['reply']=$m_reply->where('cid='.$v['id'])->select();
+            $list[$k]['reply']=$m_reply->where('cid='.$v['id'])->order('id desc')->select();
         }
         
         $this->assign('seller_flag','comment')->assign('count_comment',$total)

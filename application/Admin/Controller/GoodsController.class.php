@@ -102,6 +102,8 @@ class GoodsController extends AdminbaseController {
                 $data_action['desc']='用户找不到，删除了'.$desc;
                 $row=$m->where('id='.$id)->delete();
                 if($row===1){
+                    //删除图片和推荐置顶
+                    goods_del($info);
                     M('AdminAction')->add($data_action);
                     if($url=='top'){
                         $this->success('删除成功');
@@ -113,8 +115,7 @@ class GoodsController extends AdminbaseController {
             }
             $this->error('找不到该用户，请检查数据或删除');
         }
-        
-        
+         
         switch($review){
             case 1:
                 if($status!=0){
@@ -150,12 +151,7 @@ class GoodsController extends AdminbaseController {
                     foreach ($tmp as $v){
                         $price=bcadd($price, $v['price']);
                     }
-                    
-                    $row_top=$m_top_active->where('pid='.$id)->delete();
-                    if($row_top===false){
-                        $m->rollback();
-                        $this->error('操作失败，请刷新重试');
-                    }
+                     
                     //应通知用户消息，
                     $data_msg=array(
                         'uid'=>$user['id'],
@@ -188,10 +184,11 @@ class GoodsController extends AdminbaseController {
                     }
                     M('Msg')->add($data_msg);
                     
-                    M('TopGoods0')->where('pid='.$id)->delete();
-                    
+                    goods_del($info);
                     $m->commit();
                 }elseif($row===1){
+                    error_log('dd',3,'zz.log');
+                    goods_del($info);
                     $m->commit();
                 }
                 break;

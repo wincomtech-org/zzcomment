@@ -58,12 +58,15 @@ class CommentController extends MemberbaseController {
         }
         
         $score=I('core',1,'intval');
+        $content=I('usermessage','');
+        
+        $content0=str_replace(C('FILTER_CHAR'), '**', $content);
         $data=array(
             'files'=>$files,
             'uid'=>$uid,
             'sid'=>$sid, 
             'score'=>$score,
-            'content'=>I('usermessage',''),
+            'content'=>$content0,
             'create_time'=>time(),
             'ip'=>get_client_ip(0,true),
         );
