@@ -359,7 +359,7 @@ class InfoController extends MemberbaseController {
       
         require_once $dir.'/wxpay/lib/WxPay.Api.php';
         require_once $dir.'/wxpay/WxPay.NativePay.php';
-        require_once $dir.'/wxpay/WxPay.php';
+     
       
         $notify = new \NativePay();
         $input = new \WxPayUnifiedOrder();
