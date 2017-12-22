@@ -381,8 +381,7 @@ class InfoController extends MemberbaseController {
         $info['query_url']=U('Portal/Pay/wx_query');
         
         $this->assign('info',$info);
-        var_dump($info);
-        exit($money);
+        
         $this->display();
         
     }
