@@ -1,7 +1,6 @@
 <?php
 header("content-type:text/html;charset=utf-8");
-ini_set('date.timezone','Asia/Shanghai');
- 
+ini_set('date.timezone','Asia/Shanghai'); 
 require_once "lib/WxPay.Api.php";
 require_once "lib/WxPay.NativePay.php"; 
 
@@ -12,8 +11,7 @@ $mysqli->set_charset('utf8');
   
 $log='wx.log';
 $line=PHP_EOL;
-$time=time();
-
+$time=time(); 
  
 $data = file_get_contents("php://input"); 
 $postObj = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
