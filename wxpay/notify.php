@@ -3,7 +3,7 @@ header("content-type:text/html;charset=utf-8");
 ini_set('date.timezone','Asia/Shanghai');
  
 require_once "lib/WxPay.Api.php";
-require_once "lin/WxPay.NativePay.php"; 
+require_once "lib/WxPay.NativePay.php"; 
 
 $config=(require_once dirname(dirname(__FILE__)).'/data/conf/db.php');
 $alipay_config=$config['ALIPAY_CONFIG'];
