@@ -234,7 +234,7 @@ class InfoController extends MemberbaseController {
     public function alipay(){
         $payment=I('post.payment','');
         $money=I('post.money','');
-        if($payment!='alipayjs'){
+        if($payment!='alipay'){
             $this->error('错误地址');
         }
         if(!preg_match('/^\d{1,8}(\.\d{1,2})?$/',$money)){
