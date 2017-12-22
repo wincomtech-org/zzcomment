@@ -370,7 +370,7 @@ class InfoController extends MemberbaseController {
         $input->SetTime_start(date("YmdHis"),$time);
         $input->SetTime_expire(date("YmdHis", $time+3600));
         $input->SetGoods_tag("test");
-        $input->SetNotify_url("http://www.zypjw.cn/Portal/Pay/wx_notify.php");
+        $input->SetNotify_url("http://www.zypjw.cn/index.php/Portal/Pay/wx_notify.php");
        
         $input->SetTrade_type("NATIVE");
         $input->SetProduct_id("123456789");
