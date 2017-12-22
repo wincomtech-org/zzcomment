@@ -352,7 +352,7 @@ class InfoController extends MemberbaseController {
         $info['money']=$money;
         $info['oid']=$out_trade_no;
         $total_fee =bcmul($money,100,0);
-        $total_fee=1;
+       
         //商品描述，可空
         $body = $subject;
         $dir=getcwd();
