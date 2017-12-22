@@ -13,7 +13,7 @@ class PayController extends HomebaseController {
     /* 生成微信支付二维码 */
     public function wx_qr(){
         $dir=getcwd();
-        require_once $dir.'/wxpay/WxPay.php';
+        require_once $dir.'/wxpay/Wxpay.php';
         $wx=new \WxPay();
        $wx->qrcode(I('data'));
     }
@@ -23,7 +23,7 @@ class PayController extends HomebaseController {
      
         $arr['oid']=I('oid');
         $dir=getcwd();
-        require_once $dir.'/wxpay/WxPay.php';
+        require_once $dir.'/wxpay/Wxpay.php';
         $wx=new \WxPay(); 
         $order=$wx->order_query(I('oid'));
        
@@ -61,7 +61,7 @@ class PayController extends HomebaseController {
     public function wx_notify(){
         
         $dir=getcwd();
-        require_once $dir.'/wxpay/WxPay.php';
+        require_once $dir.'/wxpay/Wxpay.php';
         $wx=new \WxPay();
         $order=$wx->notify();
         
