@@ -327,4 +327,62 @@ class InfoController extends MemberbaseController {
         $this->display();
     }
     
+    //充值wxpay
+    public function wxpay(){
+        $payment=I('post.payment','');
+        $money=I('post.money','');
+        if($payment!='wxpay'){
+            $this->error('错误地址');
+        }
+        if(!preg_match('/^\d{1,8}(\.\d{1,2})?$/',$money)){
+            $this->error('充值金额错误,只能最多2位小数,1亿以下');
+        }
+       
+        
+        $time=time();
+        $info=[];
+        //商户订单号，商户网站订单系统中唯一订单号，必填
+        $out_trade_no = ($this->userid).'-'.date('Ymd-His');
+       
+        //订单名称，必填
+        $title=session('company.title');
+        $subject =$title['content'].'充值￥'.$money;
+        //付款金额，必填
+        //微信的支付金额1指1分钱
+        $info['money']=$money;
+        $info['oid']=$out_trade_no;
+        $total_fee =bcmul($money,100,0);
+        $total_fee=1;
+        //商品描述，可空
+        $body = $subject;
+        $dir=getcwd();
+        
+        require_once $dir.'/wxpay/lib/WxPay.Api.php';
+        require_once $dir.'/wxpay/WxPay.NativePay.php';
+        require_once $dir.'/wxpay/WxPay.php';
+      
+        $notify = new \NativePay();
+        $input = new \WxPayUnifiedOrder();
+        $input->SetBody($body);
+        $input->SetAttach("test");
+        $input->SetOut_trade_no($out_trade_no);
+        $input->SetTotal_fee("1");  //此处以人民币分为最小单位，1为0.01元
+        $input->SetTime_start(date("YmdHis"),$time);
+        $input->SetTime_expire(date("YmdHis", $time+3600));
+        $input->SetGoods_tag("test");
+        $input->SetNotify_url("http://www.zypjw.cn/Portal/Pay/wx_notify.php");
+       
+        $input->SetTrade_type("NATIVE");
+        $input->SetProduct_id("123456789");
+        $result = $notify->GetPayUrl($input);
+        
+       
+        $info['weixinUrl']= urlencode($result["code_url"]);
+        $info['query_url']=U('Portal/Pay/wx_query');
+        
+        $this->assign('info',$info);
+        $this->display();
+        
+    }
+    
 }
