@@ -356,7 +356,7 @@ class InfoController extends MemberbaseController {
         //商品描述，可空
         $body = $subject;
         $dir=getcwd();
-        
+        exit($dir);
         require_once $dir.'/wxpay/lib/WxPay.Api.php';
         require_once $dir.'/wxpay/WxPay.NativePay.php';
         require_once $dir.'/wxpay/WxPay.php';
