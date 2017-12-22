@@ -19,6 +19,8 @@ class PayController extends HomebaseController {
     }
     
     public function wx_query(){
+        $log='wx.log';
+        $line=PHP_EOL;
         $arr=['code'=>0,'msg'=>'未支付'];
      
         $arr['oid']=I('oid');
@@ -27,8 +29,7 @@ class PayController extends HomebaseController {
         $wx=new \WxPay(); 
         $order=$wx->order_query(I('oid'));
        
-        if(empty($order)){ 
-            error_log(date('Y-m-d H:i:s').'支付成功wx_query但订单未支付'."\r\n",3,'wx.log');
+        if(empty($order)){  
             $this->ajaxReturn($arr);
             exit;
         }
@@ -44,11 +45,11 @@ class PayController extends HomebaseController {
         
         if(empty($res)){
             error_log(date('Y-m-d H:i:s').'支付成功wx_query但订单有异常,订单号'.$data_paypay['oid'].
-                '订单金额'.$data_paypay['money'].'交易号'.$data_paypay['trade_no']."\r\n",3,'wx.log');
+                '订单金额'.$data_paypay['money'].'交易号'.$data_paypay['trade_no'].$line,3,$log);
             $arr=['code'=>2,'msg'=>'支付成功但订单有异常，请记住支付信息。如有问题，联系客服'];
         }else{ 
             error_log(date('Y-m-d H:i:s').'支付成功wx_query,订单号'.$data_paypay['oid'].
-                '订单金额'.$data_paypay['money'].'交易号'.$data_paypay['trade_no']."\r\n",3,'wx.log');
+                '订单金额'.$data_paypay['money'].'交易号'.$data_paypay['trade_no'].$line,3,$log);
             $arr=['code'=>1,'msg'=>'支付成功'];
         }
         $arr['trade_no']=$order['transaction_id'];
@@ -59,18 +60,19 @@ class PayController extends HomebaseController {
     }
     
     public function wx_notify(){
-       
-        error_log(date('Y-m-d H:i:s').'支付wx_notify开始'."\r\n",3,'wx.log'); 
+        $log='wx.log';
+        $line=PHP_EOL;
+        error_log(date('Y-m-d H:i:s').'支付wx_notify开始'.$line,3,$log); 
         $dir=getcwd();
         require_once $dir.'/wxpay/Wxpay.php';
         $wx=new \WxPay();
         $order=$wx->notify();
         
         if(empty($order)){
-            error_log(date('Y-m-d H:i:s').'支付wx_notify空'."\r\n",3,'wx.log'); 
+            error_log(date('Y-m-d H:i:s').'支付信息空'.$line,3,$log); 
             exit();
         }
-        error_log(date('Y-m-d H:i:s').'支付成功开始'.$order['out_trade_no']."\r\n",3,'wx.log'); 
+        error_log(date('Y-m-d H:i:s').'支付成功开始'.$order['out_trade_no'].$line,3,$log); 
          $data_paypay=[
             'oid'=>$order['out_trade_no'],
             'money'=>bcdiv($order['total_fee'],100,2),
@@ -83,10 +85,10 @@ class PayController extends HomebaseController {
         
         if(empty($res)){
             error_log(date('Y-m-d H:i:s').'支付成功wx_notify但订单有异常,订单号'.$data_paypay['oid'].
-                '订单金额'.$data_paypay['money'].'交易号'.$data_paypay['trade_no']."\r\n",3,'wx.log'); 
+                '订单金额'.$data_paypay['money'].'交易号'.$data_paypay['trade_no'].$line,3,$log); 
         }else{
             error_log(date('Y-m-d H:i:s').'支付成功wx_notify,订单号'.$data_paypay['oid'].
-                '订单金额'.$data_paypay['money'].'交易号'.$data_paypay['trade_no']."\r\n",3,'wx.log');
+                '订单金额'.$data_paypay['money'].'交易号'.$data_paypay['trade_no'].$line,3,$log);
             exit('<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>');
             
         }
