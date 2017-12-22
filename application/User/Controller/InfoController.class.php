@@ -351,6 +351,7 @@ class InfoController extends MemberbaseController {
         //微信的支付金额1指1分钱
         $info['money']=$money;
         $info['oid']=$out_trade_no;
+        //此处以人民币分为最小单位，1为0.01元
         $total_fee =bcmul($money,100,0);
        
         //商品描述，可空
@@ -366,7 +367,7 @@ class InfoController extends MemberbaseController {
         $input->SetBody($body);
         $input->SetAttach("test");
         $input->SetOut_trade_no($out_trade_no);
-        $input->SetTotal_fee("1");  //此处以人民币分为最小单位，1为0.01元
+        $input->SetTotal_fee($total_fee);  //此处以人民币分为最小单位，1为0.01元
         $input->SetTime_start(date("YmdHis"),$time);
         $input->SetTime_expire(date("YmdHis", $time+3600));
         $input->SetGoods_tag("test");
