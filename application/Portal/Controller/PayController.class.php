@@ -60,7 +60,7 @@ class PayController extends HomebaseController {
     
     public function wx_notify(){
         echo 'dd';
-        error_log(date('Y-m-d H:i:s').'支付成功wx_notify开始'."\r\n",3,'wx.log'); 
+        error_log(date('Y-m-d H:i:s').'支付wx_notify开始'."\r\n",3,'wx.log'); 
         $dir=getcwd();
         require_once $dir.'/wxpay/Wxpay.php';
         $wx=new \WxPay();
@@ -69,6 +69,7 @@ class PayController extends HomebaseController {
         if(empty($order)){
             exit();
         }
+        error_log(date('Y-m-d H:i:s').'支付成功开始'.$order['out_trade_no']."\r\n",3,'wx.log'); 
         exit('<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>');
         $data_paypay=[
             'oid'=>$order['out_trade_no'],

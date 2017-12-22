@@ -6,7 +6,7 @@ require_once "lib/WxPay.Api.php";
 require_once "lib/WxPay.NativePay.php"; 
 
 $config=(require_once dirname(dirname(__FILE__)).'/data/conf/db.php');
-$alipay_config=$config['ALIPAY_CONFIG'];
+ 
 $mysqli=new mysqli($config['DB_HOST'], $config['DB_USER'], $config['DB_PWD'], $config['DB_NAME'],$config['DB_PORT']);
 $mysqli->set_charset('utf8');
   
@@ -18,7 +18,7 @@ $time=time();
 $data = file_get_contents("php://input"); 
 $postObj = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 $out_trade_no= $postObj->out_trade_no;
-error_log(date('Y-m-d H:i:s').'weixin/notify-start-$$out_trade_no'.$out_trade_no."\n",3,'wx.log');
+error_log(date('Y-m-d H:i:s').'weixin/notify-start-$$out_trade_no'.$out_trade_no."\n",3,$log);
 $input = new WxPayOrderQuery();
 $input->SetOut_trade_no($out_trade_no);
 $result = WxPayApi::orderQuery($input);
