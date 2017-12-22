@@ -247,7 +247,7 @@ class InfoController extends MemberbaseController {
         $title=session('company.title');
         $subject =$title['content'].'充值￥'.$money; 
         //付款金额，必填
-        $money=0.01;
+        
         $total_fee =$money; 
         //商品描述，可空
         $body = $subject;
@@ -370,7 +370,7 @@ class InfoController extends MemberbaseController {
         $input->SetTime_start(date("YmdHis"),$time);
         $input->SetTime_expire(date("YmdHis", $time+3600));
         $input->SetGoods_tag("test");
-        $input->SetNotify_url("http://www.zypjw.cn/index.php/Portal/Pay/wx_notify.php");
+        $input->SetNotify_url("http://www.zypjw.cn/wxpay/notify.php");
        
         $input->SetTrade_type("NATIVE");
         $input->SetProduct_id("123456789");
