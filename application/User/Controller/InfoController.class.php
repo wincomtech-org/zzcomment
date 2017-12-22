@@ -338,7 +338,7 @@ class InfoController extends MemberbaseController {
             $this->error('充值金额错误,只能最多2位小数,1亿以下');
         }
        
-        exit($money);
+      
         $time=time();
         $info=[];
         //商户订单号，商户网站订单系统中唯一订单号，必填
@@ -381,6 +381,8 @@ class InfoController extends MemberbaseController {
         $info['query_url']=U('Portal/Pay/wx_query');
         
         $this->assign('info',$info);
+        var_dump($info);
+        exit($money);
         $this->display();
         
     }
