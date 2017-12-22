@@ -247,7 +247,7 @@ class InfoController extends MemberbaseController {
         $title=session('company.title');
         $subject =$title['content'].'充值￥'.$money; 
         //付款金额，必填
-        
+        $money=0.01;
         $total_fee =$money; 
         //商品描述，可空
         $body = $subject;
