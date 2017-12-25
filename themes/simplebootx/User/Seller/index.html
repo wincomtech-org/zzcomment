@@ -21,13 +21,13 @@
 								<select class="te" name="cate1" id="add-cate1">
 									<option value="0">分类</option>
 									<foreach name="add_cate1" item="vo">
-									<option value="{$vo.id}" <eq name="info.cate1" value="$vo.id">selected</eq>>{$vo.name}</option>
+									<option id="cate1{$vo.id}" value="{$vo.id}"  >{$vo.name}</option>
 									</foreach>
 									<select>
 									<select name="cate2" id="add-cate2">
 										<option class="cate20" value="0">行业</option>
 										<foreach name="add_cate2" item="vo">
-										<option class="cate2{$vo.fid}" value="{$vo.id}" <eq name="info.cate2" value="$vo.id">selected</eq>>{$vo.name}</option>
+										<option class="cate2{$vo.fid}" id="cate2{$vo.id}" value="{$vo.id}"  >{$vo.name}</option>
 										</foreach>
 									</select>
 							</div>
@@ -37,29 +37,42 @@
                         <div class="form2"><span>经营范围：</span><input type="text" name="jyfw" value="{$info.scope}" onblur="jyfw1()"></div> <p class="ml2 msg5"></p>
                         <div class="form2"><span>经营时间：</span><input type="text" name="jysj" value="{$info.bussiness_time}" onblur="jysj1()"></div> <p class="ml2 msg6"></p>
                         <div class="form2"><span>手机号：</span><input type="text" name="phone" value="{$info.mobile}" onblur="phone1()"></div><p class="ml2 msg7"></p>
-                        <div class="form2"><span>座机号码：</span><input type="text" name="tell" value="{$info.tel}" placeholder="请加上区号，如021-88888888"></div><p class="ml2 msg8"></p>
+                        <div class="form2"><span>座机号码：</span><input type="text" name="tell" value="{$info.tel}" placeholder="请加上区号，如021-88888888" ></div><p class="ml2 msg8"></p>
                         <div class="form2"><span class="lf">店铺地址：</span>
                             <div class="lf"> 
 	                            <select name="province" id="provinces">
 									<option class="city10" value="0">省份</option>
 								<foreach name="add_city1" item="vo">
-									<option value="{$vo.id}" <eq name="info.city1" value="$vo.id">selected</eq>>{$vo.name}</option>
+									<option value="{$vo.id}" id="city1{$vo.id}">{$vo.name}</option>
 								</foreach>
 								</select>
 								<select name="city" id="citys">
 									<option class="city20" value="0">地级市</option>
 								<foreach name="add_city2" item="vo">
-									<option class="city2{$vo.fid}" value="{$vo.id}" <eq name="info.city2" value="$vo.id">selected</eq>>{$vo.name}</option>
+									<option class="city2{$vo.fid}" id="city2{$vo.id}" value="{$vo.id}"  >{$vo.name}</option>
 								</foreach>
 								</select>
 								<select name="town" id="countys">
 									<option class="city30" value="0">县/区</option>
 								<foreach name="add_city3" item="vo">
-									<option class="city3{$vo.fid}" value="{$vo.id}" <eq name="info.city3" value="$vo.id">selected</eq>>{$vo.name}</option>
+									<option class="city3{$vo.fid}" id="city3{$vo.id}" value="{$vo.id}"  >{$vo.name}</option>
 								</foreach>
 								</select>
 							</div> 
                             <div class="clear"></div>
+ <script>
+ var cate1="{$info.cate1}";
+ var cate2="{$info.cate2}";
+ $('#cate1'+cate1).prop('selected',true);
+ $('#cate2'+cate2).prop('selected',true);
+ 
+ var city1="{$info.city1}";
+ var city2="{$info.city2}";
+ var city3="{$info.city3}";
+ $('#city1'+city1).prop('selected',true);
+ $('#city2'+city2).prop('selected',true);
+ $('#city3'+city3).prop('selected',true);
+ </script>
                         </div><p class="ml2 msg"></p>
                         <div class="form2"><span></span><input type="text" name="shopaddr" value="{$info.address}" onblur="shopaddr1()"></div>
                         <p class="ml2 msg9"></p>
@@ -87,6 +100,10 @@
         </div>
 	<tc_include file="Public/user_footer" />
 <script>
+ 
+$('#add-cate2 option').hide();
+$('#add-cate2 .cate2'+cate1).show();
+
 
 $('#add-cate1').change(function(){
 	var fid=this.value;
@@ -97,7 +114,11 @@ $('#add-cate1').change(function(){
 	
 });
 
-
+ 
+$('#citys option').hide();
+$('#citys .city2'+city1).show();
+$('#countys option').hide();
+$('#countys .city3'+city2).show();
 $('#provinces').change(function(){
 	var fid=this.value;
 	$('#citys option').hide();
