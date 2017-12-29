@@ -18,8 +18,11 @@
 					<tr>
 						 
 						<th width="50">ID</th>
-						<th>店铺名称</th>
 						<th>店铺类别</th>
+						<th>店铺名称</th>
+						<th>店铺图片</th>
+						<th>经营范围</th>
+						
 						<th>店铺城市</th>
 						<th>店铺地址</th>
 						
@@ -31,11 +34,14 @@
 				<tbody>
 				<foreach name="list" item="vo">
 					<tr> 
-	                    <td>{$vo.id}</td>      
+	                    <td>{$vo.id}</td> 
+	                     <td> {$vo.cate}</td>     
 	                    <td> {$vo.name}</td>
-	                     <td> {$vo.cate}</td>
+	                     <td><img src="__UPLOAD__/{$vo.pic}" alt="暂无图片" style="width:100px;height:50px;"/></td>
+	                      <td> {$vo.scope}</td>
+	                    
 	                     <td> {$vo.citys}</td>
-	                      <td> {$vo.address}</td>
+	                     <td> {$vo.address}</td>
 	                   <td> {$vo.create_time|date="Y-m-d H:i:s",###}</td>
 	                   <td> {$vo.authorname}</td>
 	                    <td>
