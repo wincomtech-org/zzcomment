@@ -76,13 +76,17 @@ $('.reply-form').submit(function(){
 $('.shop-add-form').submit(function(){
 	var id=parseInt("{$Think.session.user.id}");
 	if(!(id>0)){
-		alert('未登录不能创建');
+		$('#message').show();
+		$('#message').text('未登录不能创建');
+		
 		return false;
 	} 
 	 
 	var verify=$('#captcha').val();
 	if(verify.length!=4){
-		alert('验证码不正确');
+		$('#message').show();
+		$('#message').text('验证码不正确');
+		
 		return false;
 	}
 	var status=true;
@@ -100,7 +104,8 @@ $('.shop-add-form').submit(function(){
 		success:function(data){
 			if(data.errno!=1){
 			  status=false;
-			   alert(data.error);
+			  $('#message').show();
+			$('#message').text('验证码不正确');
 			  $('.verify_img').attr('src',$('.verify_img').attr('src')+'&time=1');
 			}
 		}

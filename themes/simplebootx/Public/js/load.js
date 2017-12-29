@@ -99,9 +99,11 @@ $(document).ready(function(){
 	$("#pop_layer input:text").each(function(){
 		$(this).blur(function(){
 			var infor=$(this).val();
+			var cc=$(this).attr("id");
+			if(!cc=="shop_area"){
 			if(infor==""||infor==null){
 				$("#message").text("*为必填项，请完整填写信息！").css("color","#d00000");
-			}
+			}}
 		});
 		$(this).focus(function(){
 			$("#message").text("请输入店铺信息！").css("color","#333");
@@ -122,10 +124,12 @@ $(document).ready(function(){
 		var s1=true;
 		$("#pop_layer :text").each(function(){
 			var infor=$(this).val();
+			var cc=$(this).attr("id");
+			if(!cc=="shop_area"){
 			if(infor==""||infor==null){
 				$("#message").text("*为必填项，请完整填写信息！").css("color","#d00000");
 				s1=false;
-			}
+			}}
 		})
 		$("#pop_layer select").each(function(){
 			var select=$(this).val();

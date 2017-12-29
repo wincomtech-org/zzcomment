@@ -7,7 +7,7 @@
 	<div class="pop-layer" id="pop_layer">
 		<div class="pop-container">
 			<a href="javascript:void(0);" class="close" id="close"><img src="__TMPL__Public/img/close.png" alt="关闭" title="关闭"></a>
-			<form action="{:U('User/Seller/create')}" method="post" class="shop-add-form">
+			<form action="{:U('User/Seller/create')}" method="post" class="shop-add-form" enctype="multipart/form-data">
 				<p class="message" id="message">请输入店铺信息！(登录后才能创建店铺)</p>
 				<div class="catecory">
 					<label>店铺分类</label>
@@ -28,6 +28,16 @@
 					<label for="shop_name">店铺名称</label>
 					<input type="text" placeholder="请输入店铺名称" name="shop_name" class="shopname" id="shop_name">
 				</div>
+				<div>
+					<span for="shop_area">经营范围</span>
+					<input type="text" placeholder="请输入经营范围" name="shop_area" class="shopname" id="shop_area">
+				</div>
+				<div>
+					<span for="shop_pic">店铺图片</span>
+					<input type="file" name="shop_pic" class="shopname" id="shop_pic" accept="image/jpeg,image/jpg,image/png">
+				</div>
+				 
+				
 				<div>
 					<label>地区</label>
 					<select name="province" id="add-city1">

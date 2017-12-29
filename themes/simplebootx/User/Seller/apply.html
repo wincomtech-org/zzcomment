@@ -13,7 +13,7 @@
                 <div class="" style="text-align:center;font-size:20px;color:#f00;margin:20px 0;font-weight:bold;">店铺认领申请页</div>
                     <div class="per_r1" >
                         <div class="ib imgbox3">
-                            <div id="preview3" class="preview" ><img class="imgbox3" src="__TMPL__Public/img/img1.jpg"></div>
+                            <div id="preview3" class="preview" ><img class="imgbox3" src="__UPLOAD__/{$info['pic']|default=$company['seller_empty']['content']}"></div>
                             <label class="btn btn3" for="p3" title="选择图片"><span>选择图片</span></label> 
                                 <input type="file" id="p3" class="upload_pic" onchange="preview(this,3)" name="IDpic3" value="" >
                             <p class="pms">*上传尺寸为500*300的jpg、png图,4M以内</p>
@@ -25,7 +25,7 @@
                         <div class="form2"><span>店铺名称:</span><i class="fml">{$info.name}</i></div> <p class="ml2 msg2"></p>
                         <div class="form2"><span>法人:</span><input type="text" name="fname" placeholder="" onblur="fname1()"></div> 
                         <p class="ml2 msg3"></p>  
-                        <div class="form2"><span>经营范围：</span><input type="text" name="jyfw" placeholder=""></div> <p class="ml2 msg5"></p>
+                        <div class="form2"><span>经营范围：</span><input type="text" name="jyfw" value="{$info.scope}"></div> <p class="ml2 msg5"></p>
                         <div class="form2"><span>经营时间：</span><input type="text" name="jysj" placeholder=""></div> <p class="ml2 msg6"></p>
                         <div class="form2"><span>手机号：</span><input type="text" name="phone" placeholder="" ></div><p class="ml2 msg7"></p>
                         <div class="form2"><span>座机号码：</span><input type="text" name="tell" placeholder="请加上区号，如021-88888888" ></div><p class="ml2 msg8"></p>

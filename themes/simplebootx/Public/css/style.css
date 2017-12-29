@@ -254,6 +254,7 @@ label.upload{width:215px;height:36px;position:relative;overflow: hidden;}
 .message{width:100%;font-size:14px;line-height: 24px;min-height:24px;text-align:center;}
 .shop-add-form>div{margin:30px 0;clear:both;overflow: hidden;}
 .shop-add-form label{position:relative;float:left;display:inline-block;width:72px;margin-right:12px;text-align:right;font-size:16px;line-height:44px;color:#000;}
+.shop-add-form span{position:relative;float:left;display:inline-block;width:72px;margin-right:12px;text-align:right;font-size:16px;line-height:44px;color:#000;}
 .shop-add-form label:after{content:"*";font-size:16px;line-height: 44px;color:#d00000;position:absolute;top:0;right:-8px;z-index: 1;}
 .shop-add-form input[type="text"]{float:left;padding-left:12px;height:44px;border:1px solid #dcdcdc;font-size:16px;line-height: 44px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
 input.shopname,input.shopaddress{width:320px;}
@@ -264,7 +265,7 @@ input.captcha{width:200px;}
 a.captcha{width:100px;height:44px;}
 a.captcha img{width:100px;height:44px;}
 .signup{clear:both;display: block;padding:0 12px;margin:10px auto;font-size:16px;line-height:32px;background: #d00000;color:#fff;cursor:pointer;}
-
+#shop_pic{width:160px;height:40px;opacity: 1;line-height: 40px;}
 .shop-detailcontainer{width:85%;margin:0 auto;padding:50px 0;}
 .shop-detailcontainer .cont-head{text-align:center;font-size: 24px;line-height: 34px;padding: 10px 0;}
 .shop-detailcontainer .cont-date{text-align: right;padding:15px 0;}

@@ -24,7 +24,34 @@ class SellerController extends MemberbaseController {
 	    if(!sp_check_verify_code()){
 	        $this->error('验证码错误');
 	    }
-	    
+	   
+	    $pic='';
+	    if(!empty($_FILES['shop_pic']['name'])){
+	          
+	        $subname=date('Y-m-d');
+	         
+	        $upload = new \Think\Upload();// 实例化上传类
+	        //20M
+	        $upload->maxSize   =  C('SIZE') ;// 设置附件上传大小
+	        $upload->rootPath=getcwd().'/';
+	        $upload->subName = $subname;
+	        $upload->savePath  =C("UPLOADPATH").'/seller/';
+	        $info   =   $upload->upload();
+	         
+	        if(!$info) {// 上传错误提示错误信息
+	            $this->error($upload->getError());
+	        }
+	        foreach ($info as $v){
+	            $pic0='seller/'.$subname.'/'.$v['savename'];
+	            $pic=$pic0.'.jpg';
+	        }
+	        $image = new \Think\Image();
+	        $image->open(C("UPLOADPATH").$pic0);
+	        // 生成一个固定大小为150*150的缩略图并保存为thumb.jpg
+	        $image->thumb(500, 300,\Think\Image::IMAGE_THUMB_FIXED)->save(C("UPLOADPATH").$pic);
+	        
+	        unlink(C("UPLOADPATH").$pic0);
+	    }
 	    $m=$this->m;
 	    $data=array(
 	        'name'=>$name,
@@ -35,6 +62,8 @@ class SellerController extends MemberbaseController {
 	        'grade'=>8,
 	        'score'=>8,
 	        'create_time'=>time(),
+	        'pic'=>$pic,
+	        'scope'=>I('shop_area',''),
 	    );
 	    $insert=$m->add($data);
 	    
