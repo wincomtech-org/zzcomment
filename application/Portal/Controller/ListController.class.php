@@ -114,8 +114,8 @@ class ListController extends HomebaseController {
 	    $where_top['start_time']=array('lt',$time);
 	    
 	    //先找置顶 
-	    $top_len=10;
-	    $tmp=M('TopGoods')->where($where_top)->limit(0,$top_len)->select();
+// 	    $top_len=20;
+	    $tmp=M('TopGoods')->where($where_top)->select();
 	    $sids=array();
 	    foreach ($tmp as $v){
 	        $sids[]=$v['pid'];
@@ -125,7 +125,7 @@ class ListController extends HomebaseController {
 	        $where=array('id'=>array('in',$sids));
 	        //推荐动态发布时间排名
 	        $list_top=$m->order('start_time desc')->where($where)->select();
-	        $len=count($list_top);
+// 	        $len=count($list_top);
 	    }
 	    //少于$active_len个要有其他动态
 	    //置顶的动态不变
