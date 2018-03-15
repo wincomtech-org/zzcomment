@@ -1,4 +1,0 @@
-ALTER TABLE `cm_seller` CHANGE `link` `link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '店铺链接';--end_flag--
-ALTER TABLE `cm_seller_apply` CHANGE `link` `link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '店铺链接';--end_flag--
-ALTER TABLE `cm_seller_edit` CHANGE `link` `link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '店铺链接';--end_flag--
-ALTER TABLE `cm_seller_apply` CHANGE `link` `link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '店铺链接';--end_flag--

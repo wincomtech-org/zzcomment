@@ -239,7 +239,7 @@ var mR=/^(0|86|17951)?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$
 			return false;
 		}
 		var core=$("input:checked").length;
-		var file=$("input:file").val();
+		var file=$("#provedata").val();
 		if(core==0){
 			$(".comment-infor").text("请选择评分类型！");
 			return false;
